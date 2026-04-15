@@ -1,0 +1,9 @@
+.vs/
+**/bin/
+**/obj/
+.idea/
+.vscode/
+node_modules/
+dist/
+.env
+.env.*

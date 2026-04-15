@@ -1,0 +1,6 @@
+@Productora_HostAddress = http://localhost:5252
+
+GET {{Productora_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
