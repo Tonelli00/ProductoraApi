@@ -10,7 +10,7 @@ namespace Domain.Entities
         public string EntityType { get; set; }
         public string EntityId { get; set; }
         public string Details { get; set; }
-        public string CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; }
 
         public User User { get; set; }
     }
