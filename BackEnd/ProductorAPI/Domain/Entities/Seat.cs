@@ -11,5 +11,7 @@ namespace Domain.Entities
         public string Status { get; set; }
         public int Version { get; set; }
 
+        public Sector Sector { get; set; }
+
     }
 }

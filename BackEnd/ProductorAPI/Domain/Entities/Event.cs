@@ -9,5 +9,7 @@ namespace Domain.Entities
         public DateTime EventDate { get; set; }
         public string Venue { get; set; }
         public string Status { get; set; }
+
+        public List<Sector> Sectors { get; set; }
     }
 }
