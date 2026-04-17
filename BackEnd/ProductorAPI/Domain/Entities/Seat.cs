@@ -13,5 +13,7 @@ namespace Domain.Entities
 
         public Sector Sector { get; set; }
 
+        public IEnumerable<Reservation> Reservations { get; set; }
+
     }
 }

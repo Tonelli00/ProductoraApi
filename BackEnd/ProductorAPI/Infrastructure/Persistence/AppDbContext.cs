@@ -1,6 +1,5 @@
 ﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Identity.Client;
 
 namespace Infrastructure.Persistence
 {
@@ -22,6 +21,7 @@ namespace Infrastructure.Persistence
             {
                 entity.ToTable("Event");
                 entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasColumnType("varchar(100)");
@@ -33,6 +33,15 @@ namespace Infrastructure.Persistence
                 entity.Property(e =>e.Status)
                     .IsRequired()
                     .HasColumnType("varchar(50)");
+
+                entity.HasData(new Event 
+                {
+                    Id=1,
+                    Name="Gran evento",
+                    EventDate=DateTime.Now.AddDays(20),
+                    Venue="Estadio A",
+                    Status="Activo"
+                });              
             });
 
             // Sector
@@ -40,6 +49,7 @@ namespace Infrastructure.Persistence
             {
                 entity.ToTable("Sector");
                 entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
                 entity.Property(e => e.EventId)
                     .IsRequired();
                 entity.Property(e => e.Name)
@@ -50,6 +60,9 @@ namespace Infrastructure.Persistence
                     .HasColumnType("decimal(10,2)");
                 entity.Property(e => e.Capacity)
                     .IsRequired();
+
+            entity.HasData(new Sector{Id=1,EventId=1,Name="Sector A",Price=2000,Capacity=50 });
+            entity.HasData(new Sector {Id =2, EventId = 1, Name = "Sector B", Price = 2500, Capacity = 50 });
             });
 
             // Seat 
@@ -57,6 +70,7 @@ namespace Infrastructure.Persistence
             {
                 entity.ToTable("Seat");
                 entity.HasKey(e => e.Id);
+          
                 entity.Property(e => e.Id)
                      .HasDefaultValueSql("NEWID()").IsRequired();
                 entity.Property(e => e.SectorId)
@@ -72,7 +86,10 @@ namespace Infrastructure.Persistence
                     .HasColumnType("varchar(50)");
                 entity.Property(e => e.Version)
                     .IsRequired()
-                    .HasColumnType("int");
+                    .HasColumnType("int").IsConcurrencyToken();
+
+
+
             });
 
             // User
@@ -80,6 +97,7 @@ namespace Infrastructure.Persistence
             {
                 entity.ToTable("User");
                 entity.HasKey(u => u.Id);
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
                 entity.Property(u => u.Name)
                     .IsRequired()
                     .HasColumnType("varchar(100)");
@@ -97,6 +115,8 @@ namespace Infrastructure.Persistence
             {
                 entity.ToTable("Reservation");
                 entity.HasKey(r => r.Id);
+                entity.Property(r => r.Id)
+                    .HasDefaultValueSql("NEWID()").IsRequired();
                 entity.Property(r => r.Status)
                     .IsRequired()
                     .HasConversion<string>() // guarda "Pending" en vez de 0
@@ -112,6 +132,8 @@ namespace Infrastructure.Persistence
             {
                 entity.ToTable("AuditLog");
                 entity.HasKey(a => a.Id);
+                entity.Property(a => a.Id)
+                      .HasDefaultValueSql("NEWID()").IsRequired();
                 entity.Property(a => a.Action)
                     .IsRequired()
                     .HasConversion<string>()
@@ -136,12 +158,12 @@ namespace Infrastructure.Persistence
                 .HasOne(r => r.User)
                 .WithMany(u => u.Reservations)
                 .HasForeignKey(r => r.UserId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             // uno a muchos - Seat Reservation
             modelBuilder.Entity<Reservation>()
                 .HasOne(r => r.Seat)
-                .WithMany()
+                .WithMany(re=>re.Reservations)
                 .HasForeignKey(r => r.SeatId)
                 .OnDelete(DeleteBehavior.Restrict);
 

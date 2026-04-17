@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.UseCase
+namespace Application.Interfaces
 {
-    internal class EventService
+    public interface ISeatCommand
     {
     }
 }

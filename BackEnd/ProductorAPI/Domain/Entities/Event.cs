@@ -10,6 +10,6 @@ namespace Domain.Entities
         public string Venue { get; set; }
         public string Status { get; set; }
 
-        public List<Sector> Sectors { get; set; }
+        public IEnumerable<Sector> Sectors { get; set; }
     }
 }
