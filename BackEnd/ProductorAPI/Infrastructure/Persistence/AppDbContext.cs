@@ -88,7 +88,38 @@ namespace Infrastructure.Persistence
                     .IsRequired()
                     .HasColumnType("int").IsConcurrencyToken();
 
+                var seats = new List<Seat>();
+                int id = 1;
 
+                // Sector 1 (50 butacas)
+                for (int i = 1; i <= 50; i++)
+                {
+                    seats.Add(new Seat
+                    {
+                        Id = Guid.Parse($"11111111-1111-1111-1111-{i.ToString("D12")}"),
+                        SectorId = 1,
+                        RowIdentifier = "Sector 1",
+                        SeatNumber = i,
+                        Status = "Available",
+                        Version = 1
+                    });
+                }
+
+                // Sector 2 (50 butacas)
+                for (int i = 1; i <= 50; i++)
+                {
+                    seats.Add(new Seat
+                    {
+                        Id = Guid.Parse($"22222222-2222-2222-2222-{i.ToString("D12")}"),
+                        SectorId = 2,
+                        RowIdentifier = "Sector 2",
+                        SeatNumber = i,
+                        Status = "Available",
+                        Version = 1
+                    });
+                }
+
+                modelBuilder.Entity<Seat>().HasData(seats);
 
             });
 

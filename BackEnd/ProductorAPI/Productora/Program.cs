@@ -1,11 +1,7 @@
 using Application.Interfaces;
-using Application.UseCase.Event;
-using Application.UseCase.Seat;
-using Application.UseCase.Sector;
-using Infrastructure.Commands;
+using Application.UseCase.Handlers.Seats;
 using Infrastructure.Persistence;
-using Infrastructure.Persistence.DbSeeder;
-using Infrastructure.Queries;
+using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Writers;
 
@@ -30,35 +26,21 @@ builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(conn
 //Inyecciones
 
 //EVENT
-builder.Services.AddScoped<IEventServices,EventService>();
-builder.Services.AddScoped<IEventQuery, EventQuery>();
-builder.Services.AddScoped<IEventCommand, EventCommand>();
 
 //SEAT
-builder.Services.AddScoped<ISeatServices, SeatService>();
-builder.Services.AddScoped<ISeatQuery, SeatQuery>();
-builder.Services.AddScoped<ISeatCommand, SeatCommand>();
+
+builder.Services.AddScoped<ISeatRepository, SeatRepository>();
+builder.Services.AddScoped<IGetSeatsBySectorIdHandler, GetSeatsBySectorIdHandler>();
+
 
 //SECTOR
-builder.Services.AddScoped<ISectorServices, SectorService>();
-builder.Services.AddScoped<ISectorQuery, SectorQuery>();
-builder.Services.AddScoped<ISectorCommand, SectorCommand>();
+
 
 
 
 var app = builder.Build();
 
-using (var scope = app.Services.CreateScope())
-{
-    var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
-    if (!context.Seats.Any())
-    {
-        var seats = SeatSeed.Generate(1, 2); 
-        context.Seats.AddRange(seats);
-        context.SaveChanges();
-    }
-}
 
 
 
