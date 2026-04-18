@@ -15,5 +15,13 @@ namespace Domain.Entities
 
         public IEnumerable<Reservation> Reservations { get; set; }
 
+        /*
+        public enum SeatStatus 
+        {
+            Available=1,
+            Reserved=2,
+            Sold=3
+        };*/
+
     }
 }

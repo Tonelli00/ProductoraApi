@@ -1,9 +1,12 @@
-using Application.Interfaces;
+using Application.Interfaces.Events;
+using Application.Interfaces.Seats;
+using Application.UseCase.Handlers.Events;
 using Application.UseCase.Handlers.Seats;
 using Infrastructure.Persistence;
 using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Writers;
+using Productora.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,12 +29,17 @@ builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(conn
 //Inyecciones
 
 //EVENT
+builder.Services.AddScoped<IEventRepository, EventRepository>();
+builder.Services.AddScoped<IGetAllEventsQueryHandler,GetAllEventsQueryHandler>();
+builder.Services.AddScoped<IGetPagedEventsQueryHandler, GetPagedEventsQueryHandler>();
+
 
 //SEAT
 
 builder.Services.AddScoped<ISeatRepository, SeatRepository>();
-builder.Services.AddScoped<IGetSeatsBySectorIdHandler, GetSeatsBySectorIdHandler>();
-
+builder.Services.AddScoped<IGetSeatsBySectorIdQueryHandler, GetSeatsBySectorIdHandler>();
+builder.Services.AddScoped<IMarkSeatAsReservedCommandHandler, MarkSeatAsReservedHandler>();
+builder.Services.AddScoped<IGetReservedSeatsByEventHandler, GetReservedSeatsByEventHandler>();
 
 //SECTOR
 
@@ -51,6 +59,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseMiddleware<ExceptionMiddleware>();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

@@ -1,28 +1,27 @@
-﻿using Application.DTOs.Seat;
+﻿
+using Application.DTOs.Seat;
 using Application.Interfaces.Seats;
 using Application.UseCase.Queries.Seats;
 
-
 namespace Application.UseCase.Handlers.Seats
 {
-    public class GetSeatsBySectorIdHandler: IGetSeatsBySectorIdQueryHandler
+    public class GetReservedSeatsByEventHandler : IGetReservedSeatsByEventHandler
     {
         private readonly ISeatRepository _repository;
 
-        public GetSeatsBySectorIdHandler(ISeatRepository repository)
+        public GetReservedSeatsByEventHandler(ISeatRepository repository)
         {
             _repository = repository;
         }
 
-        public async Task<IEnumerable<SeatResponse>> Handle(GetSeatsBySectorIdQuery query)
+        public async Task<IEnumerable<SeatResponse>> Handle(GetReservedSeatsByEventIdQuery Query)
         {
-            var seats = await _repository.GetSeatsBySectorId(query.SectorId);
+            var seats = await _repository.GetReservedSeatsByEventId(Query.EventId);
             return seats.Select(s => new SeatResponse
             {
-                
                 SectorId = s.SectorId,
-                RowIdentifier = s.RowIdentifier,
                 SeatNumber = s.SeatNumber,
+                RowIdentifier = s.RowIdentifier,
                 Status = s.Status,
             }).ToList();
         }

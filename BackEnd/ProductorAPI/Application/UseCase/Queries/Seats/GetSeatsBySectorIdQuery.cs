@@ -1,6 +1,4 @@
-﻿
-
-namespace Application.UseCase.Queries
+﻿namespace Application.UseCase.Queries.Seats
 {
     public class GetSeatsBySectorIdQuery
     {
