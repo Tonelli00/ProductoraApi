@@ -66,7 +66,7 @@ namespace Infrastructure.Persistence
                     .HasColumnType("varchar(10)");
                 entity.Property(e => e.SeatNumber)
                     .IsRequired()
-                    .HasColumnType("int");
+                    .HasColumnType("integer");
                 entity.Property(e => e.Status)
                     .IsRequired()
                     .HasColumnType("varchar(50)");
