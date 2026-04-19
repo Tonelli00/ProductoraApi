@@ -8,7 +8,7 @@ namespace Domain.Entities
         public string Email { get; set; }
         public string PasswordHash { get; set; }
 
-        public List<Reservation> Reservations { get; set; }
-        public List<Audit_Log> AuditLogs { get; set; }
+        public IEnumerable<Reservation> Reservations { get; set; }
+        public IEnumerable<Audit_Log> AuditLogs { get; set; }
     }
 }

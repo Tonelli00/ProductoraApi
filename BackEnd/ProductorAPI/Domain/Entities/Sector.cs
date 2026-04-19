@@ -10,7 +10,7 @@ namespace Domain.Entities
         public int Capacity { get; set; }
 
         public Event Event { get; set; }
-        public List<Seat> Seats { get; set; }
+        public IEnumerable<Seat> Seats { get; set; }
 
     }
 }

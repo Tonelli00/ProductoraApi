@@ -4,6 +4,7 @@ using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260418152846_init")]
+    partial class init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -26,12 +29,8 @@ namespace Infrastructure.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-<<<<<<< HEAD
-                        .HasColumnType("uniqueidentifier");
-=======
                         .HasColumnType("uniqueidentifier")
                         .HasDefaultValueSql("NEWID()");
->>>>>>> eccc17c2c05f64958327253dc621ecb689a3af7c
 
                     b.Property<string>("Action")
                         .IsRequired()
@@ -88,8 +87,6 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Event", (string)null);
-<<<<<<< HEAD
-=======
 
                     b.HasData(
                         new
@@ -100,19 +97,14 @@ namespace Infrastructure.Migrations
                             Status = "Activo",
                             Venue = "Estadio A"
                         });
->>>>>>> eccc17c2c05f64958327253dc621ecb689a3af7c
                 });
 
             modelBuilder.Entity("Domain.Entities.Reservation", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-<<<<<<< HEAD
-                        .HasColumnType("uniqueidentifier");
-=======
                         .HasColumnType("uniqueidentifier")
                         .HasDefaultValueSql("NEWID()");
->>>>>>> eccc17c2c05f64958327253dc621ecb689a3af7c
 
                     b.Property<DateTime>("ExpiresAt")
                         .HasColumnType("datetime2");
@@ -151,11 +143,7 @@ namespace Infrastructure.Migrations
                         .HasColumnType("varchar(10)");
 
                     b.Property<int>("SeatNumber")
-<<<<<<< HEAD
-                        .HasColumnType("integer");
-=======
                         .HasColumnType("int");
->>>>>>> eccc17c2c05f64958327253dc621ecb689a3af7c
 
                     b.Property<int>("SectorId")
                         .HasColumnType("int");
@@ -165,10 +153,7 @@ namespace Infrastructure.Migrations
                         .HasColumnType("varchar(50)");
 
                     b.Property<int>("Version")
-<<<<<<< HEAD
-=======
                         .IsConcurrencyToken()
->>>>>>> eccc17c2c05f64958327253dc621ecb689a3af7c
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -176,8 +161,6 @@ namespace Infrastructure.Migrations
                     b.HasIndex("SectorId");
 
                     b.ToTable("Seat", (string)null);
-<<<<<<< HEAD
-=======
 
                     b.HasData(
                         new
@@ -1080,7 +1063,6 @@ namespace Infrastructure.Migrations
                             Status = "Available",
                             Version = 1
                         });
->>>>>>> eccc17c2c05f64958327253dc621ecb689a3af7c
                 });
 
             modelBuilder.Entity("Domain.Entities.Sector", b =>
@@ -1109,8 +1091,6 @@ namespace Infrastructure.Migrations
                     b.HasIndex("EventId");
 
                     b.ToTable("Sector", (string)null);
-<<<<<<< HEAD
-=======
 
                     b.HasData(
                         new
@@ -1129,7 +1109,6 @@ namespace Infrastructure.Migrations
                             Name = "Sector B",
                             Price = 2500m
                         });
->>>>>>> eccc17c2c05f64958327253dc621ecb689a3af7c
                 });
 
             modelBuilder.Entity("Domain.Entities.User", b =>
@@ -1173,11 +1152,7 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Entities.Reservation", b =>
                 {
                     b.HasOne("Domain.Entities.Seat", "Seat")
-<<<<<<< HEAD
-                        .WithMany()
-=======
                         .WithMany("Reservations")
->>>>>>> eccc17c2c05f64958327253dc621ecb689a3af7c
                         .HasForeignKey("SeatId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -1185,11 +1160,7 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.Entities.User", "User")
                         .WithMany("Reservations")
                         .HasForeignKey("UserId")
-<<<<<<< HEAD
-                        .OnDelete(DeleteBehavior.Restrict)
-=======
                         .OnDelete(DeleteBehavior.Cascade)
->>>>>>> eccc17c2c05f64958327253dc621ecb689a3af7c
                         .IsRequired();
 
                     b.Navigation("Seat");
@@ -1224,14 +1195,11 @@ namespace Infrastructure.Migrations
                     b.Navigation("Sectors");
                 });
 
-<<<<<<< HEAD
-=======
             modelBuilder.Entity("Domain.Entities.Seat", b =>
                 {
                     b.Navigation("Reservations");
                 });
 
->>>>>>> eccc17c2c05f64958327253dc621ecb689a3af7c
             modelBuilder.Entity("Domain.Entities.Sector", b =>
                 {
                     b.Navigation("Seats");
