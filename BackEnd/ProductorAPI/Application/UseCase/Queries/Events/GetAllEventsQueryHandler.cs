@@ -18,6 +18,7 @@ namespace Application.UseCase.Handlers.Events
             var events = await _eventRepository.GetAllEvents();
             return events.Select(e => new EventResponse
             {
+                Id = e.Id,
                 Name = e.Name,
                 EventDate = e.EventDate,
                 Venue = e.Venue,

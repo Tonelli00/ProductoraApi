@@ -42,5 +42,6 @@ namespace Infrastructure.Repositories
             _context.Seats.Update(seat);
             await _context.SaveChangesAsync(ct);
         }
+
     }
 }

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class PrimeraMigracion : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -96,7 +96,7 @@ namespace Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
                     SectorId = table.Column<int>(type: "int", nullable: false),
                     RowIdentifier = table.Column<string>(type: "varchar(10)", nullable: false),
-                    SeatNumber = table.Column<int>(type: "int", nullable: false),
+                    SeatNumber = table.Column<int>(type: "integer", nullable: false),
                     Status = table.Column<string>(type: "varchar(50)", nullable: false),
                     Version = table.Column<int>(type: "int", nullable: false)
                 },
@@ -142,7 +142,7 @@ namespace Infrastructure.Migrations
             migrationBuilder.InsertData(
                 table: "Event",
                 columns: new[] { "Id", "EventDate", "Name", "Status", "Venue" },
-                values: new object[] { 1, new DateTime(2026, 5, 8, 12, 28, 45, 733, DateTimeKind.Local).AddTicks(6759), "Gran evento", "Activo", "Estadio A" });
+                values: new object[] { 1, new DateTime(2026, 5, 14, 12, 10, 49, 159, DateTimeKind.Local).AddTicks(3945), "Gran evento", "Activo", "Estadio A" });
 
             migrationBuilder.InsertData(
                 table: "Sector",

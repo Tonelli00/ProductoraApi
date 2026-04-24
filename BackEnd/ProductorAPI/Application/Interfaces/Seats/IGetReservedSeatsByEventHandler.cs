@@ -1,7 +1,4 @@
-﻿
-
-using Application.DTOs.Seat;
-using Application.UseCase.Handlers.Seats;
+﻿using Application.DTOs.Seat;
 using Application.UseCase.Queries.Seats;
 
 namespace Application.Interfaces.Seats

@@ -1,13 +1,13 @@
 ﻿using Application.Interfaces.Seats;
-using Application.UseCase.Commands.Seat;
 using Domain.Exceptions;
 using Domain.Entities;
 
-namespace Application.UseCase.Handlers.Seats
+namespace Application.UseCase.Commands.Seat
 {
     public class MarkSeatAsReservedHandler : IMarkSeatAsReservedCommandHandler
     {
         private readonly ISeatRepository _repository;
+        
 
         public MarkSeatAsReservedHandler(ISeatRepository repository)
         {
@@ -16,7 +16,7 @@ namespace Application.UseCase.Handlers.Seats
 
         public async Task Handle(MarkSeatAsReservedCommand command)
         {
-            if (command.SectorId < 0 || command.SeatNumber < 0)
+            if (command.SectorId <= 0 || command.SeatNumber <= 0)
             {
                 throw new ArgumentException("Los valores ingresados deben ser mayores a 0");
             }
