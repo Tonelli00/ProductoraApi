@@ -1,8 +1,7 @@
-﻿
-using Application.DTOs.Event;
+﻿using Application.DTOs.Event;
 using Application.Interfaces.Events;
 
-namespace Application.UseCase.Handlers.Events
+namespace Application.UseCase.Queries.Events
 {
     public class GetPagedEventsQueryHandler : IGetPagedEventsQueryHandler
     {
@@ -18,6 +17,7 @@ namespace Application.UseCase.Handlers.Events
             var events = await _eventRepository.GetPagedEvents(Page, PageSize);
             return events.Select(e => new EventResponse
             {
+                Id = e.Id,
                 Name= e.Name,
                 EventDate = e.EventDate,
                 Venue = e.Venue,   

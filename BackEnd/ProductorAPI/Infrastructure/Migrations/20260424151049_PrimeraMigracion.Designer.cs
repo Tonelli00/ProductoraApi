@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260418152846_init")]
-    partial class init
+    [Migration("20260424151049_PrimeraMigracion")]
+    partial class PrimeraMigracion
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -92,7 +92,7 @@ namespace Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            EventDate = new DateTime(2026, 5, 8, 12, 28, 45, 733, DateTimeKind.Local).AddTicks(6759),
+                            EventDate = new DateTime(2026, 5, 14, 12, 10, 49, 159, DateTimeKind.Local).AddTicks(3945),
                             Name = "Gran evento",
                             Status = "Activo",
                             Venue = "Estadio A"
@@ -143,7 +143,7 @@ namespace Infrastructure.Migrations
                         .HasColumnType("varchar(10)");
 
                     b.Property<int>("SeatNumber")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<int>("SectorId")
                         .HasColumnType("int");

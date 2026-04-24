@@ -1,9 +1,7 @@
-﻿
-using Application.DTOs.Seat;
+﻿using Application.DTOs.Seat;
 using Application.Interfaces.Seats;
-using Application.UseCase.Queries.Seats;
 
-namespace Application.UseCase.Handlers.Seats
+namespace Application.UseCase.Queries.Seats
 {
     public class GetReservedSeatsByEventHandler : IGetReservedSeatsByEventHandler
     {

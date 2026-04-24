@@ -1,11 +1,18 @@
+using Application.Interfaces.AuditLogs;
 using Application.Interfaces.Events;
+using Application.Interfaces.Reservations;
 using Application.Interfaces.Seats;
+using Application.Interfaces.Users;
+using Application.UseCase.Commands.AuditLog;
+using Application.UseCase.Commands.Reservation;
+using Application.UseCase.Commands.Seat;
 using Application.UseCase.Handlers.Events;
-using Application.UseCase.Handlers.Seats;
+using Application.UseCase.Queries.Events;
+using Application.UseCase.Queries.Seats;
+using Application.UseCase.Queries.Users;
 using Infrastructure.Persistence;
 using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Writers;
 using Productora.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,12 +24,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-
-//Custom
-
-//Inyecto el bdContext
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
+// Conexión a la DB
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("DefaultConnection")
+    ));
 
 
 
@@ -40,9 +46,21 @@ builder.Services.AddScoped<ISeatRepository, SeatRepository>();
 builder.Services.AddScoped<IGetSeatsBySectorIdQueryHandler, GetSeatsBySectorIdHandler>();
 builder.Services.AddScoped<IMarkSeatAsReservedCommandHandler, MarkSeatAsReservedHandler>();
 builder.Services.AddScoped<IGetReservedSeatsByEventHandler, GetReservedSeatsByEventHandler>();
+builder.Services.AddScoped<IGetSeatByIdHandler, GetSeatByIdHandler>();
 
 //SECTOR
 
+// RESERVATION   
+builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
+builder.Services.AddScoped<ICreateReservationCommandHandler, CreateReservationHandler>();
+
+// USER
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IGetUserByIdQueryHandler, GetUserByIdQueryHandler>();
+
+//AuditLog
+builder.Services.AddScoped<IAuditLogRepository, AuditLogRepository>();
+builder.Services.AddScoped<ICreateAuditLogCommandHanlder, CreateAuditLogHandler>();
 
 
 
