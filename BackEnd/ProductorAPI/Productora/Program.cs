@@ -63,7 +63,17 @@ builder.Services.AddScoped<IGetUserByIdQueryHandler, GetUserByIdQueryHandler>();
 builder.Services.AddScoped<IAuditLogRepository, AuditLogRepository>();
 builder.Services.AddScoped<ICreateAuditLogCommandHanlder, CreateAuditLogHandler>();
 
-
+//CORS
+builder.Services.AddCors(option =>
+{
+    option.AddPolicy("AllowFront", policy =>
+    {
+        policy
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
+});
 
 var app = builder.Build();
 
@@ -77,6 +87,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors("AllowFront");
 
 app.UseMiddleware<ExceptionMiddleware>();
 app.UseHttpsRedirection();

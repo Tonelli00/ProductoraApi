@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>ProductorApi</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script type="module" src="./main.js"></script>
+</head>
+<body class="bg-gray-50 text-gray-900 min-h-screen flex flex-col">
+
+  <header>
+    <nav class="flex items-center justify-between px-8 py-4 bg-white border-b border-gray-200 sticky top-0 z-50">
+      <div class="w-1/3 text-lg font-bold tracking-tight text-black">
+        <a href="index.html">ProductorApi</a>
+      </div>
+      <ul class="w-1/3 flex justify-center items-center text-sm text-gray-500">
+        <li>
+          <a href="Events.html" class="uppercase tracking-widest text-xs font-medium hover:text-black transition">
+            Eventos
+          </a>
+        </li>
+      </ul>
+      <div class="w-1/3 flex justify-end items-center gap-4">
+        <button class="text-sm text-gray-500 hover:text-black transition cursor-not-allowed">
+          Iniciar sesión
+        </button>
+        <button class="px-4 py-2 text-sm bg-black text-white rounded hover:bg-gray-800 cursor-not-allowed transition">
+          Registrarse
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <main class="flex-1">
+
+    <section class="grid md:grid-cols-2 border-b border-gray-200">
+      <div class="flex flex-col justify-center px-10 py-20 border-r border-gray-200 space-y-6">
+        <p class="text-xs uppercase tracking-widest text-gray-400 flex items-center gap-2">
+          <span class="inline-block w-6 h-px bg-gray-400"></span>
+          Plataforma de entradas
+        </p>
+        <h1 class="text-5xl font-bold leading-tight tracking-tight text-black">
+          Encontrá tus<br>
+          eventos<br>
+          <span class="italic font-normal">favoritos</span>
+        </h1>
+        <p class="text-gray-500 font-light max-w-sm leading-relaxed">
+          Comprá entradas de forma rápida y segura para los mejores espectáculos.
+        </p>
+        <a href="Events.html"
+          class="inline-flex items-center gap-2 bg-black text-white text-sm font-medium px-6 py-3 rounded hover:bg-gray-800 transition w-fit">
+          Ver todos los eventos
+          <span class="text-base">→</span>
+        </a>
+      </div>
+      <div class="grid grid-rows-2 divide-y divide-gray-200">
+        <div class="flex flex-col justify-end px-10 py-10 bg-gray-100">
+          <p class="text-4xl font-bold text-black">Grandes</p>
+          <p class="text-xl uppercase tracking-widest text-gray-400 mt-1">Eventos disponibles</p>
+        </div>
+        <div class="flex flex-col justify-end px-10 py-10 bg-white">
+          <p class="text-5xl font-bold text-black">100%</p>
+          <p class="text-xs uppercase tracking-widest text-gray-400 mt-1">Entradas verificadas</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="max-w-6xl mx-auto px-8 py-14 space-y-6">
+      <div class="flex items-baseline justify-between border-b border-gray-200 pb-3">
+        <h2 class="text-2xl font-bold tracking-tight">Eventos destacados</h2>
+        <a href="Events.html" class="text-xs uppercase tracking-widest text-gray-400 hover:text-black transition">
+          Ver todos →
+        </a>
+      </div>
+      <div id="featured-events" class="grid md:grid-cols-2 lg:grid-cols-3 gap-px bg-gray-200 border border-gray-200 rounded-lg overflow-hidden"></div>
+    </section>
+
+    <section class="max-w-6xl mx-auto px-8 pb-16 space-y-6">
+      <div class="border-b border-gray-200 pb-3">
+        <h2 class="text-2xl font-bold tracking-tight">Por qué elegirnos</h2>
+      </div>
+      <div class="grid md:grid-cols-3 divide-x divide-gray-200 border border-gray-200 rounded-lg overflow-hidden">
+        <div class="p-8 space-y-3 hover:bg-gray-50 transition">
+          <p class="text-4xl font-bold text-gray-200">01</p>
+          <h3 class="font-semibold text-black">Compra segura</h3>
+          <p class="text-sm text-gray-500 font-light leading-relaxed">
+            Protegemos tus datos en todo momento con encriptación de nivel bancario.
+          </p>
+        </div>
+        <div class="p-8 space-y-3 hover:bg-gray-50 transition">
+          <p class="text-4xl font-bold text-gray-200">02</p>
+          <h3 class="font-semibold text-black">Eventos verificados</h3>
+          <p class="text-sm text-gray-500 font-light leading-relaxed">
+            Solo trabajamos con organizadores oficiales y productoras reconocidas.
+          </p>
+        </div>
+        <div class="p-8 space-y-3 hover:bg-gray-50 transition">
+          <p class="text-4xl font-bold text-gray-200">03</p>
+          <h3 class="font-semibold text-black">Acceso rápido</h3>
+          <p class="text-sm text-gray-500 font-light leading-relaxed">
+            Recibí tus entradas al instante vía email o directamente en la app.
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="bg-black mt-auto">
+    <div class="max-w-6xl mx-auto px-8 py-6 flex justify-between items-center text-sm">
+      <span class="text-white font-semibold tracking-tight">ProductorApi</span>
+      <span class="text-gray-500 text-xs">© 2026 — Grupo 03 UNAJ</span>
+    </div>
+  </footer>
+
+</body>
+</html>
