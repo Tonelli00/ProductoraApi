@@ -8,13 +8,13 @@ namespace Productora.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    public class SeatsController : ControllerBase
+    public class seatsController : ControllerBase
     {
         private readonly IGetSeatsBySectorIdQueryHandler _getSeatsBySectorIdHandler;
         private readonly IMarkSeatAsReservedCommandHandler _markSeatAsReservedCommand;
         private readonly IGetReservedSeatsByEventHandler _getReservedSeatsByEventHandler;
 
-        public SeatsController(IGetSeatsBySectorIdQueryHandler handler, IMarkSeatAsReservedCommandHandler markSeatAsReservedCommand, IGetReservedSeatsByEventHandler getReservedSeatsByEventHandler)
+        public seatsController(IGetSeatsBySectorIdQueryHandler handler, IMarkSeatAsReservedCommandHandler markSeatAsReservedCommand, IGetReservedSeatsByEventHandler getReservedSeatsByEventHandler)
         {
             _getSeatsBySectorIdHandler = handler;
             _markSeatAsReservedCommand = markSeatAsReservedCommand;
@@ -38,12 +38,6 @@ namespace Productora.Controllers
             return Ok(result);
 
         }
-
-        [HttpPost("Reserve")]
-        public async Task<IActionResult> ReserveSeat([FromQuery] MarkSeatAsReservedCommand command) 
-        {
-            await _markSeatAsReservedCommand.Handle(command);
-            return Ok(new { message = "Asiento resevado con éxito" });
-        }  
+        
     }
 }

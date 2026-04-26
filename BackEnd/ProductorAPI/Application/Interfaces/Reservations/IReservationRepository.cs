@@ -9,9 +9,9 @@ namespace Application.Interfaces.Reservations
 {
     public interface IReservationRepository
     {
-        Task CreateReservationAsync(Reservation reservation);
-        Task<Reservation?> GetByIdAsync(Guid id);
-        Task<IEnumerable<Reservation>> GetByUserIdAsync(int userId);
-        Task CancelReservation(Reservation reservation);
+        Task CreateReservationAsync(Reservation reservation,CancellationToken ct = default);
+        Task<Reservation?> GetByIdAsync(Guid id,CancellationToken ct = default);
+        Task<IEnumerable<Reservation>> GetByUserIdAsync(int userId,CancellationToken ct = default);
+        Task CancelReservation(Reservation reservation,CancellationToken ct = default);
     }
 }

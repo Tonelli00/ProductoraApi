@@ -6,6 +6,6 @@ namespace Application.Interfaces.Events
 {
     public interface IGetPagedEventsQueryHandler
     {
-        Task<IEnumerable<EventResponse>> Handle(int Page,int PageSize=10);
+        Task<IEnumerable<EventShortResponseDTO>> Handle(int Page,int PageSize=10);
     }
 }

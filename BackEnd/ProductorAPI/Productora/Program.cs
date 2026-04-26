@@ -6,7 +6,6 @@ using Application.Interfaces.Users;
 using Application.UseCase.Commands.AuditLog;
 using Application.UseCase.Commands.Reservation;
 using Application.UseCase.Commands.Seat;
-using Application.UseCase.Handlers.Events;
 using Application.UseCase.Queries.Events;
 using Application.UseCase.Queries.Seats;
 using Application.UseCase.Queries.Users;
@@ -14,6 +13,7 @@ using Infrastructure.Persistence;
 using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Productora.Middleware;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,8 +36,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 //EVENT
 builder.Services.AddScoped<IEventRepository, EventRepository>();
-builder.Services.AddScoped<IGetAllEventsQueryHandler,GetAllEventsQueryHandler>();
 builder.Services.AddScoped<IGetPagedEventsQueryHandler, GetPagedEventsQueryHandler>();
+builder.Services.AddScoped<IGetEventByIdHandler,GetEventByIdHandler>();
+builder.Services.AddScoped<IGetSeatsByEventIdHandler,GetSeatsByEventIdHandler>();
 
 
 //SEAT

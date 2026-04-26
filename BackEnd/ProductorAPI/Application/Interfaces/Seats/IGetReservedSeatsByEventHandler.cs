@@ -5,6 +5,6 @@ namespace Application.Interfaces.Seats
 {
     public interface IGetReservedSeatsByEventHandler
     {
-        Task<IEnumerable<SeatResponse>> Handle(GetReservedSeatsByEventIdQuery Query);
+        Task<IEnumerable<SeatResponseDTO>> Handle(GetReservedSeatsByEventIdQuery Query);
     }
 }

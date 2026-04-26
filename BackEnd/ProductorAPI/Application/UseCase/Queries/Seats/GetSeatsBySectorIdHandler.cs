@@ -13,13 +13,12 @@ namespace Application.UseCase.Queries.Seats
             _repository = repository;
         }
 
-        public async Task<IEnumerable<SeatResponse>> Handle(GetSeatsBySectorIdQuery query)
+        public async Task<IEnumerable<SeatResponseDTO>> Handle(GetSeatsBySectorIdQuery query)
         {
             var seats = await _repository.GetSeatsBySectorId(query.SectorId);
-            return seats.Select(s => new SeatResponse
+            return seats.Select(s => new SeatResponseDTO
             {
-                
-                SectorId = s.SectorId,
+                SeatId = s.Id,
                 RowIdentifier = s.RowIdentifier,
                 SeatNumber = s.SeatNumber,
                 Status = s.Status,

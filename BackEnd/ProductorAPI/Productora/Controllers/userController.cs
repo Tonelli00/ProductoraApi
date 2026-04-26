@@ -7,11 +7,11 @@ namespace Productora.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class userController : ControllerBase
     {
         private readonly IGetUserByIdQueryHandler _queryHandler;
 
-        public UserController(IGetUserByIdQueryHandler queryHandler)
+        public userController(IGetUserByIdQueryHandler queryHandler)
         {
             _queryHandler = queryHandler;
         }

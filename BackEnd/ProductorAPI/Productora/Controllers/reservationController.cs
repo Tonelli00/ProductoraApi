@@ -7,11 +7,11 @@ namespace Productora.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    public class ReservationController : ControllerBase
+    public class reservationController : ControllerBase
     {
         private readonly ICreateReservationCommandHandler _createReservationHandler;
 
-        public ReservationController(ICreateReservationCommandHandler createReservationHandler)
+        public reservationController(ICreateReservationCommandHandler createReservationHandler)
         {
             _createReservationHandler = createReservationHandler;
         }
