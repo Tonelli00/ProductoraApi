@@ -51,7 +51,17 @@ namespace Application.UseCase.Commands.Reservation
 
             // validar disponibilidad
             if(seat.Status == "Reserved" || seat.Status == "Sold")
+            {
+                await _createAuditLogCommandHandler.Handler(new CreateAuditLogCommand
+                {
+                    UserId = command.UserId,
+                    Action = AuditAction.RESERVER_ATTEMPT.ToString(),
+                    EntityType = "Seat",
+                    EntityId = seat.Id.ToString(),
+                    Details = $"Intentó reservar el asiento {seat.SeatNumber} en el sector {seat.SectorId}, pero ya estaba reservado o vendido"
+                });
                 throw new Exception("El asiento ya está reservado");
+            }                
 
 
             // crear reserva
