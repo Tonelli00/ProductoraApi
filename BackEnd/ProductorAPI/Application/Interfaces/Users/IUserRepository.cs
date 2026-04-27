@@ -10,7 +10,7 @@ namespace Application.Interfaces.Users
 {
     public interface IUserRepository
     {
-        Task<User?> GetUserById(int id);
-        Task Handler(User user);
+        Task<User?> GetUserById(int id, CancellationToken ct = default);
+        Task InsertAsync(User user, CancellationToken ct = default);
     }
 }

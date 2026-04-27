@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title></title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    body { font-family: 'DM Sans', sans-serif; }
+    .font-serif { font-family: 'Playfair Display', serif; }
+  </style>
+  <script type="module" src="./main.js"></script>
+</head>
+<body class="bg-gray-50 min-h-screen pb-16">
+
+  <header>
+    <nav class="flex items-center justify-between px-8 py-4 bg-white border-b border-gray-200 sticky top-0 z-50">
+      <div class="w-1/3 text-lg font-bold tracking-tight text-black">
+        <a href="index.html">ProductorApi</a>
+      </div>
+      <ul class="w-1/3 flex justify-center items-center text-sm text-gray-500">
+        <li>
+          <a href="Events.html" class="uppercase tracking-widest text-xs font-medium hover:text-black transition">
+            Eventos
+          </a>
+        </li>
+      </ul>
+      <div class="w-1/3 flex justify-end items-center gap-4">
+        <button class="text-sm text-gray-500 hover:text-black transition cursor-not-allowed">Iniciar sesión</button>
+        <button class="px-4 py-2 text-sm bg-black text-white rounded hover:bg-gray-800 cursor-not-allowed transition">Registrarse</button>
+      </div>
+    </nav>
+  </header>
+
+  <main class="max-w-5xl mx-auto px-6">
+
+    <div class="flex items-center gap-2 pt-5 text-xs text-gray-400">
+      <a href="Events.html" class="hover:text-black transition">Eventos</a>
+      <span>›</span>
+      <span id="breadcrumb-name" class="text-gray-700">—</span>
+    </div>
+
+    <div class="pt-6">
+      <p id="ev-date" class="text-[11px] font-medium uppercase tracking-widest text-gray-400 mb-2">—</p>
+      <h1 id="ev-name" class="font-serif text-4xl font-normal text-gray-900 leading-tight mb-2">—</h1>
+      <p class="text-sm font-light text-gray-400 flex items-center gap-2 mb-4">
+        <span class="inline-block w-1 h-1 rounded-full bg-gray-300"></span>
+        <span id="ev-venue">—</span>
+      </p>
+      <span id="ev-status" class="inline-flex items-center text-[11px] font-medium uppercase tracking-wide px-2.5 py-1 rounded-md"></span>
+    </div>
+
+    <div class="border-t border-gray-100 my-6"></div>
+
+    <div class="grid grid-cols-3 gap-3 mb-10">
+      <div class="bg-gray-50 rounded-lg p-4">
+        <p class="text-[10px] uppercase tracking-widest text-gray-400 mb-1">Fecha</p>
+        <p id="info-date" class="text-sm font-medium text-gray-900">—</p>
+      </div>
+      <div class="bg-gray-50 rounded-lg p-4">
+        <p class="text-[10px] uppercase tracking-widest text-gray-400 mb-1">Horario</p>
+        <p id="info-time" class="text-sm font-medium text-gray-900">—</p>
+      </div>
+      <div class="bg-gray-50 rounded-lg p-4">
+        <p class="text-[10px] uppercase tracking-widest text-gray-400 mb-1">Sectores</p>
+        <p id="info-sectors" class="text-sm font-medium text-gray-900">—</p>
+      </div>
+    </div>
+
+    <p class="text-[11px] font-medium uppercase tracking-widest text-gray-400 mb-4">Mapa de asientos</p>
+    <div id="seat-map-container"></div>
+
+  </main>
+
+</body>
+</html>

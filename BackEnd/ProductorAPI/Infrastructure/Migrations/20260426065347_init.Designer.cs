@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260424151049_PrimeraMigracion")]
-    partial class PrimeraMigracion
+    [Migration("20260426065347_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -58,7 +58,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("AuditLog", (string)null);
+                    b.ToTable("AUDIT_LOG", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Event", b =>
@@ -86,13 +86,13 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Event", (string)null);
+                    b.ToTable("EVENT", (string)null);
 
                     b.HasData(
                         new
                         {
                             Id = 1,
-                            EventDate = new DateTime(2026, 5, 14, 12, 10, 49, 159, DateTimeKind.Local).AddTicks(3945),
+                            EventDate = new DateTime(2026, 5, 16, 3, 53, 46, 522, DateTimeKind.Local).AddTicks(3668),
                             Name = "Gran evento",
                             Status = "Activo",
                             Venue = "Estadio A"
@@ -128,7 +128,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Reservation", (string)null);
+                    b.ToTable("RESERVATION", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Seat", b =>
@@ -160,7 +160,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("SectorId");
 
-                    b.ToTable("Seat", (string)null);
+                    b.ToTable("SEAT", (string)null);
 
                     b.HasData(
                         new
@@ -1090,7 +1090,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("EventId");
 
-                    b.ToTable("Sector", (string)null);
+                    b.ToTable("SECTOR", (string)null);
 
                     b.HasData(
                         new
@@ -1136,7 +1136,7 @@ namespace Infrastructure.Migrations
                     b.HasIndex("Email")
                         .IsUnique();
 
-                    b.ToTable("User", (string)null);
+                    b.ToTable("USER", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Audit_Log", b =>

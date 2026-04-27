@@ -42,6 +42,13 @@ namespace Infrastructure.Repositories
             _context.Seats.Update(seat);
             await _context.SaveChangesAsync(ct);
         }
-
+        
+        public async Task<IEnumerable<Seat>> GetSeatsByEventId(int EventId, CancellationToken ct = default)
+        {
+            return await _context.Seats.Include(s=>s.Sector)
+                .Where(s => s.SectorId != null && s.Sector.EventId == EventId).OrderBy(s=>s.SeatNumber)
+                .ToListAsync(ct);
+        }
+        
     }
 }

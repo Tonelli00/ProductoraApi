@@ -6,7 +6,6 @@ using Application.Interfaces.Users;
 using Application.UseCase.Commands.AuditLog;
 using Application.UseCase.Commands.Reservation;
 using Application.UseCase.Commands.Seat;
-using Application.UseCase.Handlers.Events;
 using Application.UseCase.Queries.Events;
 using Application.UseCase.Queries.Seats;
 using Application.UseCase.Queries.Users;
@@ -14,6 +13,7 @@ using Infrastructure.Persistence;
 using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Productora.Middleware;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,8 +36,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 //EVENT
 builder.Services.AddScoped<IEventRepository, EventRepository>();
-builder.Services.AddScoped<IGetAllEventsQueryHandler,GetAllEventsQueryHandler>();
 builder.Services.AddScoped<IGetPagedEventsQueryHandler, GetPagedEventsQueryHandler>();
+builder.Services.AddScoped<IGetEventByIdHandler,GetEventByIdHandler>();
+builder.Services.AddScoped<IGetSeatsByEventIdHandler,GetSeatsByEventIdHandler>();
 
 
 //SEAT
@@ -62,7 +63,17 @@ builder.Services.AddScoped<IGetUserByIdQueryHandler, GetUserByIdQueryHandler>();
 builder.Services.AddScoped<IAuditLogRepository, AuditLogRepository>();
 builder.Services.AddScoped<ICreateAuditLogCommandHanlder, CreateAuditLogHandler>();
 
-
+//CORS
+builder.Services.AddCors(option =>
+{
+    option.AddPolicy("AllowFront", policy =>
+    {
+        policy
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
+});
 
 var app = builder.Build();
 
@@ -76,6 +87,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors("AllowFront");
 
 app.UseMiddleware<ExceptionMiddleware>();
 app.UseHttpsRedirection();

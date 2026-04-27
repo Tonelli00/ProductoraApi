@@ -9,5 +9,8 @@
             Task<IEnumerable<Seat>> GetReservedSeatsByEventId(int EventId,CancellationToken ct = default);
             Task<Seat> GetSeatById(Guid SeatId,CancellationToken ct=default);
             Task UpdateSeatStatus(Seat seat,CancellationToken ct = default);
+
+            Task<IEnumerable<Seat>> GetSeatsByEventId(int EventId, CancellationToken ct = default);
+
         }
     }

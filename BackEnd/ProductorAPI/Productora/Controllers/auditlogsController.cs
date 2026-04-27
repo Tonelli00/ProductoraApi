@@ -7,12 +7,12 @@ namespace Productora.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    public class AuditLogsController : ControllerBase
+    public class auditlogsController : ControllerBase
     {
         private readonly ICreateAuditLogCommandHanlder _createAuditLogCommandHanlder;
         private readonly IGetAuditLogByUserQueryHandler _getAuditLogByUserQueryHandler;
 
-        public AuditLogsController(ICreateAuditLogCommandHanlder createAuditLogCommandHanlder, IGetAuditLogByUserQueryHandler getAuditLogByUserQueryHandler)
+        public auditlogsController(ICreateAuditLogCommandHanlder createAuditLogCommandHanlder, IGetAuditLogByUserQueryHandler getAuditLogByUserQueryHandler)
         {
             _createAuditLogCommandHanlder = createAuditLogCommandHanlder;
             _getAuditLogByUserQueryHandler = getAuditLogByUserQueryHandler;

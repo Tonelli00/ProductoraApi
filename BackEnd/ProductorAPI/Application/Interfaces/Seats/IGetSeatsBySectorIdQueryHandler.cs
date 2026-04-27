@@ -5,6 +5,6 @@ namespace Application.Interfaces.Seats
 {
     public interface IGetSeatsBySectorIdQueryHandler
     {
-        Task<IEnumerable<SeatResponse>> Handle(GetSeatsBySectorIdQuery query);
+        Task<IEnumerable<SeatResponseDTO>> Handle(GetSeatsBySectorIdQuery query);
     }
 }

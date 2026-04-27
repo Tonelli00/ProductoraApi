@@ -36,6 +36,22 @@ namespace Productora.Middleware
                 var response = new { statusCode = 404, message = ex.Message };
                 await httpContext.Response.WriteAsync(JsonSerializer.Serialize(response));
             }
+            catch (EventNotFoundException ex) 
+            {
+                httpContext.Response.StatusCode = 404;
+                httpContext.Response.ContentType = "application/json";
+
+                var response = new { statusCode = 404, message = ex.Message };
+                await httpContext.Response.WriteAsync(JsonSerializer.Serialize(response));
+            }
+            catch (ReservedSeatException ex) 
+            {
+                httpContext.Response.StatusCode = 409;
+                httpContext.Response.ContentType = "application/json";
+
+                var response = new { statusCode = 404, message = ex.Message };
+                await httpContext.Response.WriteAsync(JsonSerializer.Serialize(response));
+            }
             catch (KeyNotFoundException ex)
             {
                 httpContext.Response.StatusCode = 404;

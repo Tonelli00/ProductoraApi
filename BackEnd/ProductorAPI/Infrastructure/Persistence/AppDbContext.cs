@@ -19,7 +19,7 @@ namespace Infrastructure.Persistence
             // Event
             modelBuilder.Entity<Event>(entity =>
             {
-                entity.ToTable("Event");
+                entity.ToTable("EVENT");
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Id).ValueGeneratedOnAdd();
                 entity.Property(e => e.Name)
@@ -47,7 +47,7 @@ namespace Infrastructure.Persistence
             // Sector
             modelBuilder.Entity<Sector>(entity =>
             {
-                entity.ToTable("Sector");
+                entity.ToTable("SECTOR");
                 entity.HasKey(e => e.Id);
                 entity.Property(e => e.Id).ValueGeneratedOnAdd();
                 entity.Property(e => e.EventId)
@@ -68,7 +68,7 @@ namespace Infrastructure.Persistence
             // Seat 
             modelBuilder.Entity<Seat>(entity =>
             {
-                entity.ToTable("Seat");
+                entity.ToTable("SEAT");
                 entity.HasKey(e => e.Id);
           
                 entity.Property(e => e.Id)
@@ -126,7 +126,7 @@ namespace Infrastructure.Persistence
             // User
             modelBuilder.Entity<User>(entity =>
             {
-                entity.ToTable("User");
+                entity.ToTable("USER");
                 entity.HasKey(u => u.Id);
                 entity.Property(e => e.Id).ValueGeneratedOnAdd();
                 entity.Property(u => u.Name)
@@ -144,7 +144,7 @@ namespace Infrastructure.Persistence
             // Reservation
             modelBuilder.Entity<Reservation>(entity =>
             {
-                entity.ToTable("Reservation");
+                entity.ToTable("RESERVATION");
                 entity.HasKey(r => r.Id);
                 entity.Property(r => r.Id)
                     .HasDefaultValueSql("NEWID()").IsRequired();
@@ -161,7 +161,7 @@ namespace Infrastructure.Persistence
             // AuditLog
             modelBuilder.Entity<Audit_Log>(entity =>
             {
-                entity.ToTable("AuditLog");
+                entity.ToTable("AUDIT_LOG");
                 entity.HasKey(a => a.Id);
                 entity.Property(a => a.Id)
                       .HasDefaultValueSql("NEWID()").IsRequired();

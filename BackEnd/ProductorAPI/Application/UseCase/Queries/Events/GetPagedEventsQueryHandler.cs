@@ -1,4 +1,5 @@
-﻿using Application.DTOs.Event;
+﻿using Application.DTOs;
+using Application.DTOs.Event;
 using Application.Interfaces.Events;
 
 namespace Application.UseCase.Queries.Events
@@ -12,16 +13,27 @@ namespace Application.UseCase.Queries.Events
             _eventRepository = eventRepository;
         }
 
-        public async Task<IEnumerable<EventResponse>> Handle(int Page, int PageSize=10)
+        public async Task<IEnumerable<EventShortResponseDTO>> Handle(int Page, int PageSize=10)
         {
+            if (Page <= 0)
+            {
+                throw new ArgumentException("Ingrese una página válida");
+            }
+
             var events = await _eventRepository.GetPagedEvents(Page, PageSize);
-            return events.Select(e => new EventResponse
+            return events.Select(e => new EventShortResponseDTO
             {
                 Id = e.Id,
                 Name= e.Name,
                 EventDate = e.EventDate,
                 Venue = e.Venue,   
                 Status = e.Status,
+                Sectors = e.Sectors.Select(s => new SectorShortResponseDTO()
+                {
+                    Name = s.Name,
+                    Capacity = s.Capacity,
+                    Price = s.Price
+                }).ToList()
             }).ToList();
         }
     }

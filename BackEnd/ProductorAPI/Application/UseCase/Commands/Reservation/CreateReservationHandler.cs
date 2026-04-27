@@ -8,6 +8,7 @@ using Application.UseCase.Commands.Seat;
 using Application.UseCase.Queries.Seats;
 using Application.UseCase.Queries.Users;
 using Domain.Enums;
+using Domain.Exceptions;
 
 namespace Application.UseCase.Commands.Reservation
 {
@@ -31,23 +32,22 @@ namespace Application.UseCase.Commands.Reservation
         public async Task<ReservationResponse> Handle(CreateReservationCommand command)
         {
             // validar datos
-            if(command.UserId <= 0)
-                throw new Exception("El UserId es requerido");
-            if(command.SeatNumber <= 0)
-                throw new Exception("El SeatNumber es requerido");
-            if(command.SectorId <= 0)
-                throw new Exception("El SectorId es requerido");
-
+            if(command.UserId <= 0 || command.UserId.Equals(null) )
+                throw new ArgumentException("El UserId es requerido");
+            
+            if (command.SeatId == Guid.Empty)
+                throw new ArgumentException("Seleccione un asiento válido");
+            
             // validar usuario
-            GetUserByIdQuery query =new GetUserByIdQuery { UserId = command.UserId };
-            var user = await _getUserByIdQueryHandler.Handler(query);
-            if(user == null)
-                throw new Exception("El usuario no existe");
+              GetUserByIdQuery query =new GetUserByIdQuery { UserId = command.UserId };
+              var user = await _getUserByIdQueryHandler.Handler(query);
+              if(user == null)
+                  throw new Exception("El usuario no existe");
 
             // validar asiento
             var seat = await _getSeatByIdHandler.Handle(new GetSeatByIdQuery { SeatId = command.SeatId});
             if(seat == null)
-                throw new Exception("El asiento no existe");
+                throw new SeatNotFoundException("El asiento no existe");
 
             // validar disponibilidad
             if(seat.Status == "Reserved" || seat.Status == "Sold")
@@ -67,7 +67,6 @@ namespace Application.UseCase.Commands.Reservation
             // crear reserva
             var reservation = new Domain.Entities.Reservation
             {
-                Id = Guid.NewGuid(),
                 UserId = command.UserId,
                 SeatId = seat.Id,
                 Status = "Pending",
@@ -78,7 +77,7 @@ namespace Application.UseCase.Commands.Reservation
             // guardar cambios
             // actualizar estado del asiento
             await _reservationRepository.CreateReservationAsync(reservation);
-            MarkSeatAsReservedCommand seatAsReserved = new MarkSeatAsReservedCommand { SeatNumber = command.SeatNumber, SectorId = command.SectorId};
+            MarkSeatAsReservedCommand seatAsReserved = new MarkSeatAsReservedCommand { SeatNumber = seat.SeatNumber, SectorId = seat.SectorId};
             await _markSeatAsReserverHandler.Handle(seatAsReserved);
 
             // crear el log de auditoría
@@ -96,7 +95,7 @@ namespace Application.UseCase.Commands.Reservation
             {
                 Id = reservation.Id,
                 Status = reservation.Status,
-                ReservadAt = reservation.ReservedAt
+                ReservedAt = reservation.ReservedAt
             };
         }
     }

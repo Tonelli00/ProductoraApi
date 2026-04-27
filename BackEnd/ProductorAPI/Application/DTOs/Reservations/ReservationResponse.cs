@@ -12,7 +12,7 @@ namespace Application.DTOs.Reservation
         public int UserId { get; set; }
         public Guid SeatId { get; set; }
         public string Status { get; set; } 
-        public DateTime ReservadAt { get; set; }
+        public DateTime ReservedAt { get; set; }
         public DateTime ExpiresAt { get; set; }
     }
 }
