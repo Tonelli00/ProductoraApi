@@ -4,7 +4,7 @@ using Application.Interfaces.Seats;
 
 namespace Application.UseCase.Queries.Seats
 {
-    public class GetSeatsBySectorIdHandler: IGetSeatsBySectorIdQueryHandler
+    public class GetSeatsBySectorIdHandler: IGetSeatsBySectorIdHandler
     {
         private readonly ISeatRepository _repository;
 

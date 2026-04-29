@@ -4,7 +4,7 @@ using Domain.Entities;
 
 namespace Application.UseCase.Commands.Seat
 {
-    public class MarkSeatAsReservedHandler : IMarkSeatAsReservedCommandHandler
+    public class MarkSeatAsReservedHandler : IMarkSeatAsReservedHandler
     {
         private readonly ISeatRepository _repository;
         

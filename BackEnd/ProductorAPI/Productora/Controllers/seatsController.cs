@@ -8,16 +8,17 @@ namespace Productora.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    public class SeatsController : ControllerBase
+    public class seatsController : ControllerBase
     {
-        private readonly IGetSeatsBySectorIdQueryHandler _getSeatsBySectorIdHandler;
-        private readonly IMarkSeatAsReservedCommandHandler _markSeatAsReservedCommand;
+        private readonly IGetSeatsBySectorIdHandler _getSeatsBySectorIdHandler;
+        private readonly IMarkSeatAsReservedHandler _markSeatAsReserved;
         private readonly IGetReservedSeatsByEventHandler _getReservedSeatsByEventHandler;
 
-        public SeatsController(IGetSeatsBySectorIdQueryHandler handler, IMarkSeatAsReservedCommandHandler markSeatAsReservedCommand, IGetReservedSeatsByEventHandler getReservedSeatsByEventHandler)
+
+        public seatsController(IGetSeatsBySectorIdHandler handler, IMarkSeatAsReservedHandler markSeatAsReserved, IGetReservedSeatsByEventHandler getReservedSeatsByEventHandler)
         {
             _getSeatsBySectorIdHandler = handler;
-            _markSeatAsReservedCommand = markSeatAsReservedCommand;
+            _markSeatAsReserved = markSeatAsReserved;
             _getReservedSeatsByEventHandler = getReservedSeatsByEventHandler;
         }
 

@@ -1,7 +1,6 @@
 ﻿using Application.Interfaces.Reservations;
 using Application.UseCase.Commands.Reservation;
 using Application.UseCase.Queries.Reservations;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Productora.Controllers

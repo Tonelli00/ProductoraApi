@@ -16,10 +16,10 @@ namespace Application.UseCase.Commands.Reservation
     {
         private readonly IReservationRepository _reservationRepository;
         private readonly IGetSeatByIdHandler _getSeatByIdHandler;
-        private readonly IMarkSeatAsReservedCommandHandler _markSeatAsReserverHandler;
+        private readonly IMarkSeatAsReservedHandler _markSeatAsReserverHandler;
         private readonly ICreateAuditLogCommandHanlder _createAuditLogCommandHandler;
         private readonly IGetUserByIdQueryHandler _getUserByIdQueryHandler;
-        public CreateReservationHandler(IReservationRepository reservationRepository, IGetSeatByIdHandler getSeatByIdHandler, IMarkSeatAsReservedCommandHandler markSeatAsReserverHandler,
+        public CreateReservationHandler(IReservationRepository reservationRepository, IGetSeatByIdHandler getSeatByIdHandler, IMarkSeatAsReservedHandler markSeatAsReserverHandler,
             ICreateAuditLogCommandHanlder createAuditLogCommandHanlder, IGetUserByIdQueryHandler getUserByIdQueryHandler)
         {
             _reservationRepository = reservationRepository;

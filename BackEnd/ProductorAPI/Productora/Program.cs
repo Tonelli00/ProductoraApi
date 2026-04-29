@@ -2,15 +2,18 @@ using Application.Interfaces.AuditLogs;
 using Application.Interfaces.Events;
 using Application.Interfaces.Reservations;
 using Application.Interfaces.Seats;
+using Application.Interfaces.Sectors;
 using Application.Interfaces.Users;
 using Application.UseCase.Commands.AuditLog;
 using Application.UseCase.Commands.Reservation;
 using Application.UseCase.Commands.Seat;
 using Application.UseCase.Commands.User;
 using Application.UseCase.Handlers.AuditLogs;
+using Application.UseCase.Commands.Sector;
 using Application.UseCase.Queries.Events;
 using Application.UseCase.Queries.Reservations;
 using Application.UseCase.Queries.Seats;
+using Application.UseCase.Queries.Sectors;
 using Application.UseCase.Queries.Users;
 using Infrastructure.Persistence;
 using Infrastructure.Repositories;
@@ -39,7 +42,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 //EVENT
 builder.Services.AddScoped<IEventRepository, EventRepository>();
-builder.Services.AddScoped<IGetPagedEventsQueryHandler, GetPagedEventsQueryHandler>();
+builder.Services.AddScoped<IGetPagedEventsHandler, GetPagedEventsHandler>();
 builder.Services.AddScoped<IGetEventByIdHandler,GetEventByIdHandler>();
 builder.Services.AddScoped<IGetSeatsByEventIdHandler,GetSeatsByEventIdHandler>();
 
@@ -47,12 +50,16 @@ builder.Services.AddScoped<IGetSeatsByEventIdHandler,GetSeatsByEventIdHandler>()
 //SEAT
 
 builder.Services.AddScoped<ISeatRepository, SeatRepository>();
-builder.Services.AddScoped<IGetSeatsBySectorIdQueryHandler, GetSeatsBySectorIdHandler>();
-builder.Services.AddScoped<IMarkSeatAsReservedCommandHandler, MarkSeatAsReservedHandler>();
+builder.Services.AddScoped<IGetSeatsBySectorIdHandler, GetSeatsBySectorIdHandler>();
+builder.Services.AddScoped<IMarkSeatAsReservedHandler, MarkSeatAsReservedHandler>();
 builder.Services.AddScoped<IGetReservedSeatsByEventHandler, GetReservedSeatsByEventHandler>();
 builder.Services.AddScoped<IGetSeatByIdHandler, GetSeatByIdHandler>();
+builder.Services.AddScoped<ICreateSeatsHandler, CreateSeatsHandler>();
 
 //SECTOR
+builder.Services.AddScoped<ISectorRepository, SectorRepository>();
+builder.Services.AddScoped<ICreateSectorHandler, CreateSectorHandler>();
+builder.Services.AddScoped<IGetSectorByIdHandler, GetSectorByIdHandler>();
 
 // RESERVATION   
 builder.Services.AddScoped<IReservationRepository, ReservationRepository>();

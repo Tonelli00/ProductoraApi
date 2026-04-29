@@ -4,11 +4,11 @@ using Application.Interfaces.Events;
 
 namespace Application.UseCase.Queries.Events
 {
-    public class GetPagedEventsQueryHandler : IGetPagedEventsQueryHandler
+    public class GetPagedEventsHandler : IGetPagedEventsHandler
     {
         private readonly IEventRepository _eventRepository;
 
-        public GetPagedEventsQueryHandler(IEventRepository eventRepository)
+        public GetPagedEventsHandler(IEventRepository eventRepository)
         {
             _eventRepository = eventRepository;
         }
@@ -30,6 +30,7 @@ namespace Application.UseCase.Queries.Events
                 Status = e.Status,
                 Sectors = e.Sectors.Select(s => new SectorShortResponseDTO()
                 {
+                    SectorId = s.Id,
                     Name = s.Name,
                     Capacity = s.Capacity,
                     Price = s.Price

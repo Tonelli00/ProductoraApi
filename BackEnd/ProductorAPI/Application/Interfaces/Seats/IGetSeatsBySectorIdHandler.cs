@@ -3,7 +3,7 @@ using Application.UseCase.Queries.Seats;
 
 namespace Application.Interfaces.Seats
 {
-    public interface IGetSeatsBySectorIdQueryHandler
+    public interface IGetSeatsBySectorIdHandler
     {
         Task<IEnumerable<SeatResponseDTO>> Handle(GetSeatsBySectorIdQuery query);
     }
