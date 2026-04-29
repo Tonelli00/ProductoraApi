@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Application.UseCase.Queries.Reservations
 {
-    public class GetReservationByIdQuery
+    public class GetReservationByIdQueryHandler
     {
-         
+        public Guid reservationId { get; set; }
     }
 }

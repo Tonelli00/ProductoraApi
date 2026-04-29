@@ -55,12 +55,12 @@ namespace Application.UseCase.Commands.Reservation
                 await _createAuditLogCommandHandler.Handler(new CreateAuditLogCommand
                 {
                     UserId = command.UserId,
-                    Action = AuditAction.RESERVER_ATTEMPT.ToString(),
+                    Action = AuditAction.RESERVE_ATTEMPT.ToString(),
                     EntityType = "Seat",
                     EntityId = seat.Id.ToString(),
                     Details = $"Intentó reservar el asiento {seat.SeatNumber} en el sector {seat.SectorId}, pero ya estaba reservado o vendido"
                 });
-                throw new Exception("El asiento ya está reservado");
+                throw new Exception("409");
             }                
 
 
@@ -73,29 +73,33 @@ namespace Application.UseCase.Commands.Reservation
                 ReservedAt = DateTime.UtcNow,
                 ExpiresAt = DateTime.UtcNow.AddMinutes(5)
             };
-
-            // guardar cambios
+           
             // actualizar estado del asiento
-            await _reservationRepository.CreateReservationAsync(reservation);
-            MarkSeatAsReservedCommand seatAsReserved = new MarkSeatAsReservedCommand { SeatNumber = seat.SeatNumber, SectorId = seat.SectorId};
-            await _markSeatAsReserverHandler.Handle(seatAsReserved);
+            MarkSeatAsReservedCommand seatAsReserved = new MarkSeatAsReservedCommand { SeatNumber = seat.SeatNumber, SectorId = seat.SectorId };
+            await _markSeatAsReserverHandler.Handle(seatAsReserved);                      
 
             // crear el log de auditoría
             await _createAuditLogCommandHandler.Handler(new CreateAuditLogCommand
             {
                 UserId = command.UserId,
-                Action = AuditAction.RESERVER_SUCCESS.ToString(),
+                Action = AuditAction.RESERVE_SUCCESS.ToString(),
                 EntityType = "Reservation",
                 EntityId = reservation.Id.ToString(),
                 Details = $"Reserva creada para el asiento {seat.SeatNumber} en el sector {seat.SectorId}"
             });
 
+            // guardar cambios
+            await _reservationRepository.CreateReservationAsync(reservation);
+
             // retornar respuesta
             return new ReservationResponse
             {
                 Id = reservation.Id,
+                UserId = reservation.UserId,
+                SeatId = reservation.SeatId,
                 Status = reservation.Status,
-                ReservedAt = reservation.ReservedAt
+                ReservedAt = reservation.ReservedAt,
+                ExpiresAt = reservation.ExpiresAt,
             };
         }
     }

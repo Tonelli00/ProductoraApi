@@ -8,8 +8,8 @@ namespace Domain.Enums
 {
     public enum AuditAction
     {
-        RESERVER_ATTEMPT,
-        RESERVER_SUCCESS,
+        RESERVE_ATTEMPT,
+        RESERVE_SUCCESS,
         EXPIRED
     }
 }

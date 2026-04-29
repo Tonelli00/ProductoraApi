@@ -10,18 +10,18 @@ using System.Threading.Tasks;
 
 namespace Application.UseCase.Handlers.AuditLogs
 {
-    public class GetAllAuditLogByUserHandler : IGetAuditLogByUserQueryHandler
+    public class GetAuditLogByUserHandler : IGetAuditLogsByUserQueryHandler
     {
         private readonly IAuditLogRepository _auditLogRepository;
 
-        public GetAllAuditLogByUserHandler(IAuditLogRepository auditLogRepository)
+        public GetAuditLogByUserHandler(IAuditLogRepository auditLogRepository)
         {
             _auditLogRepository = auditLogRepository;
         }
 
         public async Task<IEnumerable<AuditLogResponse>> Handler(GetAuditLogByUserQuery query)
         {
-            var auditLogs = await _auditLogRepository.GetAuditLogsByUserId(query.UsertId);
+            var auditLogs = await _auditLogRepository.GetAuditLogsByUserId(query.UserId);
             return auditLogs.Select(a => new AuditLogResponse
             {
                 Id = a.Id,

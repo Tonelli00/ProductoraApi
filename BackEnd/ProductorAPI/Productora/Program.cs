@@ -6,7 +6,10 @@ using Application.Interfaces.Users;
 using Application.UseCase.Commands.AuditLog;
 using Application.UseCase.Commands.Reservation;
 using Application.UseCase.Commands.Seat;
+using Application.UseCase.Commands.User;
+using Application.UseCase.Handlers.AuditLogs;
 using Application.UseCase.Queries.Events;
+using Application.UseCase.Queries.Reservations;
 using Application.UseCase.Queries.Seats;
 using Application.UseCase.Queries.Users;
 using Infrastructure.Persistence;
@@ -54,14 +57,18 @@ builder.Services.AddScoped<IGetSeatByIdHandler, GetSeatByIdHandler>();
 // RESERVATION   
 builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
 builder.Services.AddScoped<ICreateReservationCommandHandler, CreateReservationHandler>();
+builder.Services.AddScoped<IGetReservationsByUserQueryHandler, GetReservationsByUserHandler>();
+builder.Services.AddScoped<IGetReservationByIdQueryHandler, GetReservationByIdHandler>();
 
 // USER
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IGetUserByIdQueryHandler, GetUserByIdQueryHandler>();
+builder.Services.AddScoped<ICreateUserCommandHandler, CreateUserHandler>();
 
 //AuditLog
 builder.Services.AddScoped<IAuditLogRepository, AuditLogRepository>();
 builder.Services.AddScoped<ICreateAuditLogCommandHanlder, CreateAuditLogHandler>();
+builder.Services.AddScoped<IGetAuditLogsByUserQueryHandler, GetAuditLogByUserHandler>();
 
 //CORS
 builder.Services.AddCors(option =>

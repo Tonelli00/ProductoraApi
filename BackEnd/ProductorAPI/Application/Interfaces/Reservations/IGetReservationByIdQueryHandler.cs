@@ -1,9 +1,11 @@
-﻿using Domain.Entities;
+﻿using Application.DTOs.Reservation;
+using Application.UseCase.Queries.Reservations;
+using Domain.Entities;
 
 namespace Application.Interfaces.Reservations
 {
     public interface IGetReservationByIdQueryHandler
     {
-        Task<Reservation> Handle(Guid ReservationId);
+        Task<ReservationResponse> Handle(GetReservationByIdQueryHandler query);
     }
 }
