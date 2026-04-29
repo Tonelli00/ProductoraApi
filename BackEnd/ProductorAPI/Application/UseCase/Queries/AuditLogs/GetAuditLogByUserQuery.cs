@@ -8,6 +8,6 @@ namespace Application.UseCase.Queries.AuditLogs
 {
     public class GetAuditLogByUserQuery
     {
-        public int UsertId { get; set; }
+        public int UserId { get; set; }
     }
 }

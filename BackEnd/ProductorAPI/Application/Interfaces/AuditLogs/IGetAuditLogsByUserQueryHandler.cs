@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Application.Interfaces.AuditLogs
 {
-    public interface IGetAuditLogByUserQueryHandler
+    public interface IGetAuditLogsByUserQueryHandler
     {
         Task<IEnumerable<AuditLogResponse>> Handler(GetAuditLogByUserQuery query);
     }

@@ -5,23 +5,21 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Productora.Controllers
 {
-    [Route("api/v1/[controller]")]
+    [Route("api/v1/auditlogs")]
     [ApiController]
-    public class auditlogsController : ControllerBase
+    public class AuditLogsController : ControllerBase
     {
-        private readonly ICreateAuditLogCommandHanlder _createAuditLogCommandHanlder;
-        private readonly IGetAuditLogByUserQueryHandler _getAuditLogByUserQueryHandler;
+        private readonly IGetAuditLogsByUserQueryHandler _getAuditLogByUserQueryHandler;
 
-        public auditlogsController(ICreateAuditLogCommandHanlder createAuditLogCommandHanlder, IGetAuditLogByUserQueryHandler getAuditLogByUserQueryHandler)
+        public AuditLogsController(IGetAuditLogsByUserQueryHandler getAuditLogByUserQueryHandler)
         {
-            _createAuditLogCommandHanlder = createAuditLogCommandHanlder;
             _getAuditLogByUserQueryHandler = getAuditLogByUserQueryHandler;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetByUser([FromQuery] GetAuditLogByUserQuery query)
+        public async Task<IActionResult> GetByUser([FromQuery] int userId)
         {
-            var result = await _getAuditLogByUserQueryHandler.Handler(query);
+            var result = await _getAuditLogByUserQueryHandler.Handler(new GetAuditLogByUserQuery { UserId = userId});
             return Ok(result);
         }
     }
