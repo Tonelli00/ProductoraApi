@@ -10,7 +10,7 @@
 
 Antes de comenzar con las migraciones, asegurarse de que la base de datos esté levantada.
 
-### Nosotros, decidimos uasr  Docker
+### Nosotros, decidimos usar  Docker
 
 1. Verificar si el contenedor está activo:
 ```bash
