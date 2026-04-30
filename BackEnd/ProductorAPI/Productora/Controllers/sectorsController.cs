@@ -10,12 +10,12 @@ namespace Productora.Controllers;
 
 [Route("api/v1/[controller]")]
 [ApiController]
-public class sectorsController : ControllerBase
+public class SectorsController : ControllerBase
 {
    private readonly IGetSectorByIdHandler _getSectorByIdHandler;
    private readonly ICreateSectorHandler _createSectorHandler;
 
-   public sectorsController(IGetSectorByIdHandler getSectorByIdHandler, ICreateSectorHandler createSectorHandler)
+   public SectorsController(IGetSectorByIdHandler getSectorByIdHandler, ICreateSectorHandler createSectorHandler)
    {
       _getSectorByIdHandler = getSectorByIdHandler;
       _createSectorHandler = createSectorHandler;

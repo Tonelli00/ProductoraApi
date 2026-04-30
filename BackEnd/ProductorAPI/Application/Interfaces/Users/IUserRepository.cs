@@ -12,5 +12,7 @@ namespace Application.Interfaces.Users
     {
         Task<User?> GetUserById(int id, CancellationToken ct = default);
         Task InsertAsync(User user, CancellationToken ct = default);
+
+        Task<User?> GetUserByEmailAsync(string userEmail,CancellationToken ct = default);
     }
 }

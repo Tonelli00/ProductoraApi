@@ -7,14 +7,14 @@ namespace Productora.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    public class eventsController : ControllerBase
+    public class EventsController : ControllerBase
     {
 
         private readonly IGetPagedEventsHandler _getPagedEventsHandler;
         private readonly IGetSeatsByEventIdHandler _getSeatsByEventIdHandler;
         private readonly IGetEventByIdHandler _getEventByIdHandler;
 
-        public eventsController(IGetPagedEventsHandler getPagedEventsHandler,
+        public EventsController(IGetPagedEventsHandler getPagedEventsHandler,
             IGetEventByIdHandler getEventByIdHandler,IGetSeatsByEventIdHandler getSeatsByEventIdHandler)
         {
             _getPagedEventsHandler = getPagedEventsHandler;

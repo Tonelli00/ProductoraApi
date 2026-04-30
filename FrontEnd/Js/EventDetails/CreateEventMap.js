@@ -1,6 +1,8 @@
+import { makeReservation } from "../Reservation/MakeReservation.js";
+
 const SEATS_PER_ROW = 10;
 
-export function CreateEventMap(event) {
+export function CreateEventMap(event,userId) {
   const wrapper = document.createElement('div');
   wrapper.className = 'flex gap-6 items-start';
 
@@ -95,12 +97,12 @@ export function CreateEventMap(event) {
 
   let selected = null;
 
-  const emptyEl   = sidebar.querySelector('.sidebar-empty');
-  const detailEl  = sidebar.querySelector('.sidebar-detail');
-  const sectorEl  = sidebar.querySelector('.sidebar-sector');
-  const seatEl    = sidebar.querySelector('.sidebar-seat');
-  const priceEl   = sidebar.querySelector('.sidebar-price');
-  const buyBtn    = sidebar.querySelector('.buy-btn');
+  const emptyEl = sidebar.querySelector('.sidebar-empty');
+  const detailEl= sidebar.querySelector('.sidebar-detail');
+  const sectorEl= sidebar.querySelector('.sidebar-sector');
+  const seatEl = sidebar.querySelector('.sidebar-seat');
+  const priceEl= sidebar.querySelector('.sidebar-price');
+  const buyBtn = sidebar.querySelector('.buy-btn');
   const clearBtn  = sidebar.querySelector('.clear-btn');
 
   function selectSeat(seat, sector, el) {
@@ -146,10 +148,45 @@ export function CreateEventMap(event) {
     }
   });
 
-  buyBtn.addEventListener('click', () => {
+buyBtn.addEventListener('click', async () => {
     if (!selected) return;
-    console.log('Comprar:', { seatId: selected.seatId, sector: selected.sector.name });
-  });
+
+    buyBtn.disabled = true;
+    buyBtn.textContent = "Procesando...";
+
+    try {
+        await makeReservation(userId, selected.seatId);
+
+        buyBtn.textContent = "¡Compra realizada!";
+        
+        buyBtn.classList.remove("bg-black", "hover:bg-gray-800");
+        buyBtn.classList.add("bg-green-600", "cursor-default");
+      setTimeout(() => {
+        selected.el.style.background = '#e5e7eb';
+        selected.el.style.border = 'none';
+        selected.el.style.cursor = 'default';
+        selected = null;
+        showEmpty();
+       
+        buyBtn.textContent = "Confirmar compra";
+        buyBtn.disabled = false;
+        buyBtn.classList.add("bg-black", "hover:bg-gray-800");
+        buyBtn.classList.remove("bg-green-600", "cursor-default");
+    }, 2000)
+       
+
+    } catch (error) {
+        buyBtn.disabled = false;
+        buyBtn.textContent = "No se pudo realizar la compra..";
+
+        const errorEl = document.createElement('p');
+        errorEl.className = 'text-xs text-red-600 bg-red-50 px-3 py-2 rounded text-center';
+        errorEl.textContent = error.message || "Error al realizar la compra.";
+        buyBtn.parentElement.insertBefore(errorEl, buyBtn);
+
+        setTimeout(() => errorEl.remove(), 3000);
+    }
+});
 
   event.sectors.forEach(sector => {
     const sectorLabel = document.createElement('div');

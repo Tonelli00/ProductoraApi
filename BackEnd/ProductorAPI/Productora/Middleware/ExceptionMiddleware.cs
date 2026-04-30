@@ -44,6 +44,14 @@ namespace Productora.Middleware
                 var response = new { statusCode = 404, message = ex.Message };
                 await httpContext.Response.WriteAsync(JsonSerializer.Serialize(response));
             }
+            catch (UserNotFoundException ex)
+            {
+                httpContext.Response.StatusCode = 404;
+                httpContext.Response.ContentType = "application/json";
+
+                var response = new { statusCode = 404, message = ex.Message };
+                await httpContext.Response.WriteAsync(JsonSerializer.Serialize(response));
+            }
             catch (SectorNotFoundException ex) 
             {
                 httpContext.Response.StatusCode = 404;
@@ -57,7 +65,24 @@ namespace Productora.Middleware
                 httpContext.Response.StatusCode = 409;
                 httpContext.Response.ContentType = "application/json";
 
-                var response = new { statusCode = 404, message = ex.Message };
+                var response = new { statusCode = 409, message = ex.Message };
+                await httpContext.Response.WriteAsync(JsonSerializer.Serialize(response));
+            }
+            catch (EmailConflictException ex)
+            {
+                httpContext.Response.StatusCode = 409;
+                httpContext.Response.ContentType = "application/json";
+
+                var response = new { statusCode = 409, message = ex.Message };
+                await httpContext.Response.WriteAsync(JsonSerializer.Serialize(response));
+            }
+
+            catch (PasswordConflictException ex)
+            {
+                httpContext.Response.StatusCode = 409;
+                httpContext.Response.ContentType = "application/json";
+
+                var response = new { statusCode = 409, message = ex.Message };
                 await httpContext.Response.WriteAsync(JsonSerializer.Serialize(response));
             }
             catch (FullSectorException ex) 
@@ -65,7 +90,7 @@ namespace Productora.Middleware
                 httpContext.Response.StatusCode = 409;
                 httpContext.Response.ContentType = "application/json";
 
-                var response = new { statusCode = 404, message = ex.Message };
+                var response = new { statusCode = 409, message = ex.Message };
                 await httpContext.Response.WriteAsync(JsonSerializer.Serialize(response));
             }
             
@@ -74,7 +99,7 @@ namespace Productora.Middleware
                 httpContext.Response.StatusCode = 409;
                 httpContext.Response.ContentType = "application/json";
 
-                var response = new { statusCode = 404, message = ex.Message };
+                var response = new { statusCode = 409, message = ex.Message };
                 await httpContext.Response.WriteAsync(JsonSerializer.Serialize(response));
             }
             catch (KeyNotFoundException ex)

@@ -12,11 +12,14 @@ namespace Productora.Controllers
     {
         private readonly ICreateUserCommandHandler _commandHandler;
         private readonly IGetUserByIdQueryHandler _queryHandler;
+        private readonly ILoginUserHandler _loginUserHandler;
 
-        public UserController(IGetUserByIdQueryHandler queryHandler, ICreateUserCommandHandler commandHandler)
+
+        public UserController(IGetUserByIdQueryHandler queryHandler, ICreateUserCommandHandler commandHandler, ILoginUserHandler loginUserHandler)
         {
             _queryHandler = queryHandler;
             _commandHandler = commandHandler;
+            _loginUserHandler = loginUserHandler;
         }
 
         [HttpPost]
@@ -25,9 +28,15 @@ namespace Productora.Controllers
             var result = await _commandHandler.Handler(command);
             return CreatedAtAction(nameof(GetUserById), new { id = result.Id }, result);
         }
-
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginUserCommand command)
+        {
+            var result = await _loginUserHandler.Handle(command);
+            return Ok(result);
+        }
+        
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetUserById([FromQuery] int id)
+        public async Task<IActionResult> GetUserById([FromRoute] int id)
         {
             var result = await _queryHandler.Handler(new GetUserByIdQuery { UserId = id});
             return Ok(result);

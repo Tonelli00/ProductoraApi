@@ -85,7 +85,7 @@ namespace Application.UseCase.Commands.Reservation
                 Action = AuditAction.RESERVE_SUCCESS.ToString(),
                 EntityType = "Reservation",
                 EntityId = reservation.Id.ToString(),
-                Details = $"Reserva creada para el asiento {seat.SeatNumber} en el sector {seat.SectorId}"
+                Details = $"Reserva creada para el asiento {seat.SeatNumber} en el sector {seat.Sector.Name}"
             });
 
             // guardar cambios

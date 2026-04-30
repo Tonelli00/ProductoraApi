@@ -1,13 +1,8 @@
 ﻿using Application.Interfaces.Users;
-using Application.UseCase.Commands.User;
 using Domain.Entities;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Infrastructure.Repositories
 {
@@ -30,5 +25,12 @@ namespace Infrastructure.Repositories
             _context.Users.Add(user);
             await _context.SaveChangesAsync(ct);
         }
+
+
+        public async Task<User?> GetUserByEmailAsync(string userEmail, CancellationToken ct = default)
+        {
+            return await _context.Users.FirstOrDefaultAsync(u=>u.Email==userEmail,ct);
+        }
+
     }
 }

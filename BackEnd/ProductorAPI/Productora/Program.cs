@@ -38,6 +38,16 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 
 
+//Configuración para que la urls sean minusculas
+builder.Services.Configure<RouteOptions>(options =>
+{
+    options.LowercaseUrls = true;        
+    options.LowercaseQueryStrings = true; 
+});
+
+
+
+
 //Inyecciones
 
 //EVENT
@@ -71,6 +81,7 @@ builder.Services.AddScoped<IGetReservationByIdQueryHandler, GetReservationByIdHa
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IGetUserByIdQueryHandler, GetUserByIdQueryHandler>();
 builder.Services.AddScoped<ICreateUserCommandHandler, CreateUserHandler>();
+builder.Services.AddScoped<ILoginUserHandler, LoginUserHandler>();
 
 //AuditLog
 builder.Services.AddScoped<IAuditLogRepository, AuditLogRepository>();

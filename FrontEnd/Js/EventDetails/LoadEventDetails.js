@@ -1,4 +1,5 @@
 import { getEvent } from "../Event/GetEvents.js";
+import { initLoginModal } from "../UserForms/LoginUserForm.js";
 import { CreateEventMap } from "./CreateEventMap.js";
 
 export async function loadEventDetail() {
@@ -45,7 +46,24 @@ export async function loadEventDetail() {
     : "inline-flex items-center text-[11px] font-medium uppercase tracking-wide px-2.5 py-1 rounded-md bg-gray-100 text-gray-400";
 
   const seatMap = document.getElementById("seat-map-container");
+  const userId = localStorage.getItem("UserId");
 
-  seatMap.appendChild(CreateEventMap(event));
+  if (!userId) {
+    seatMap.innerHTML = `
+        <div class="flex flex-col items-center gap-3 py-12 text-center">
+            <p class="text-sm text-gray-500">Necesitás iniciar sesión para ver y reservar asientos.</p>
+            <button id="btn-login-event" class="px-4 py-2 text-sm bg-black text-white rounded hover:bg-gray-800 transition">
+                Iniciar sesión
+            </button>
+        </div>
+    `;
+    initLoginModal();
+    document.getElementById("btn-login-event").addEventListener("click", () => {
+        document.getElementById("modal-login").classList.remove("hidden");
+    });
+}
+    else{
+      seatMap.appendChild(CreateEventMap(event,userId));
+    }
   
 }
