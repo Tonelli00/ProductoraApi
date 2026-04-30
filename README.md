@@ -34,7 +34,7 @@ Modificar la cadena `DefaultConnection` en el archivo `appsettings.json` para qu
 
 Existen dos formas de generar migraciones:
 
-### ✔️ Opción 1: Desde Visual Studio
+### - Opción 1: Desde Visual Studio
 
 1. Abrir la Consola del Administrador de Paquetes  
 2. Seleccionar el proyecto **Infrastructure** como predeterminado  
@@ -46,7 +46,7 @@ Add-Migration <NombreMigracion>
 
 ---
 
-### ✔️ Opción 2: Desde la terminal
+### - Opción 2: Desde la terminal
 
 1. Posicionarse en la carpeta del proyecto API  
 2. Ejecutar:
@@ -63,7 +63,7 @@ En ambos casos, se generará automáticamente la carpeta `Migrations/`.
 
 Una vez creada la migración, se debe aplicar a la base de datos.
 
-### ✔️ Opción 1: Desde Visual Studio
+### - Opción 1: Desde Visual Studio
 
 1. Abrir la Consola del Administrador de Paquetes  
 2. Seleccionar el proyecto **Infrastructure**  
@@ -75,7 +75,7 @@ Update-Database
 
 ---
 
-### ✔️ Opción 2: Desde la terminal
+### - Opción 2: Desde la terminal
 
 ```bash
 dotnet ef database update --project Infrastructure --startup-project Productora
