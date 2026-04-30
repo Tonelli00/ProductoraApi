@@ -105,6 +105,6 @@ Se optó por una estructura modular basada en vistas y componentes reutilizables
 - Facilidad de mantenimiento  
 
 ### Decisiones de negocio
-Se optó por determinar que el usuario únicamente puede realizar una reserva para un asiento. El usuario no puede realizar una reserva con 2 asientos asociados. Ademaás, para realizar la reserva el mismo tieme que estar logueado en la página. Caso contrario, no podrá ver el mapa de asientos.
+Se optó por determinar que el usuario únicamente puede realizar una reserva para un asiento. El usuario no puede realizar una reserva con 2 asientos asociados. Ademaás, para realizar la reserva, el mismo tieme que estar logueado en la página. Caso contrario, no podrá ver el mapa de asientos.
 
 
