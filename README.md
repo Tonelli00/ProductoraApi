@@ -48,8 +48,9 @@ Add-Migration <NombreMigracion>
 
 ### - Opción 2: Desde la terminal
 
-1. Posicionarse en la carpeta del proyecto API  
-2. Ejecutar:
+1. Posicionarse en la carpeta del proyecto API
+2. Ejecutar dotnet restore
+3. Ejecutar:
 
 ```bash
 dotnet ef migrations add <NombreMigracion> --project Infrastructure --startup-project Productora
