@@ -1,5 +1,9 @@
-﻿using Application.Interfaces.Events;
+﻿using Application.DTOs;
+using Application.DTOs.Event;
+using Application.DTOs.Seat;
+using Application.Interfaces.Events;
 using Application.UseCase.Queries.Events;
+using Domain.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,12 +27,18 @@ namespace Productora.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(typeof(EventShortResponseDTO), 200)]
+        [ProducesResponseType(typeof(ErrorReponseDTO), 404)]
+
         public async Task<IActionResult> GetPagedEvents([FromQuery]int Page=1, [FromQuery] int PageSize=10)
         {
             return Ok(await _getPagedEventsHandler.Handle(Page,PageSize));
         }
 
         [HttpGet("{id:int}")]
+        [ProducesResponseType(typeof(EventResponseDTO), 200)]
+        [ProducesResponseType(typeof(ErrorReponseDTO), 404)]
+        
         public async Task<IActionResult> GetEventById(int id)
         {
             var result = await _getEventByIdHandler.Handle(new GetEventByIdQuery
@@ -38,6 +48,11 @@ namespace Productora.Controllers
             return Ok(result);
         }
         [HttpGet("{id}/seats")]
+        [ProducesResponseType(typeof(SeatResponseDTO), 200)]
+        [ProducesResponseType(typeof(ErrorReponseDTO), 400)]
+        [ProducesResponseType(typeof(ErrorReponseDTO), 404)]
+        [ProducesResponseType(typeof(ErrorReponseDTO), 409)]
+
         public async Task<IActionResult> GetSeatsByEventId(int id)
         {
             var result = await _getSeatsByEventIdHandler.Handle(new GetSeatsByEventIdQuery

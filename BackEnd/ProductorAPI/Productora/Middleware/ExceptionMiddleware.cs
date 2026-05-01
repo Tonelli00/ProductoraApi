@@ -1,127 +1,80 @@
-﻿using Domain.Exceptions;
-using Microsoft.AspNetCore.Http.HttpResults;
-using System.Text.Json;
+﻿using Application.DTOs;
+using Domain.Exceptions;
 
-namespace Productora.Middleware
+public class ExceptionMiddleware
 {
-    public class ExceptionMiddleware
+    private readonly RequestDelegate _next;
+
+    public ExceptionMiddleware(RequestDelegate next)
     {
-        private readonly RequestDelegate delegateNext;
-        private readonly ILogger<ExceptionMiddleware> logger;
+        _next = next;
+    }
 
-        public ExceptionMiddleware(RequestDelegate delegateNext, ILogger<ExceptionMiddleware> logger)
+    public async Task Invoke(HttpContext context)
+    {
+        try
         {
-            this.delegateNext = delegateNext;
-            this.logger = logger;
+            await _next(context);
+        }
+        catch (EventNotFoundException ex)
+        {
+            await Handle(context, 404, "EVENT_NOT_FOUND", ex.Message);
+        }
+        catch (SeatNotFoundException ex)
+        {
+            await Handle(context, 404, "SEAT_NOT_FOUND", ex.Message);
+        }
+        catch (UserNotFoundException ex)
+        {
+            await Handle(context, 404, "USER_NOT_FOUND", ex.Message);
+        }
+        catch (SectorNotFoundException ex)
+        {
+            await Handle(context, 404, "SECTOR_NOT_FOUND", ex.Message);
         }
 
-        public async Task InvokeAsync(HttpContext httpContext)
+        catch (EmailConflictException ex)
         {
-            try
-            {
-                await delegateNext(httpContext);
-            }
-            catch (ArgumentException ex)
-            {
-                httpContext.Response.StatusCode = 400;
-                httpContext.Response.ContentType = "application/json";
-
-                var response = new { statusCode = 400, message = ex.Message };
-                await httpContext.Response.WriteAsync(JsonSerializer.Serialize(response));
-            }
-            catch (SeatNotFoundException ex) 
-            {
-                httpContext.Response.StatusCode = 404;
-                httpContext.Response.ContentType = "application/json";
-
-                var response = new { statusCode = 404, message = ex.Message };
-                await httpContext.Response.WriteAsync(JsonSerializer.Serialize(response));
-            }
-            catch (EventNotFoundException ex) 
-            {
-                httpContext.Response.StatusCode = 404;
-                httpContext.Response.ContentType = "application/json";
-
-                var response = new { statusCode = 404, message = ex.Message };
-                await httpContext.Response.WriteAsync(JsonSerializer.Serialize(response));
-            }
-            catch (UserNotFoundException ex)
-            {
-                httpContext.Response.StatusCode = 404;
-                httpContext.Response.ContentType = "application/json";
-
-                var response = new { statusCode = 404, message = ex.Message };
-                await httpContext.Response.WriteAsync(JsonSerializer.Serialize(response));
-            }
-            catch (SectorNotFoundException ex) 
-            {
-                httpContext.Response.StatusCode = 404;
-                httpContext.Response.ContentType = "application/json";
-
-                var response = new { statusCode = 404, message = ex.Message };
-                await httpContext.Response.WriteAsync(JsonSerializer.Serialize(response));
-            }
-            catch (SectorConflictException ex) 
-            {
-                httpContext.Response.StatusCode = 409;
-                httpContext.Response.ContentType = "application/json";
-
-                var response = new { statusCode = 409, message = ex.Message };
-                await httpContext.Response.WriteAsync(JsonSerializer.Serialize(response));
-            }
-            catch (EmailConflictException ex)
-            {
-                httpContext.Response.StatusCode = 409;
-                httpContext.Response.ContentType = "application/json";
-
-                var response = new { statusCode = 409, message = ex.Message };
-                await httpContext.Response.WriteAsync(JsonSerializer.Serialize(response));
-            }
-
-            catch (PasswordConflictException ex)
-            {
-                httpContext.Response.StatusCode = 409;
-                httpContext.Response.ContentType = "application/json";
-
-                var response = new { statusCode = 409, message = ex.Message };
-                await httpContext.Response.WriteAsync(JsonSerializer.Serialize(response));
-            }
-            catch (FullSectorException ex) 
-            {
-                httpContext.Response.StatusCode = 409;
-                httpContext.Response.ContentType = "application/json";
-
-                var response = new { statusCode = 409, message = ex.Message };
-                await httpContext.Response.WriteAsync(JsonSerializer.Serialize(response));
-            }
-            
-            catch (ReservedSeatException ex) 
-            {
-                httpContext.Response.StatusCode = 409;
-                httpContext.Response.ContentType = "application/json";
-
-                var response = new { statusCode = 409, message = ex.Message };
-                await httpContext.Response.WriteAsync(JsonSerializer.Serialize(response));
-            }
-            catch (KeyNotFoundException ex)
-            {
-                httpContext.Response.StatusCode = 404;
-                httpContext.Response.ContentType = "application/json";
-
-                var response = new { statusCode = 404, message = ex.Message };
-                await httpContext.Response.WriteAsync(JsonSerializer.Serialize(response));
-            }
-
-            catch (Exception ex)
-            {
-                httpContext.Response.StatusCode = 500;
-                httpContext.Response.ContentType = "application/json";
-                logger.LogError(ex, "Unhandled exception");
-
-                var response = new { statusCode = 500, message = "Internal server error" };
-                await httpContext.Response.WriteAsync(JsonSerializer.Serialize(response));
-            }
+            await Handle(context, 409, "EMAIL_CONFLICT", ex.Message);
+        }
+        catch (PasswordConflictException ex)
+        {
+            await Handle(context, 409, "PASSWORD_CONFLICT", ex.Message);
+        }
+        catch (SectorConflictException ex)
+        {
+            await Handle(context, 409, "SECTOR_CONFLICT", ex.Message);
+        }
+        catch (FullSectorException ex)
+        {
+            await Handle(context, 409, "SECTOR_FULL", ex.Message);
+        }
+        catch (ReservedSeatException ex)
+        {
+            await Handle(context, 409, "SEAT_RESERVED", ex.Message);
         }
 
+        catch (ArgumentException ex)
+        {
+            await Handle(context, 400, "BAD_REQUEST", ex.Message);
+        }
+
+        catch (Exception ex)
+        {
+            await Handle(context, 500, "INTERNAL_ERROR", "Internal server error");
+        }
+    }
+
+    private static async Task Handle(HttpContext context, int statusCode, string code, string message)
+    {
+        context.Response.StatusCode = statusCode;
+        context.Response.ContentType = "application/json";
+
+        await context.Response.WriteAsJsonAsync(new ErrorReponseDTO
+        {
+            Status=statusCode,
+            Code = code,
+            Message = message
+        });
     }
 }
