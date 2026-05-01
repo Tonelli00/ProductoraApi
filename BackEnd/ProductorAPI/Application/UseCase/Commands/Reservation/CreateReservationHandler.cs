@@ -42,7 +42,7 @@ namespace Application.UseCase.Commands.Reservation
               GetUserByIdQuery query =new GetUserByIdQuery { UserId = command.UserId };
               var user = await _getUserByIdQueryHandler.Handler(query);
               if(user == null)
-                  throw new Exception("El usuario no existe");
+                  throw new UserNotFoundException("El usuario no existe");
 
             // validar asiento
             var seat = await _getSeatByIdHandler.Handle(new GetSeatByIdQuery { SeatId = command.SeatId});
@@ -58,9 +58,9 @@ namespace Application.UseCase.Commands.Reservation
                     Action = AuditAction.RESERVE_ATTEMPT.ToString(),
                     EntityType = "Seat",
                     EntityId = seat.Id.ToString(),
-                    Details = $"Intentó reservar el asiento {seat.SeatNumber} en el sector {seat.SectorId}, pero ya estaba reservado o vendido"
+                    Details = $"Intentó reservar el asiento {seat.SeatNumber} en el sector {seat.Sector.Name}, pero ya estaba reservado o vendido"
                 });
-                throw new Exception("409");
+                throw new SectorConflictException("El asiento ya está reservado, intente con otro.");
             }                
 
 

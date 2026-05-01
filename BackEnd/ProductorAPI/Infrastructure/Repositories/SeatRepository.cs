@@ -24,7 +24,7 @@ namespace Infrastructure.Repositories
         
         public async Task<Seat> GetSeatById(Guid SeatId, CancellationToken ct = default)
         {
-            return await _context.Seats.FirstOrDefaultAsync(s => s.Id == SeatId, ct);
+            return await _context.Seats.Include(s=>s.Sector).FirstOrDefaultAsync(s => s.Id == SeatId, ct);
         }
         
         public async Task UpdateSeatStatus(Seat seat, CancellationToken ct = default)

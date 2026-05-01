@@ -6,7 +6,7 @@ export async function createUser(name,email,password)
     const body = {
         name:name,
         email:email,
-        password:password
+        passwordHash:password
     }
 
     return await postData(endpointUrl,body);
