@@ -54,41 +54,35 @@ function clearGlobalMessages() {
 
 
 function createModalHTML() {
-    if (document.getElementById("modal-login")) return; // evita duplicados
-
+    if (document.getElementById("modal-login")) return;
     document.body.insertAdjacentHTML("beforeend", `
         <div id="modal-login" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center">
             <div class="bg-white rounded-lg border border-gray-200 p-8 w-full max-w-md mx-4">
-
                 <div class="flex justify-between items-center mb-6">
                     <h2 class="text-lg font-semibold">Iniciar sesión</h2>
                     <button id="login-close" class="text-gray-400 hover:text-black text-xl">✕</button>
                 </div>
-
                 <form id="login-form" class="flex flex-col gap-4" novalidate>
-
                     <div class="flex flex-col gap-1">
                         <label class="text-xs text-gray-500">Email</label>
                         <input id="login-email" type="email"
                             class="border border-gray-200 rounded px-3 py-2 text-sm" />
                         <span id="login-email-error" class="hidden text-xs text-red-500"></span>
+                        <span class="text-xs text-black-400">Email precargado: Proyecto2026@gmail.com</span>
                     </div>
-
                     <div class="flex flex-col gap-1">
                         <label class="text-xs text-gray-500">Contraseña</label>
                         <input id="login-password" type="password"
                             class="border border-gray-200 rounded px-3 py-2 text-sm" />
                         <span id="login-password-error" class="hidden text-xs text-red-500"></span>
+                        <span class="text-xs text-black-400">Contraseña precargada: Proyecto123</span>
                     </div>
-
                     <p id="login-error" class="hidden text-xs text-red-600"></p>
                     <p id="login-success" class="hidden text-xs text-green-600"></p>
-
                     <button type="submit" class="w-full bg-black text-white py-2 rounded">
                         Iniciar sesión
                     </button>
                 </form>
-
             </div>
         </div>
     `);

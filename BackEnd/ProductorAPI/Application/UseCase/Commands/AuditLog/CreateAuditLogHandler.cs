@@ -14,10 +14,8 @@ namespace Application.UseCase.Commands.AuditLog
 
         public async Task<AuditLogResponse> Handler(CreateAuditLogCommand command)
         {
-            // crear auditoria
             var auditLog = new Audit_Log
             {
-                Id = Guid.NewGuid(),
                 UserId = command.UserId,
                 Action = command.Action,
                 EntityType = command.EntityType,

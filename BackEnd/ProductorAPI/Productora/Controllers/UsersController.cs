@@ -6,16 +6,16 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Productora.Controllers
 {
-    [Route("api/v1/users")]
+    [Route("api/v1/[controller]")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class UsersController : ControllerBase
     {
         private readonly ICreateUserCommandHandler _commandHandler;
         private readonly IGetUserByIdQueryHandler _queryHandler;
         private readonly ILoginUserHandler _loginUserHandler;
 
 
-        public UserController(IGetUserByIdQueryHandler queryHandler, ICreateUserCommandHandler commandHandler, ILoginUserHandler loginUserHandler)
+        public UsersController(IGetUserByIdQueryHandler queryHandler, ICreateUserCommandHandler commandHandler, ILoginUserHandler loginUserHandler)
         {
             _queryHandler = queryHandler;
             _commandHandler = commandHandler;

@@ -49,6 +49,12 @@ builder.Services.Configure<RouteOptions>(options =>
 
 
 //Inyecciones
+//Audit Logs
+
+builder.Services.AddScoped<IAuditLogRepository, AuditLogRepository>();
+builder.Services.AddScoped<IGetAuditLogsByUserQueryHandler, GetAuditLogByUserHandler>();
+
+
 
 //EVENT
 builder.Services.AddScoped<IEventRepository, EventRepository>();

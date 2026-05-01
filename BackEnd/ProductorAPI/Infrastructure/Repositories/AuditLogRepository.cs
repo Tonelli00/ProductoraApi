@@ -19,36 +19,22 @@ namespace Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task CreateAuditLog(Audit_Log audit_Log)
+        public async Task CreateAuditLog(Audit_Log audit_Log, CancellationToken ct = default)
         {
             _context.Audit_Logs.Add(audit_Log);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(ct);
         }
 
-        public async Task<Audit_Log?> GetAuditLogById(Guid Id)
+        public async Task<Audit_Log?> GetAuditLogById(Guid Id, CancellationToken ct = default)
         {
-            return await _context.Audit_Logs.FirstOrDefaultAsync(a => a.Id == Id);
+            return await _context.Audit_Logs.FirstOrDefaultAsync(a => a.Id == Id,ct);
         }
 
-        public async Task<IEnumerable<AuditLogResponse>> GetAuditLogsByUserId(int userId)
+        public async Task<IEnumerable<Audit_Log>> GetAuditLogsByUserId(int userId, CancellationToken ct = default)
         {
-            return await _context.Audit_Logs
-                .Where(a => a.UserId == userId)
-                .Select(a => new AuditLogResponse
-                {
-                    Id = a.Id,
-                    Action = a.Action,
-                    EntityType = a.EntityType,
-                    EntityId = a.EntityId,
-                    Details = a.Details,
-                    CreatedAt = a.CreatedAt
-                })
-                .ToListAsync();
+            return await _context.Audit_Logs.Where(a => a.UserId == userId).ToListAsync(ct);
         }
 
-        Task<IEnumerable<Audit_Log>> IAuditLogRepository.GetAuditLogsByUserId(int userId)
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }

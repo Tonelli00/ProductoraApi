@@ -28,7 +28,7 @@ namespace Productora.Controllers
             return Ok(await _getPagedEventsHandler.Handle(Page,PageSize));
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> GetEventById(int id)
         {
             var result = await _getEventByIdHandler.Handle(new GetEventByIdQuery

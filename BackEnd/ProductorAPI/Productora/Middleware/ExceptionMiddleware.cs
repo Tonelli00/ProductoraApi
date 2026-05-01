@@ -1,4 +1,5 @@
 ﻿using Domain.Exceptions;
+using Microsoft.AspNetCore.Http.HttpResults;
 using System.Text.Json;
 
 namespace Productora.Middleware

@@ -4,6 +4,7 @@ using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260501022913_init")]
+    partial class init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -89,7 +92,7 @@ namespace Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            EventDate = new DateTime(2026, 5, 20, 23, 51, 47, 806, DateTimeKind.Local).AddTicks(5661),
+                            EventDate = new DateTime(2026, 5, 20, 23, 29, 13, 94, DateTimeKind.Local).AddTicks(4870),
                             Name = "Gran evento",
                             Status = "Activo",
                             Venue = "Estadio A"
@@ -1134,15 +1137,6 @@ namespace Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("USER", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Email = "Proyecto2026@gmail.com",
-                            Name = "Proyecto",
-                            PasswordHash = "$2a$11$aS/QSa9iaBs4pDo.ciZMpOfKepKZt0WkhwjOgjWxGXWY26YY9jcsu"
-                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.Audit_Log", b =>

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260430073534_init")]
-    partial class init
+    [Migration("20260501025148_UserSeed")]
+    partial class UserSeed
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -92,7 +92,7 @@ namespace Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            EventDate = new DateTime(2026, 5, 20, 4, 35, 33, 767, DateTimeKind.Local).AddTicks(9906),
+                            EventDate = new DateTime(2026, 5, 20, 23, 51, 47, 806, DateTimeKind.Local).AddTicks(5661),
                             Name = "Gran evento",
                             Status = "Activo",
                             Venue = "Estadio A"
@@ -1137,6 +1137,15 @@ namespace Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("USER", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Email = "Proyecto2026@gmail.com",
+                            Name = "Proyecto",
+                            PasswordHash = "$2a$11$aS/QSa9iaBs4pDo.ciZMpOfKepKZt0WkhwjOgjWxGXWY26YY9jcsu"
+                        });
                 });
 
             modelBuilder.Entity("Domain.Entities.Audit_Log", b =>

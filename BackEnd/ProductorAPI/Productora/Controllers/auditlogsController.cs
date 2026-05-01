@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Productora.Controllers
 {
-    [Route("api/v1/auditlogs")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     public class AuditLogsController : ControllerBase
     {
@@ -16,8 +16,8 @@ namespace Productora.Controllers
             _getAuditLogByUserQueryHandler = getAuditLogByUserQueryHandler;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetByUser([FromQuery] int userId)
+        [HttpGet("{userId:int}")]
+        public async Task<IActionResult> GetByUser(int userId)
         {
             var result = await _getAuditLogByUserQueryHandler.Handler(new GetAuditLogByUserQuery { UserId = userId});
             return Ok(result);

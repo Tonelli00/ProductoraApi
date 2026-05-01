@@ -142,7 +142,7 @@ namespace Infrastructure.Migrations
             migrationBuilder.InsertData(
                 table: "EVENT",
                 columns: new[] { "Id", "EventDate", "Name", "Status", "Venue" },
-                values: new object[] { 1, new DateTime(2026, 5, 20, 4, 35, 33, 767, DateTimeKind.Local).AddTicks(9906), "Gran evento", "Activo", "Estadio A" });
+                values: new object[] { 1, new DateTime(2026, 5, 20, 23, 29, 13, 94, DateTimeKind.Local).AddTicks(4870), "Gran evento", "Activo", "Estadio A" });
 
             migrationBuilder.InsertData(
                 table: "SECTOR",

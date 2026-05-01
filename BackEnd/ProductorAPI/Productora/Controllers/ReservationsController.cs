@@ -5,15 +5,15 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Productora.Controllers
 {
-    [Route("api/v1/reservations")]
+    [Route("api/v1/[controller]")]
     [ApiController]
-    public class ReservationController : ControllerBase
+    public class ReservationsController : ControllerBase
     {
         private readonly ICreateReservationCommandHandler _createReservationHandler;
         private readonly IGetReservationsByUserQueryHandler _getReservationsByUserId;
         private readonly IGetReservationByIdQueryHandler _getReservationsById;
 
-        public ReservationController(ICreateReservationCommandHandler createReservationHandler, IGetReservationsByUserQueryHandler getReservationsByUserId,
+        public ReservationsController(ICreateReservationCommandHandler createReservationHandler, IGetReservationsByUserQueryHandler getReservationsByUserId,
             IGetReservationByIdQueryHandler getReservationsById)
         {
             _createReservationHandler = createReservationHandler;
@@ -35,8 +35,8 @@ namespace Productora.Controllers
             return Ok(result);
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetById([FromQuery] Guid id)
+        [HttpGet("{id:guid}")]
+        public async Task<IActionResult> GetById([FromRoute] Guid id)
         {
             var result = await _getReservationsById.Handle(new GetReservationByIdQueryHandler { reservationId = id });
             return Ok(result);

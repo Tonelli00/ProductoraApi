@@ -11,8 +11,8 @@ namespace Application.Interfaces.AuditLogs
 {
     public interface IAuditLogRepository
     {
-        Task CreateAuditLog(Audit_Log audit_Log);
-        Task<IEnumerable<Audit_Log>> GetAuditLogsByUserId(int userId);
-        Task<Audit_Log?> GetAuditLogById(Guid Id);
+        Task CreateAuditLog(Audit_Log audit_Log, CancellationToken ct = default);
+        Task<IEnumerable<Audit_Log>> GetAuditLogsByUserId(int userIdk,CancellationToken ct = default);
+        Task<Audit_Log?> GetAuditLogById(Guid Id, CancellationToken ct = default);
     }
 }
