@@ -73,7 +73,10 @@ namespace Application.UseCase.Commands.Reservation
                 ReservedAt = DateTime.UtcNow,
                 ExpiresAt = DateTime.UtcNow.AddMinutes(5)
             };
-           
+
+            // guardar cambios
+            await _reservationRepository.CreateReservationAsync(reservation);
+
             // actualizar estado del asiento
             MarkSeatAsReservedCommand seatAsReserved = new MarkSeatAsReservedCommand { SeatNumber = seat.SeatNumber, SectorId = seat.SectorId };
             await _markSeatAsReserverHandler.Handle(seatAsReserved);                      
@@ -88,8 +91,7 @@ namespace Application.UseCase.Commands.Reservation
                 Details = $"Reserva creada para el asiento {seat.SeatNumber} en el sector {seat.Sector.Name}"
             });
 
-            // guardar cambios
-            await _reservationRepository.CreateReservationAsync(reservation);
+
 
             // retornar respuesta
             return new ReservationResponse

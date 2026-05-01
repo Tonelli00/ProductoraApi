@@ -1,4 +1,7 @@
-﻿using Application.Interfaces.Seats;
+﻿using Application.DTOs;
+using Application.DTOs.Reservation;
+using Application.DTOs.Seat;
+using Application.Interfaces.Seats;
 using Application.UseCase.Commands.Seat;
 using Application.UseCase.Queries.Seats;
 using Microsoft.AspNetCore.Http;
@@ -23,6 +26,11 @@ namespace Productora.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(typeof(SeatResponseDTO), 200)]
+        [ProducesResponseType(typeof(ErrorReponseDTO), 400)]
+        [ProducesResponseType(typeof(ErrorReponseDTO), 404)]
+        [ProducesResponseType(typeof(ErrorReponseDTO), 409)]
+
         public async Task<IActionResult> GetAll([FromQuery] GetSeatsBySectorIdQuery query)
         {
 
@@ -32,6 +40,11 @@ namespace Productora.Controllers
         }
 
         [HttpGet("Reserved")]
+        [ProducesResponseType(typeof(ReservationResponse), 200)]
+        [ProducesResponseType(typeof(ErrorReponseDTO), 400)]
+        [ProducesResponseType(typeof(ErrorReponseDTO), 404)]
+        [ProducesResponseType(typeof(ErrorReponseDTO), 409)]
+
         public async Task<IActionResult> GetReserved([FromQuery] GetReservedSeatsByEventIdQuery query)
         {
 

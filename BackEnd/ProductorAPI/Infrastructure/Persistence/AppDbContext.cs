@@ -139,6 +139,10 @@ namespace Infrastructure.Persistence
                     .IsUnique();
                 entity.Property(u => u.PasswordHash)
                     .IsRequired();
+
+
+                entity.HasData(new User { Id = 1, Name = "Proyecto", Email = "Proyecto2026@gmail.com", PasswordHash = BCrypt.Net.BCrypt.HashPassword("Proyecto123") });
+
             });
 
             // Reservation

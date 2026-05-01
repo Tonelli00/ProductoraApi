@@ -18,7 +18,6 @@ using Application.UseCase.Queries.Users;
 using Infrastructure.Persistence;
 using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
-using Productora.Middleware;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -49,6 +48,12 @@ builder.Services.Configure<RouteOptions>(options =>
 
 
 //Inyecciones
+//Audit Logs
+
+builder.Services.AddScoped<IAuditLogRepository, AuditLogRepository>();
+builder.Services.AddScoped<IGetAuditLogsByUserQueryHandler, GetAuditLogByUserHandler>();
+
+
 
 //EVENT
 builder.Services.AddScoped<IEventRepository, EventRepository>();
@@ -99,6 +104,11 @@ builder.Services.AddCors(option =>
             .AllowAnyHeader();
     });
 });
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+
 
 var app = builder.Build();
 

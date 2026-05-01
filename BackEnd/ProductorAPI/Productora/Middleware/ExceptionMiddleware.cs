@@ -1,20 +1,22 @@
-﻿using Domain.Exceptions;
-using System.Text.Json;
+﻿using Application.DTOs;
+using Domain.Exceptions;
 
-namespace Productora.Middleware
+public class ExceptionMiddleware
 {
-    public class ExceptionMiddleware
+    private readonly RequestDelegate _next;
+
+    public ExceptionMiddleware(RequestDelegate next)
     {
-        private readonly RequestDelegate delegateNext;
-        private readonly ILogger<ExceptionMiddleware> logger;
+        _next = next;
+    }
 
-        public ExceptionMiddleware(RequestDelegate delegateNext, ILogger<ExceptionMiddleware> logger)
+    public async Task Invoke(HttpContext context)
+    {
+        try
         {
-            this.delegateNext = delegateNext;
-            this.logger = logger;
+            await _next(context);
         }
-
-        public async Task InvokeAsync(HttpContext httpContext)
+        catch (EventNotFoundException ex)
         {
             try
             {
@@ -76,6 +78,12 @@ namespace Productora.Middleware
                 await StatusMessage(httpContext, 500, "Internal server error");
             }
         }
+    }
+
+    private static async Task Handle(HttpContext context, int statusCode, string code, string message)
+    {
+        context.Response.StatusCode = statusCode;
+        context.Response.ContentType = "application/json";
 
         private async Task StatusMessage(HttpContext context, int statusCode, string message)
         {
