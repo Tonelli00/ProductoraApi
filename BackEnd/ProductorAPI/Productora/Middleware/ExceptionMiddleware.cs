@@ -1,13 +1,16 @@
 ﻿using Application.DTOs;
 using Domain.Exceptions;
+using System.Text.Json;
 
 public class ExceptionMiddleware
 {
     private readonly RequestDelegate _next;
+    private readonly ILogger<ExceptionMiddleware> _logger;
 
-    public ExceptionMiddleware(RequestDelegate next)
+    public ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> logger)
     {
         _next = next;
+        _logger = logger;
     }
 
     public async Task Invoke(HttpContext context)
@@ -16,84 +19,71 @@ public class ExceptionMiddleware
         {
             await _next(context);
         }
+        catch (ArgumentException ex)
+        {
+            await StatusMessage(context, 400, ex.Message, ex);
+        }
+        catch (SeatNotFoundException ex)
+        {
+            await StatusMessage(context, 404, ex.Message, ex);
+        }
         catch (EventNotFoundException ex)
         {
-            try
-            {
-                await delegateNext(httpContext);
-            }
-            catch (ArgumentException ex)
-            {               
-                await StatusMessage(httpContext, 400, ex.Message);
-            }
-            catch (SeatNotFoundException ex) 
-            {               
-                await StatusMessage(httpContext, 404, ex.Message);
-            }
-            catch (EventNotFoundException ex) 
-            {
-                await StatusMessage(httpContext, 404, ex.Message);
-            }
-            catch (UserNotFoundException ex)
-            {
-                await StatusMessage(httpContext, 404, ex.Message);
-            }
-            catch (SectorNotFoundException ex) 
-            {
-                await StatusMessage(httpContext, 404, ex.Message);
-            }
-            catch (SectorConflictException ex) 
-            {               
-                await StatusMessage(httpContext, 409, ex.Message);
-            }
-            catch (EmailConflictException ex)
-            {
-                await StatusMessage(httpContext, 409, ex.Message);
-            }
-
-            catch (PasswordConflictException ex)
-            {
-                await StatusMessage(httpContext, 409, ex.Message);
-            }
-            catch (FullSectorException ex) 
-            {
-                await StatusMessage(httpContext, 409, ex.Message);
-            }
-            
-            catch (ReservedSeatException ex) 
-            {
-                await StatusMessage(httpContext, 409, ex.Message);
-            }
-            catch (KeyNotFoundException ex)
-            {
-                await StatusMessage(httpContext, 404, ex.Message);
-            }
-            catch(ReservationNotFoundException ex)
-            {
-                await StatusMessage(httpContext, 404, ex.Message);
-            }
-
-            catch (Exception ex)
-            {
-                await StatusMessage(httpContext, 500, "Internal server error");
-            }
+            await StatusMessage(context, 404, ex.Message, ex);
+        }
+        catch (UserNotFoundException ex)
+        {
+            await StatusMessage(context, 404, ex.Message, ex);
+        }
+        catch (SectorNotFoundException ex)
+        {
+            await StatusMessage(context, 404, ex.Message, ex);
+        }
+        catch (ReservationNotFoundException ex)
+        {
+            await StatusMessage(context, 404, ex.Message, ex);
+        }
+        catch (KeyNotFoundException ex)
+        {
+            await StatusMessage(context, 404, ex.Message, ex);
+        }
+        catch (SectorConflictException ex)
+        {
+            await StatusMessage(context, 409, ex.Message, ex);
+        }
+        catch (EmailConflictException ex)
+        {
+            await StatusMessage(context, 409, ex.Message, ex);
+        }
+        catch (PasswordConflictException ex)
+        {
+            await StatusMessage(context, 409, ex.Message, ex);
+        }
+        catch (FullSectorException ex)
+        {
+            await StatusMessage(context, 409, ex.Message, ex);
+        }
+        catch (ReservedSeatException ex)
+        {
+            await StatusMessage(context, 409, ex.Message,ex);
+        }
+        catch (Exception ex)
+        {
+            await StatusMessage(context, 500, "Internal server error",ex);
         }
     }
 
-    private static async Task Handle(HttpContext context, int statusCode, string code, string message)
+    private async Task StatusMessage(HttpContext context, int statusCode, string message,Exception ex)
     {
         context.Response.StatusCode = statusCode;
         context.Response.ContentType = "application/json";
-
-        private async Task StatusMessage(HttpContext context, int statusCode, string message)
+        _logger.LogError(ex,"Ocurrió un error");
+        var response = new ErrorReponseDTO
         {
-            context.Response.StatusCode = statusCode;
-            context.Response.ContentType = "application/json";
+            StatusCode = statusCode,
+            Message = message
+        };
 
-            var response = new { statusCode, message };
-
-            await context.Response.WriteAsync(JsonSerializer.Serialize(response));
-        }
-
+        await context.Response.WriteAsync(JsonSerializer.Serialize(response));
     }
 }

@@ -39,7 +39,6 @@ public class SectorsController : ControllerBase
    [ProducesResponseType(typeof(SectorShortResponseDTO), 200)]
     [ProducesResponseType(typeof(ErrorReponseDTO), 400)]
     [ProducesResponseType(typeof(ErrorReponseDTO), 404)]
-    [ProducesResponseType(typeof(ErrorReponseDTO), 409)]
 
     public async Task<IActionResult> GetSector(int id)
    {

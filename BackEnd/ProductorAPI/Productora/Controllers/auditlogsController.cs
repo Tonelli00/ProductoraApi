@@ -23,7 +23,7 @@ namespace Productora.Controllers
         [ProducesResponseType(typeof(AuditLogResponse), 200)]
         [ProducesResponseType(typeof(ErrorReponseDTO), 400)]
         [ProducesResponseType(typeof(ErrorReponseDTO), 404)]
-        [ProducesResponseType(typeof(ErrorReponseDTO), 409)]
+        
         public async Task<IActionResult> GetByUser(int userId)
         {
             var result = await _getAuditLogByUserQueryHandler.Handler(new GetAuditLogByUserQuery { UserId = userId});

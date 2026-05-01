@@ -35,15 +35,14 @@ namespace Productora.Controllers
             return CreatedAtAction(nameof(GetById), new { id = result.Id }, result);
         }
 
-        [HttpGet]
+        [HttpGet("{id:int}/user")]
         [ProducesResponseType(typeof(ReservationResponse), 200)]
         [ProducesResponseType(typeof(ErrorReponseDTO), 400)]
         [ProducesResponseType(typeof(ErrorReponseDTO), 404)]
-        [ProducesResponseType(typeof(ErrorReponseDTO), 409)]
 
-        public async Task<IActionResult> GetByUser([FromQuery] int userId)
+        public async Task<IActionResult> GetByUser([FromRoute] int id)
         {
-            var result = await _getReservationsByUserId.Handler(new GetReservationsByUserIDQuery { userId = userId});
+            var result = await _getReservationsByUserId.Handler(new GetReservationsByUserIDQuery { userId = id});
             return Ok(result);
         }
 
@@ -51,7 +50,6 @@ namespace Productora.Controllers
         [ProducesResponseType(typeof(ReservationResponse), 200)]
         [ProducesResponseType(typeof(ErrorReponseDTO), 400)]
         [ProducesResponseType(typeof(ErrorReponseDTO), 404)]
-        [ProducesResponseType(typeof(ErrorReponseDTO), 409)]
 
         public async Task<IActionResult> GetById([FromRoute] Guid id)
         {

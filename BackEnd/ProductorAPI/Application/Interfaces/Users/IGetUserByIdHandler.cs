@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Application.Interfaces.Users
 {
-    public interface IGetUserByIdQueryHandler
+    public interface IGetUserByIdHandler
     {
         Task<UserResponse?> Handler(GetUserByIdQuery query);
     }

@@ -5,24 +5,33 @@ using Domain.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Quic;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Application.UseCase.Queries.Users
 {
-    public class GetUserByIdQueryHandler : IGetUserByIdQueryHandler
+    public class GetUserByIdHandler : IGetUserByIdHandler
     {
         private readonly IUserRepository _userRepository;
-        public GetUserByIdQueryHandler(IUserRepository userRepository)
+        public GetUserByIdHandler(IUserRepository userRepository)
         {
             _userRepository = userRepository;
         }
 
         public async Task<UserResponse?> Handler(GetUserByIdQuery query)
         {
+            if(query.UserId<0 || query.UserId == 0) 
+            {
+                throw new ArgumentException("Ingrese valores válidos");
+            }
+
             var user = await _userRepository.GetUserById(query.UserId);
-            if (user == null)
+            if (user == null) 
+            {
                 throw new UserNotFoundException("Usuario no encontrado");
+            }
+                
             return new UserResponse
             {
                 Id = user.Id,

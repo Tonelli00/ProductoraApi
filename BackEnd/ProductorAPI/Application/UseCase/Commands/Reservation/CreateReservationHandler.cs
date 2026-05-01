@@ -18,9 +18,9 @@ namespace Application.UseCase.Commands.Reservation
         private readonly IGetSeatByIdHandler _getSeatByIdHandler;
         private readonly IMarkSeatAsReservedHandler _markSeatAsReserverHandler;
         private readonly ICreateAuditLogCommandHanlder _createAuditLogCommandHandler;
-        private readonly IGetUserByIdQueryHandler _getUserByIdQueryHandler;
+        private readonly IGetUserByIdHandler _getUserByIdQueryHandler;
         public CreateReservationHandler(IReservationRepository reservationRepository, IGetSeatByIdHandler getSeatByIdHandler, IMarkSeatAsReservedHandler markSeatAsReserverHandler,
-            ICreateAuditLogCommandHanlder createAuditLogCommandHanlder, IGetUserByIdQueryHandler getUserByIdQueryHandler)
+            ICreateAuditLogCommandHanlder createAuditLogCommandHanlder, IGetUserByIdHandler getUserByIdQueryHandler)
         {
             _reservationRepository = reservationRepository;
             _getSeatByIdHandler = getSeatByIdHandler;

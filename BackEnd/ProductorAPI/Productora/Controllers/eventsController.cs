@@ -28,8 +28,6 @@ namespace Productora.Controllers
 
         [HttpGet]
         [ProducesResponseType(typeof(EventShortResponseDTO), 200)]
-        [ProducesResponseType(typeof(ErrorReponseDTO), 404)]
-
         public async Task<IActionResult> GetPagedEvents([FromQuery]int Page=1, [FromQuery] int PageSize=10)
         {
             return Ok(await _getPagedEventsHandler.Handle(Page,PageSize));
@@ -37,8 +35,9 @@ namespace Productora.Controllers
 
         [HttpGet("{id:int}")]
         [ProducesResponseType(typeof(EventResponseDTO), 200)]
+        [ProducesResponseType(typeof(ErrorReponseDTO), 400)]
         [ProducesResponseType(typeof(ErrorReponseDTO), 404)]
-        
+
         public async Task<IActionResult> GetEventById(int id)
         {
             var result = await _getEventByIdHandler.Handle(new GetEventByIdQuery
@@ -51,7 +50,6 @@ namespace Productora.Controllers
         [ProducesResponseType(typeof(SeatResponseDTO), 200)]
         [ProducesResponseType(typeof(ErrorReponseDTO), 400)]
         [ProducesResponseType(typeof(ErrorReponseDTO), 404)]
-        [ProducesResponseType(typeof(ErrorReponseDTO), 409)]
 
         public async Task<IActionResult> GetSeatsByEventId(int id)
         {

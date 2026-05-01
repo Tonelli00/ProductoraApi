@@ -25,25 +25,24 @@ namespace Productora.Controllers
             _getReservedSeatsByEventHandler = getReservedSeatsByEventHandler;
         }
 
-        [HttpGet]
+        [HttpGet("{id:int}")]
         [ProducesResponseType(typeof(SeatResponseDTO), 200)]
         [ProducesResponseType(typeof(ErrorReponseDTO), 400)]
         [ProducesResponseType(typeof(ErrorReponseDTO), 404)]
-        [ProducesResponseType(typeof(ErrorReponseDTO), 409)]
 
-        public async Task<IActionResult> GetAll([FromQuery] GetSeatsBySectorIdQuery query)
+
+        public async Task<IActionResult> GetAll([FromRoute] int id)
         {
 
-            var result = await _getSeatsBySectorIdHandler.Handle(query);
+            var result = await _getSeatsBySectorIdHandler.Handle(new GetSeatsBySectorIdQuery { SectorId=id});
             return Ok(result);
 
         }
 
-        [HttpGet("Reserved")]
+        [HttpGet("reserved")]
         [ProducesResponseType(typeof(ReservationResponse), 200)]
         [ProducesResponseType(typeof(ErrorReponseDTO), 400)]
         [ProducesResponseType(typeof(ErrorReponseDTO), 404)]
-        [ProducesResponseType(typeof(ErrorReponseDTO), 409)]
 
         public async Task<IActionResult> GetReserved([FromQuery] GetReservedSeatsByEventIdQuery query)
         {

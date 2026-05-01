@@ -84,7 +84,7 @@ builder.Services.AddScoped<IGetReservationByIdQueryHandler, GetReservationByIdHa
 
 // USER
 builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<IGetUserByIdQueryHandler, GetUserByIdQueryHandler>();
+builder.Services.AddScoped<IGetUserByIdHandler, GetUserByIdHandler>();
 builder.Services.AddScoped<ICreateUserCommandHandler, CreateUserHandler>();
 builder.Services.AddScoped<ILoginUserHandler, LoginUserHandler>();
 
@@ -105,8 +105,7 @@ builder.Services.AddCors(option =>
     });
 });
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
 
 
 

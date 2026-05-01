@@ -14,11 +14,11 @@ namespace Productora.Controllers
     public class UsersController : ControllerBase
     {
         private readonly ICreateUserCommandHandler _commandHandler;
-        private readonly IGetUserByIdQueryHandler _queryHandler;
+        private readonly IGetUserByIdHandler _queryHandler;
         private readonly ILoginUserHandler _loginUserHandler;
 
 
-        public UsersController(IGetUserByIdQueryHandler queryHandler, ICreateUserCommandHandler commandHandler, ILoginUserHandler loginUserHandler)
+        public UsersController(IGetUserByIdHandler queryHandler, ICreateUserCommandHandler commandHandler, ILoginUserHandler loginUserHandler)
         {
             _queryHandler = queryHandler;
             _commandHandler = commandHandler;
@@ -40,7 +40,6 @@ namespace Productora.Controllers
         [ProducesResponseType(typeof(UserResponse), 201)]
         [ProducesResponseType(typeof(ErrorReponseDTO), 400)]
         [ProducesResponseType(typeof(ErrorReponseDTO), 404)]
-        [ProducesResponseType(typeof(ErrorReponseDTO), 409)]
 
         public async Task<IActionResult> Login([FromBody] LoginUserCommand command)
         {
@@ -52,8 +51,7 @@ namespace Productora.Controllers
         [ProducesResponseType(typeof(UserResponse), 200)]
         [ProducesResponseType(typeof(ErrorReponseDTO), 400)]
         [ProducesResponseType(typeof(ErrorReponseDTO), 404)]
-        [ProducesResponseType(typeof(ErrorReponseDTO), 409)]
-
+     
         public async Task<IActionResult> GetUserById([FromRoute] int id)
         {
             var result = await _queryHandler.Handler(new GetUserByIdQuery { UserId = id});

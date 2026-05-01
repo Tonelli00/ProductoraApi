@@ -18,6 +18,11 @@ public class GetSectorByIdHandler : IGetSectorByIdHandler
 
     public async Task<SectorResponseDTO> Handle(GetSectorByIdQuery query)
     {
+        if(query.SectorId==0 || query.SectorId < 0) 
+        {
+            throw new ArgumentException("Ingrese valores válidos");
+        }
+
         var sector = await _repository.GetSectorByIdAsync(query.SectorId) ?? throw new SectorNotFoundException("Sector no encontrado");
         return new SectorResponseDTO()
         {
