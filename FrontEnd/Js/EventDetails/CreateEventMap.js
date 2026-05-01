@@ -2,6 +2,14 @@ import { makeReservation } from "../Reservation/MakeReservation.js";
 
 const SEATS_PER_ROW = 10;
 
+const SECTOR_COLORS = [
+  { bg: '#dbeafe', border: '#93c5fd', selected: '#2563eb' }, // azul
+  { bg: '#dcfce7', border: '#86efac', selected: '#16a34a' }, // verde
+  { bg: '#fef9c3', border: '#fde047', selected: '#ca8a04' }, // amarillo
+  { bg: '#fce7f3', border: '#f9a8d4', selected: '#db2777' }, // rosa
+  { bg: '#ede9fe', border: '#c4b5fd', selected: '#7c3aed' }, // violeta
+];
+
 export function CreateEventMap(event, userId) {
   const wrapper = document.createElement('div');
   wrapper.className = 'flex gap-6 items-start';
@@ -64,9 +72,12 @@ export function CreateEventMap(event, userId) {
 
       <div class="sidebar-detail hidden flex-col gap-4">
         <div class="bg-gray-50 rounded-lg p-4 flex flex-col gap-3">
-          <div class="flex justify-between">
+          <div class="flex justify-between items-center">
             <span class="text-[10px] text-gray-400">Sector</span>
-            <span class="sidebar-sector text-xs font-medium text-gray-900">—</span>
+            <div class="flex items-center gap-1.5">
+              <div class="sidebar-sector-pill w-2 h-2 rounded-sm"></div>
+              <span class="sidebar-sector text-xs font-medium text-gray-900">—</span>
+            </div>
           </div>
           <div class="flex justify-between">
             <span class="text-[10px] text-gray-400">Asiento</span>
@@ -95,32 +106,33 @@ export function CreateEventMap(event, userId) {
   const emptyEl = sidebar.querySelector('.sidebar-empty');
   const detailEl = sidebar.querySelector('.sidebar-detail');
   const sectorEl = sidebar.querySelector('.sidebar-sector');
+  const sectorPillEl = sidebar.querySelector('.sidebar-sector-pill');
   const seatEl = sidebar.querySelector('.sidebar-seat');
   const priceEl = sidebar.querySelector('.sidebar-price');
   const buyBtn = sidebar.querySelector('.buy-btn');
   const clearBtn = sidebar.querySelector('.clear-btn');
 
-  function resetSeatStyle(el) {
-    el.style.background = '#dbeafe';
-    el.style.border = '1px solid #bfdbfe';
+  function resetSeatStyle(el, colors) {
+    el.style.background = colors.bg;
+    el.style.border = `1px solid ${colors.border}`;
   }
 
-  function selectSeat(seat, sector, el) {
+  function selectSeat(seat, sector, el, colors) {
     if (selected) {
-      resetSeatStyle(selected.el);
+      resetSeatStyle(selected.el, selected.colors);
     }
 
     if (selected?.seatId === seat.seatId) {
-      resetSeatStyle(el);
+      resetSeatStyle(el, colors);
       selected = null;
       showEmpty();
       return;
     }
 
-    el.style.background = '#3b82f6';
-    el.style.border = '1px solid #2563eb';
+    el.style.background = colors.selected;
+    el.style.border = `1px solid ${colors.selected}`;
 
-    selected = { seatId: seat.seatId, seat, sector, el };
+    selected = { seatId: seat.seatId, seat, sector, el, colors };
     showDetail(selected);
   }
 
@@ -129,18 +141,19 @@ export function CreateEventMap(event, userId) {
     detailEl.classList.add('hidden');
   }
 
-  function showDetail({ seat, sector }) {
+  function showDetail({ seat, sector, colors }) {
     emptyEl.classList.add('hidden');
     detailEl.classList.remove('hidden');
 
     sectorEl.textContent = sector.name;
+    sectorPillEl.style.background = colors.selected;
     seatEl.textContent = `N° ${seat.seatNumber}`;
     priceEl.textContent = `$${sector.price.toLocaleString('es-AR')}`;
   }
 
   clearBtn.addEventListener('click', () => {
     if (selected) {
-      resetSeatStyle(selected.el);
+      resetSeatStyle(selected.el, selected.colors);
       selected = null;
       showEmpty();
     }
@@ -156,6 +169,7 @@ export function CreateEventMap(event, userId) {
       await makeReservation(userId, selected.seatId);
 
       selected.el.style.background = '#e5e7eb';
+      selected.el.style.border = '1px solid #d1d5db';
       selected.el.style.cursor = 'default';
 
       buyBtn.textContent = "¡Compra realizada!";
@@ -163,12 +177,11 @@ export function CreateEventMap(event, userId) {
       buyBtn.disabled = true;
 
       setTimeout(() => {
-      buyBtn.textContent = "Actualizando...";
-      setTimeout(() => {
-        location.reload();
-      }, 800);
-
-}, 2000);
+        buyBtn.textContent = "Actualizando...";
+        setTimeout(() => {
+          location.reload();
+        }, 800);
+      }, 2000);
 
     } catch (error) {
       buyBtn.disabled = false;
@@ -184,9 +197,27 @@ export function CreateEventMap(event, userId) {
         errorEl.remove();
       }, 3000);
     }
-  }); 
+  });
 
-  event.sectors.forEach(sector => {
+  event.sectors.forEach((sector, idx) => {
+    const colors = SECTOR_COLORS[idx % SECTOR_COLORS.length];
+
+    const sectorBlock = document.createElement('div');
+    sectorBlock.className = 'w-full flex flex-col gap-2';
+
+    const sectorHeader = document.createElement('div');
+    sectorHeader.className = 'flex items-center justify-between px-1';
+    sectorHeader.innerHTML = `
+      <div class="flex items-center gap-2">
+        <div style="width:10px;height:10px;border-radius:2px;background:${colors.selected};flex-shrink:0;"></div>
+        <span class="text-[11px] font-medium text-gray-600">${sector.name}</span>
+      </div>
+      <span class="text-[11px] text-gray-400">$${sector.price.toLocaleString('es-AR')}</span>
+    `;
+
+    const rowsContainer = document.createElement('div');
+    rowsContainer.className = 'flex flex-col gap-1 items-center';
+
     const rows = chunkSeats(sector.seats, SEATS_PER_ROW);
 
     rows.forEach(rowSeats => {
@@ -195,21 +226,44 @@ export function CreateEventMap(event, userId) {
 
       rowSeats.forEach(seat => {
         const el = document.createElement('div');
-        el.style.cssText = 'width:20px;height:16px;border-radius:3px;';
+        el.style.cssText = 'width:20px;height:16px;border-radius:3px;transition:transform 0.1s,opacity 0.1s;';
 
         if (seat.status?.toLowerCase() === 'reserved') {
           el.style.background = '#e5e7eb';
+          el.style.border = '1px solid #d1d5db';
         } else {
-          resetSeatStyle(el);
+          resetSeatStyle(el, colors);
           el.style.cursor = 'pointer';
-          el.addEventListener('click', () => selectSeat(seat, sector, el));
+
+          el.addEventListener('mouseenter', () => {
+            if (selected?.seatId !== seat.seatId) {
+              el.style.transform = 'scale(1.15)';
+              el.style.opacity = '0.85';
+            }
+          });
+          el.addEventListener('mouseleave', () => {
+            el.style.transform = 'scale(1)';
+            el.style.opacity = '1';
+          });
+
+          el.addEventListener('click', () => selectSeat(seat, sector, el, colors));
         }
 
         rowEl.appendChild(el);
       });
 
-      gridEl.appendChild(rowEl);
+      rowsContainer.appendChild(rowEl);
     });
+
+    sectorBlock.appendChild(sectorHeader);
+    sectorBlock.appendChild(rowsContainer);
+    gridEl.appendChild(sectorBlock);
+
+    if (idx < event.sectors.length - 1) {
+      const divider = document.createElement('div');
+      divider.style.cssText = 'width:100%;border-top:1px dashed #e5e7eb;';
+      gridEl.appendChild(divider);
+    }
   });
 
   mapEl.appendChild(gridEl);
