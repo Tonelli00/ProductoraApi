@@ -1,6 +1,7 @@
 ﻿using Application.DTOs.Users;
 using Application.Interfaces.Users;
 using Domain.Entities;
+using Domain.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,8 @@ namespace Application.UseCase.Queries.Users
         public async Task<UserResponse?> Handler(GetUserByIdQuery query)
         {
             var user = await _userRepository.GetUserById(query.UserId);
-            if (user == null) return null;
+            if (user == null)
+                throw new UserNotFoundException("Usuario no encontrado");
             return new UserResponse
             {
                 Id = user.Id,

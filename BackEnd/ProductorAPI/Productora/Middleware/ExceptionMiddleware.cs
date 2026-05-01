@@ -18,50 +18,65 @@ public class ExceptionMiddleware
         }
         catch (EventNotFoundException ex)
         {
-            await Handle(context, 404, "EVENT_NOT_FOUND", ex.Message);
-        }
-        catch (SeatNotFoundException ex)
-        {
-            await Handle(context, 404, "SEAT_NOT_FOUND", ex.Message);
-        }
-        catch (UserNotFoundException ex)
-        {
-            await Handle(context, 404, "USER_NOT_FOUND", ex.Message);
-        }
-        catch (SectorNotFoundException ex)
-        {
-            await Handle(context, 404, "SECTOR_NOT_FOUND", ex.Message);
-        }
+            try
+            {
+                await delegateNext(httpContext);
+            }
+            catch (ArgumentException ex)
+            {               
+                await StatusMessage(httpContext, 400, ex.Message);
+            }
+            catch (SeatNotFoundException ex) 
+            {               
+                await StatusMessage(httpContext, 404, ex.Message);
+            }
+            catch (EventNotFoundException ex) 
+            {
+                await StatusMessage(httpContext, 404, ex.Message);
+            }
+            catch (UserNotFoundException ex)
+            {
+                await StatusMessage(httpContext, 404, ex.Message);
+            }
+            catch (SectorNotFoundException ex) 
+            {
+                await StatusMessage(httpContext, 404, ex.Message);
+            }
+            catch (SectorConflictException ex) 
+            {               
+                await StatusMessage(httpContext, 409, ex.Message);
+            }
+            catch (EmailConflictException ex)
+            {
+                await StatusMessage(httpContext, 409, ex.Message);
+            }
 
-        catch (EmailConflictException ex)
-        {
-            await Handle(context, 409, "EMAIL_CONFLICT", ex.Message);
-        }
-        catch (PasswordConflictException ex)
-        {
-            await Handle(context, 409, "PASSWORD_CONFLICT", ex.Message);
-        }
-        catch (SectorConflictException ex)
-        {
-            await Handle(context, 409, "SECTOR_CONFLICT", ex.Message);
-        }
-        catch (FullSectorException ex)
-        {
-            await Handle(context, 409, "SECTOR_FULL", ex.Message);
-        }
-        catch (ReservedSeatException ex)
-        {
-            await Handle(context, 409, "SEAT_RESERVED", ex.Message);
-        }
+            catch (PasswordConflictException ex)
+            {
+                await StatusMessage(httpContext, 409, ex.Message);
+            }
+            catch (FullSectorException ex) 
+            {
+                await StatusMessage(httpContext, 409, ex.Message);
+            }
+            
+            catch (ReservedSeatException ex) 
+            {
+                await StatusMessage(httpContext, 409, ex.Message);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                await StatusMessage(httpContext, 404, ex.Message);
+            }
+            catch(ReservationNotFoundException ex)
+            {
+                await StatusMessage(httpContext, 404, ex.Message);
+            }
 
-        catch (ArgumentException ex)
-        {
-            await Handle(context, 400, "BAD_REQUEST", ex.Message);
-        }
-
-        catch (Exception ex)
-        {
-            await Handle(context, 500, "INTERNAL_ERROR", "Internal server error");
+            catch (Exception ex)
+            {
+                await StatusMessage(httpContext, 500, "Internal server error");
+            }
         }
     }
 
@@ -70,11 +85,15 @@ public class ExceptionMiddleware
         context.Response.StatusCode = statusCode;
         context.Response.ContentType = "application/json";
 
-        await context.Response.WriteAsJsonAsync(new ErrorReponseDTO
+        private async Task StatusMessage(HttpContext context, int statusCode, string message)
         {
-            Status=statusCode,
-            Code = code,
-            Message = message
-        });
+            context.Response.StatusCode = statusCode;
+            context.Response.ContentType = "application/json";
+
+            var response = new { statusCode, message };
+
+            await context.Response.WriteAsync(JsonSerializer.Serialize(response));
+        }
+
     }
 }

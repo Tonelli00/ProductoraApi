@@ -1,6 +1,7 @@
 ﻿using Application.DTOs.Reservation;
 using Application.Interfaces.Reservations;
 using Domain.Entities;
+using Domain.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +24,7 @@ namespace Application.UseCase.Queries.Reservations
             var reservation = await _reservationRepository.GetByIdAsync(query.reservationId);
             if(reservation == null)
             {
-                throw new Exception("Reservation not found");
+                throw new ReservationNotFoundException("Reservación no encontrada");
             }
             return new ReservationResponse
             {

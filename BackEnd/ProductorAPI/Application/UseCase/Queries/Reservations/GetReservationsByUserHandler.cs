@@ -1,6 +1,7 @@
 ﻿using Application.DTOs.Reservation;
 using Application.Interfaces.Reservations;
 using Domain.Entities;
+using Domain.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,8 @@ namespace Application.UseCase.Queries.Reservations
         public async Task<IEnumerable<ReservationResponse>> Handler(GetReservationsByUserIDQuery query)
         {
             var reservations = await _reservationRepository.GetByUserIdAsync(query.userId);
+            if (reservations == null)
+                throw new ReservationNotFoundException("No se encontraron reservasiones para el usuario especificado.");
             return reservations.Select(r => new ReservationResponse
             {
                 Id = r.Id,
