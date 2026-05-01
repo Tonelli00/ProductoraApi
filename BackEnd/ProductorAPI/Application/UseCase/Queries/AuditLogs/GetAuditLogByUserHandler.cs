@@ -2,6 +2,7 @@
 using Application.Interfaces.AuditLogs;
 using Application.UseCase.Queries.AuditLogs;
 using Domain.Entities;
+using Domain.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,8 @@ namespace Application.UseCase.Handlers.AuditLogs
         public async Task<IEnumerable<AuditLogResponse>> Handler(GetAuditLogByUserQuery query)
         {
             var auditLogs = await _auditLogRepository.GetAuditLogsByUserId(query.UserId);
+            if (auditLogs == null) 
+                throw new AuditLogNotFoundException("No se encontraron registros de auditoría para el usuario especificado.");
             return auditLogs.Select(a => new AuditLogResponse
             {
                 Id = a.Id,
