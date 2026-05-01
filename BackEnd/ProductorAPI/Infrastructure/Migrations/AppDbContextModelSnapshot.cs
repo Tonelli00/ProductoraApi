@@ -89,7 +89,7 @@ namespace Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            EventDate = new DateTime(2026, 5, 20, 4, 35, 33, 767, DateTimeKind.Local).AddTicks(9906),
+                            EventDate = new DateTime(2026, 5, 20, 20, 55, 48, 815, DateTimeKind.Local).AddTicks(5727),
                             Name = "Gran evento",
                             Status = "Activo",
                             Venue = "Estadio A"

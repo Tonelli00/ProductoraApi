@@ -22,11 +22,13 @@ namespace Productora.Middleware
             }
             catch (ArgumentException ex)
             {
-                httpContext.Response.StatusCode = 400;
+                /*httpContext.Response.StatusCode = 400;
                 httpContext.Response.ContentType = "application/json";
 
                 var response = new { statusCode = 400, message = ex.Message };
-                await httpContext.Response.WriteAsync(JsonSerializer.Serialize(response));
+                await httpContext.Response.WriteAsync(JsonSerializer.Serialize(response));*/
+
+                await StatusMessage(httpContext, 400, ex.Message);
             }
             catch (SeatNotFoundException ex) 
             {
@@ -120,6 +122,16 @@ namespace Productora.Middleware
                 var response = new { statusCode = 500, message = "Internal server error" };
                 await httpContext.Response.WriteAsync(JsonSerializer.Serialize(response));
             }
+        }
+
+        private async Task StatusMessage(HttpContext context, int statusCode, string message)
+        {
+            context.Response.StatusCode = statusCode;
+            context.Response.ContentType = "application/json";
+
+            var response = new { statusCode, message };
+
+            await context.Response.WriteAsync(JsonSerializer.Serialize(response));
         }
 
     }

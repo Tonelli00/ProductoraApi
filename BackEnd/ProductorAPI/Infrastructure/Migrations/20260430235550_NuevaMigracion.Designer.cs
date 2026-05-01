@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260430073534_init")]
-    partial class init
+    [Migration("20260430235550_NuevaMigracion")]
+    partial class NuevaMigracion
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -92,7 +92,7 @@ namespace Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            EventDate = new DateTime(2026, 5, 20, 4, 35, 33, 767, DateTimeKind.Local).AddTicks(9906),
+                            EventDate = new DateTime(2026, 5, 20, 20, 55, 48, 815, DateTimeKind.Local).AddTicks(5727),
                             Name = "Gran evento",
                             Status = "Activo",
                             Venue = "Estadio A"
