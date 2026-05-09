@@ -9,6 +9,7 @@ using Application.UseCase.Queries.Seats;
 using Application.UseCase.Queries.Users;
 using Domain.Enums;
 using Domain.Exceptions;
+using Domain.Exceptions.Users;
 
 namespace Application.UseCase.Commands.Reservation
 {
@@ -61,48 +62,58 @@ namespace Application.UseCase.Commands.Reservation
                     Details = $"Intentó reservar el asiento {seat.SeatNumber} en el sector {seat.Sector.Name}, pero ya estaba reservado o vendido"
                 });
                 throw new SectorConflictException("El asiento ya está reservado, intente con otro.");
-            }                
+            }
 
 
-            // crear reserva
-            var reservation = new Domain.Entities.Reservation
+            // inicio de la transacción
+            await using var transaction = await _reservationRepository
+
+            try
             {
-                UserId = command.UserId,
-                SeatId = seat.Id,
-                Status = "Pending",
-                ReservedAt = DateTime.UtcNow,
-                ExpiresAt = DateTime.UtcNow.AddMinutes(5)
-            };
+                // crear reserva
+                var reservation = new Domain.Entities.Reservation
+                {
+                    UserId = command.UserId,
+                    SeatId = seat.Id,
+                    Status = "Pending",
+                    ReservedAt = DateTime.UtcNow,
+                    ExpiresAt = DateTime.UtcNow.AddMinutes(5)
+                };
 
-            // guardar cambios
-            await _reservationRepository.CreateReservationAsync(reservation);
+                // guardar cambios
+                await _reservationRepository.CreateReservationAsync(reservation);
 
-            // actualizar estado del asiento
-            MarkSeatAsReservedCommand seatAsReserved = new MarkSeatAsReservedCommand { SeatNumber = seat.SeatNumber, SectorId = seat.SectorId };
-            await _markSeatAsReserverHandler.Handle(seatAsReserved);                      
+                // actualizar estado del asiento
+                MarkSeatAsReservedCommand seatAsReserved = new MarkSeatAsReservedCommand { SeatNumber = seat.SeatNumber, SectorId = seat.SectorId };
+                await _markSeatAsReserverHandler.Handle(seatAsReserved);
 
-            // crear el log de auditoría
-            await _createAuditLogCommandHandler.Handler(new CreateAuditLogCommand
+                // crear el log de auditoría
+                await _createAuditLogCommandHandler.Handler(new CreateAuditLogCommand
+                {
+                    UserId = command.UserId,
+                    Action = AuditAction.RESERVE_SUCCESS.ToString(),
+                    EntityType = "Reservation",
+                    EntityId = reservation.Id.ToString(),
+                    Details = $"Reserva creada para el asiento {seat.SeatNumber} en el sector {seat.Sector.Name}"
+                });
+
+
+
+                // retornar respuesta
+                return new ReservationResponse
+                {
+                    Id = reservation.Id,
+                    UserId = reservation.UserId,
+                    SeatId = reservation.SeatId,
+                    Status = reservation.Status,
+                    ReservedAt = reservation.ReservedAt,
+                    ExpiresAt = reservation.ExpiresAt,
+                };
+            }
+            catch (Exception)
             {
-                UserId = command.UserId,
-                Action = AuditAction.RESERVE_SUCCESS.ToString(),
-                EntityType = "Reservation",
-                EntityId = reservation.Id.ToString(),
-                Details = $"Reserva creada para el asiento {seat.SeatNumber} en el sector {seat.Sector.Name}"
-            });
 
-
-
-            // retornar respuesta
-            return new ReservationResponse
-            {
-                Id = reservation.Id,
-                UserId = reservation.UserId,
-                SeatId = reservation.SeatId,
-                Status = reservation.Status,
-                ReservedAt = reservation.ReservedAt,
-                ExpiresAt = reservation.ExpiresAt,
-            };
+            }
         }
     }
 }

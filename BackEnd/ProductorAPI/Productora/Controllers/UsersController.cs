@@ -1,11 +1,13 @@
 ﻿using Application.DTOs;
-using Application.DTOs.Reservation;
 using Application.DTOs.Users;
 using Application.Interfaces.Users;
 using Application.UseCase.Commands.User;
 using Application.UseCase.Queries.Users;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Filters;
+using Swashbuckle.AspNetCore.Annotations;
+using Productora.Documentation.SwaggerExamples.Errors;
+using Productora.Documentation.SwaggerExamples.Users;
 
 namespace Productora.Controllers
 {
@@ -26,10 +28,16 @@ namespace Productora.Controllers
         }
 
         [HttpPost]
-        [ProducesResponseType(typeof(UserResponse), 201)]
-        [ProducesResponseType(typeof(ErrorReponseDTO), 400)]
-        [ProducesResponseType(typeof(ErrorReponseDTO), 404)]
-        [ProducesResponseType(typeof(ErrorReponseDTO), 409)]
+        [ProducesResponseType(typeof(UserResponse), 200)]
+        [ProducesResponseType(typeof(ErrorResponseDTO), 400)]
+        [ProducesResponseType(typeof(ErrorResponseDTO), 404)]
+        [ProducesResponseType(typeof(ErrorResponseDTO), 409)]
+
+        [SwaggerResponse(400, "Bad Request", typeof(ErrorResponseDTO))]
+        [SwaggerResponse(409, "Conflict", typeof(ErrorResponseDTO))]
+
+        [SwaggerResponseExample(400, typeof(BadRequestExample))]
+        [SwaggerResponseExample(409, typeof(EmailConflictExample))]
 
         public async Task<IActionResult> Create([FromBody] CreateUserCommand command)
         {
@@ -37,9 +45,10 @@ namespace Productora.Controllers
             return CreatedAtAction(nameof(GetUserById), new { id = result.Id }, result);
         }
         [HttpPost("login")]
-        [ProducesResponseType(typeof(UserResponse), 201)]
-        [ProducesResponseType(typeof(ErrorReponseDTO), 400)]
-        [ProducesResponseType(typeof(ErrorReponseDTO), 404)]
+        [ProducesResponseType(typeof(UserResponse), 200)]
+        [ProducesResponseType(typeof(ErrorResponseDTO), 400)]
+        [ProducesResponseType(typeof(ErrorResponseDTO), 404)]
+                
 
         public async Task<IActionResult> Login([FromBody] LoginUserCommand command)
         {
@@ -47,11 +56,15 @@ namespace Productora.Controllers
             return Ok(result);
         }
         
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         [ProducesResponseType(typeof(UserResponse), 200)]
-        [ProducesResponseType(typeof(ErrorReponseDTO), 400)]
-        [ProducesResponseType(typeof(ErrorReponseDTO), 404)]
-     
+        [ProducesResponseType(typeof(ErrorResponseDTO), 400)]
+        [ProducesResponseType(typeof(ErrorResponseDTO), 404)]
+
+        [SwaggerResponse(404, "Not Found", typeof(ErrorResponseDTO))]
+
+        [SwaggerResponseExample(404, typeof(UserNotFoundExample))]
+
         public async Task<IActionResult> GetUserById([FromRoute] int id)
         {
             var result = await _queryHandler.Handler(new GetUserByIdQuery { UserId = id});

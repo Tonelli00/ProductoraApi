@@ -6,6 +6,9 @@ using Application.UseCase.Queries.Events;
 using Domain.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Productora.Documentation.SwaggerExamples.Events;
+using Swashbuckle.AspNetCore.Annotations;
+using Swashbuckle.AspNetCore.Filters;
 
 namespace Productora.Controllers
 {
@@ -35,8 +38,12 @@ namespace Productora.Controllers
 
         [HttpGet("{id:int}")]
         [ProducesResponseType(typeof(EventResponseDTO), 200)]
-        [ProducesResponseType(typeof(ErrorReponseDTO), 400)]
-        [ProducesResponseType(typeof(ErrorReponseDTO), 404)]
+        [ProducesResponseType(typeof(ErrorResponseDTO), 400)]
+        [ProducesResponseType(typeof(ErrorResponseDTO), 404)]
+
+        [SwaggerResponse(404, "Event not found", typeof(ErrorResponseDTO))]
+
+        [SwaggerResponseExample(404, typeof(EventNotFoundExample))]
 
         public async Task<IActionResult> GetEventById(int id)
         {
@@ -48,8 +55,8 @@ namespace Productora.Controllers
         }
         [HttpGet("{id}/seats")]
         [ProducesResponseType(typeof(SeatResponseDTO), 200)]
-        [ProducesResponseType(typeof(ErrorReponseDTO), 400)]
-        [ProducesResponseType(typeof(ErrorReponseDTO), 404)]
+        [ProducesResponseType(typeof(ErrorResponseDTO), 400)]
+        [ProducesResponseType(typeof(ErrorResponseDTO), 404)]
 
         public async Task<IActionResult> GetSeatsByEventId(int id)
         {

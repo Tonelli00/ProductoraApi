@@ -7,6 +7,9 @@ using Application.UseCase.Commands.Sector;
 using Application.UseCase.Queries.AuditLogs;
 using Application.UseCase.Queries.Sectors;
 using Microsoft.AspNetCore.Mvc;
+using Productora.Documentation.SwaggerExamples.Sectors;
+using Swashbuckle.AspNetCore.Annotations;
+using Swashbuckle.AspNetCore.Filters;
 
 namespace Productora.Controllers;
 
@@ -25,9 +28,13 @@ public class SectorsController : ControllerBase
 
     [HttpPost]
     [ProducesResponseType(typeof(SectorShortResponseDTO), 201)]
-    [ProducesResponseType(typeof(ErrorReponseDTO), 400)]
-    [ProducesResponseType(typeof(ErrorReponseDTO), 404)]
-    [ProducesResponseType(typeof(ErrorReponseDTO), 409)]
+    [ProducesResponseType(typeof(ErrorResponseDTO), 400)]
+    [ProducesResponseType(typeof(ErrorResponseDTO), 404)]
+    [ProducesResponseType(typeof(ErrorResponseDTO), 409)]
+
+    [SwaggerResponse(409, "Conflict", typeof(ErrorResponseDTO))]
+
+    [SwaggerResponseExample(409, typeof(SectorConflictExample))]
 
     public async Task<IActionResult> CreateSector([FromBody]CreateSectorCommand command)
    {
@@ -35,10 +42,14 @@ public class SectorsController : ControllerBase
       return CreatedAtAction(nameof(GetSector), new { id = result.SectorId }, result);
    }
 
-   [HttpGet("{id:int}")]
-   [ProducesResponseType(typeof(SectorShortResponseDTO), 200)]
-    [ProducesResponseType(typeof(ErrorReponseDTO), 400)]
-    [ProducesResponseType(typeof(ErrorReponseDTO), 404)]
+    [HttpGet("{id:int}")]
+    [ProducesResponseType(typeof(SectorShortResponseDTO), 200)]
+    [ProducesResponseType(typeof(ErrorResponseDTO), 400)]
+    [ProducesResponseType(typeof(ErrorResponseDTO), 404)]
+
+    [SwaggerResponse(400, "Bad request", typeof(ErrorResponseDTO))]
+
+    [SwaggerResponseExample(400, typeof(SectorNotFoundExample))]
 
     public async Task<IActionResult> GetSector(int id)
    {
