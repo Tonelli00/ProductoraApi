@@ -1,6 +1,7 @@
 ﻿using Application.DTOs.Users;
 using Application.Interfaces.Users;
 using Domain.Exceptions;
+using Domain.Exceptions.Users;
 
 namespace Application.UseCase.Commands.User
 {

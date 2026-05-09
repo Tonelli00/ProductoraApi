@@ -5,6 +5,9 @@ using Application.Interfaces.AuditLogs;
 using Application.UseCase.Commands.AuditLog;
 using Application.UseCase.Queries.AuditLogs;
 using Microsoft.AspNetCore.Mvc;
+using Productora.Documentation.SwaggerExamples.AuditLogs;
+using Swashbuckle.AspNetCore.Annotations;
+using Swashbuckle.AspNetCore.Filters;
 
 namespace Productora.Controllers
 {
@@ -21,11 +24,12 @@ namespace Productora.Controllers
 
         [HttpGet("{userId:int}")]
         [ProducesResponseType(typeof(AuditLogResponse), 200)]
-        [ProducesResponseType(typeof(ErrorReponseDTO), 400)]
-        [ProducesResponseType(typeof(ErrorReponseDTO), 404)]
-        
+        [ProducesResponseType(typeof(ErrorResponseDTO), 400)]
+        [ProducesResponseType(typeof(ErrorResponseDTO), 404)]
 
+        [SwaggerResponse(404, "User not found", typeof(ErrorResponseDTO))]
 
+        [SwaggerResponseExample(404, typeof(AuditLogNotFoundExample))]
 
         public async Task<IActionResult> GetByUser(int userId)
         {

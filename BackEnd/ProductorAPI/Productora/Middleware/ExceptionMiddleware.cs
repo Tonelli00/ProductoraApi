@@ -1,5 +1,7 @@
 ﻿using Application.DTOs;
 using Domain.Exceptions;
+using Domain.Exceptions.Reservations;
+using Domain.Exceptions.Users;
 using System.Text.Json;
 
 public class ExceptionMiddleware
@@ -78,7 +80,7 @@ public class ExceptionMiddleware
         context.Response.StatusCode = statusCode;
         context.Response.ContentType = "application/json";
         _logger.LogError(ex,"Ocurrió un error");
-        var response = new ErrorReponseDTO
+        var response = new ErrorResponseDTO
         {
             StatusCode = statusCode,
             Message = message

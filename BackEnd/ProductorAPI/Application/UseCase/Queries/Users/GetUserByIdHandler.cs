@@ -2,6 +2,7 @@
 using Application.Interfaces.Users;
 using Domain.Entities;
 using Domain.Exceptions;
+using Domain.Exceptions.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;

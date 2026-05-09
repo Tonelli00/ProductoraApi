@@ -5,6 +5,9 @@ using Application.Interfaces.Reservations;
 using Application.UseCase.Commands.Reservation;
 using Application.UseCase.Queries.Reservations;
 using Microsoft.AspNetCore.Mvc;
+using Productora.Documentation.SwaggerExamples.Reservations;
+using Swashbuckle.AspNetCore.Annotations;
+using Swashbuckle.AspNetCore.Filters;
 
 namespace Productora.Controllers
 {
@@ -26,9 +29,14 @@ namespace Productora.Controllers
 
         [HttpPost]
         [ProducesResponseType(typeof(ReservationResponse), 201)]
-        [ProducesResponseType(typeof(ErrorReponseDTO), 400)]
-        [ProducesResponseType(typeof(ErrorReponseDTO), 404)]
-        [ProducesResponseType(typeof(ErrorReponseDTO), 409)]
+        [ProducesResponseType(typeof(ErrorResponseDTO), 400)]
+        [ProducesResponseType(typeof(ErrorResponseDTO), 404)]
+        [ProducesResponseType(typeof(ErrorResponseDTO), 409)]
+
+        [SwaggerResponse(201, "Created", typeof(ReservationResponse))]
+
+        [SwaggerResponseExample(201, typeof(ReservedSeatExample))]
+
         public async Task<IActionResult> Create([FromBody] CreateReservationCommand command)
         {
             var result = await _createReservationHandler.Handle(command);
@@ -37,8 +45,8 @@ namespace Productora.Controllers
 
         [HttpGet("{id:int}/user")]
         [ProducesResponseType(typeof(ReservationResponse), 200)]
-        [ProducesResponseType(typeof(ErrorReponseDTO), 400)]
-        [ProducesResponseType(typeof(ErrorReponseDTO), 404)]
+        [ProducesResponseType(typeof(ErrorResponseDTO), 400)]
+        [ProducesResponseType(typeof(ErrorResponseDTO), 404)]
 
         public async Task<IActionResult> GetByUser([FromRoute] int id)
         {
@@ -48,8 +56,12 @@ namespace Productora.Controllers
 
         [HttpGet("{id:guid}")]
         [ProducesResponseType(typeof(ReservationResponse), 200)]
-        [ProducesResponseType(typeof(ErrorReponseDTO), 400)]
-        [ProducesResponseType(typeof(ErrorReponseDTO), 404)]
+        [ProducesResponseType(typeof(ErrorResponseDTO), 400)]
+        [ProducesResponseType(typeof(ErrorResponseDTO), 404)]
+
+        [SwaggerResponse(404, "Not Found", typeof(ErrorResponseDTO))]
+
+        [SwaggerResponseExample(404, typeof(ReservationNotFoundExample))]
 
         public async Task<IActionResult> GetById([FromRoute] Guid id)
         {

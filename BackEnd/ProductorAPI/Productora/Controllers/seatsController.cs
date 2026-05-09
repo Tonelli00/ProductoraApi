@@ -6,6 +6,10 @@ using Application.UseCase.Commands.Seat;
 using Application.UseCase.Queries.Seats;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Productora.Documentation.SwaggerExamples.Seats;
+using Productora.Documentation.SwaggerExamples.Sectors;
+using Swashbuckle.AspNetCore.Annotations;
+using Swashbuckle.AspNetCore.Filters;
 
 namespace Productora.Controllers
 {
@@ -26,9 +30,9 @@ namespace Productora.Controllers
         }
 
         [HttpGet("{id:int}")]
-        [ProducesResponseType(typeof(SeatResponseDTO), 200)]
-        [ProducesResponseType(typeof(ErrorReponseDTO), 400)]
-        [ProducesResponseType(typeof(ErrorReponseDTO), 404)]
+        [ProducesResponseType(typeof(List<SeatResponseDTO>), 200)]
+        [ProducesResponseType(typeof(ErrorResponseDTO), 400)]
+        [ProducesResponseType(typeof(ErrorResponseDTO), 404)]
 
 
         public async Task<IActionResult> GetAll([FromRoute] int id)
@@ -41,8 +45,12 @@ namespace Productora.Controllers
 
         [HttpGet("reserved")]
         [ProducesResponseType(typeof(ReservationResponse), 200)]
-        [ProducesResponseType(typeof(ErrorReponseDTO), 400)]
-        [ProducesResponseType(typeof(ErrorReponseDTO), 404)]
+        [ProducesResponseType(typeof(ErrorResponseDTO), 400)]
+        [ProducesResponseType(typeof(ErrorResponseDTO), 404)]
+
+        [SwaggerResponse(404, "Not Found", typeof(ErrorResponseDTO))]
+
+        [SwaggerResponseExample(404, typeof(SeatNotFoundExample))]
 
         public async Task<IActionResult> GetReserved([FromQuery] GetReservedSeatsByEventIdQuery query)
         {
