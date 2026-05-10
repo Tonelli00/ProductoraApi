@@ -17,13 +17,11 @@ namespace Infrastructure.Repositories
         public async Task CancelReservation(Reservation reservation,CancellationToken ct = default)
         {
             _context.Reservations.Update(reservation);
-            await _context.SaveChangesAsync(ct);
         }
 
         public async Task CreateReservationAsync(Reservation reservation,CancellationToken ct = default)
         {
-            _context.Reservations.Add(reservation);
-            await _context.SaveChangesAsync(ct);
+            await _context.Reservations.AddAsync(reservation, ct);
         }
 
         public async Task<Reservation?> GetByIdAsync(Guid id,CancellationToken ct = default)

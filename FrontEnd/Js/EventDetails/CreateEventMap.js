@@ -1,14 +1,125 @@
 import { makeReservation } from "../Reservation/MakeReservation.js";
 
 const SEATS_PER_ROW = 10;
+const TIMER_DURATION = 5 * 60; // 5 minutos en segundos
 
 const SECTOR_COLORS = [
-  { bg: '#dbeafe', border: '#93c5fd', selected: '#2563eb' }, // azul
-  { bg: '#dcfce7', border: '#86efac', selected: '#16a34a' }, // verde
-  { bg: '#fef9c3', border: '#fde047', selected: '#ca8a04' }, // amarillo
-  { bg: '#fce7f3', border: '#f9a8d4', selected: '#db2777' }, // rosa
-  { bg: '#ede9fe', border: '#c4b5fd', selected: '#7c3aed' }, // violeta
+  { bg: '#dbeafe', border: '#93c5fd', selected: '#2563eb' },
+  { bg: '#dcfce7', border: '#86efac', selected: '#16a34a' },
+  { bg: '#fef9c3', border: '#fde047', selected: '#ca8a04' },
+  { bg: '#fce7f3', border: '#f9a8d4', selected: '#db2777' },
+  { bg: '#ede9fe', border: '#c4b5fd', selected: '#7c3aed' },
 ];
+
+// --- Barra de temporizador ---
+
+function createTimerBar() {
+  const bar = document.createElement('div');
+  bar.id = 'seat-timer-bar';
+  bar.style.cssText = `
+    position: sticky;
+    top: 64px;
+    z-index: 40;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: #111827;
+    color: #f9fafb;
+    padding: 10px 20px;
+    font-size: 13px;
+    font-weight: 500;
+    border-bottom: 1px solid #374151;
+    transition: opacity 0.3s;
+  `;
+
+  const icon = document.createElement('span');
+  icon.textContent = '⏱';
+  icon.style.fontSize = '15px';
+
+  const text = document.createElement('span');
+  text.id = 'seat-timer-text';
+  text.textContent = 'Tu asiento está reservado por ';
+
+  const countdown = document.createElement('span');
+  countdown.id = 'seat-timer-countdown';
+  countdown.style.cssText = `
+    font-family: monospace;
+    font-size: 14px;
+    color: #fbbf24;
+    font-weight: 700;
+  `;
+  countdown.textContent = '5:00';
+
+  const suffix = document.createElement('span');
+  suffix.textContent = ' — completá tu compra antes de que expire.';
+  suffix.style.color = '#9ca3af';
+
+  bar.appendChild(icon);
+  bar.appendChild(text);
+  bar.appendChild(countdown);
+  bar.appendChild(suffix);
+
+  // Insertar justo después del header
+  const header = document.querySelector('header');
+  if (header && header.nextSibling) {
+    header.parentNode.insertBefore(bar, header.nextSibling);
+  } else {
+    document.body.prepend(bar);
+  }
+
+  return bar;
+}
+
+function formatTime(seconds) {
+  const m = Math.floor(seconds / 60);
+  const s = seconds % 60;
+  return `${m}:${s.toString().padStart(2, '0')}`;
+}
+
+// --- Módulo de timer ---
+
+function createTimer(onExpire) {
+  let intervalId = null;
+  let remaining = TIMER_DURATION;
+
+  const bar = document.getElementById('seat-timer-bar') || createTimerBar();
+  const countdown = document.getElementById('seat-timer-countdown');
+
+  function show() {
+    remaining = TIMER_DURATION;
+    countdown.textContent = formatTime(remaining);
+    bar.style.display = 'flex';
+    clearInterval(intervalId);
+    intervalId = setInterval(() => {
+      remaining--;
+      countdown.textContent = formatTime(remaining);
+
+      // Avisar cuando quedan 60 segundos
+      if (remaining <= 60) {
+        countdown.style.color = '#ef4444';
+      } else {
+        countdown.style.color = '#fbbf24';
+      }
+
+      if (remaining <= 0) {
+        stop();
+        onExpire();
+      }
+    }, 1000);
+  }
+
+  function stop() {
+    clearInterval(intervalId);
+    intervalId = null;
+    bar.style.display = 'none';
+    countdown.style.color = '#fbbf24';
+  }
+
+  return { show, stop };
+}
+
+// --- Componente principal ---
 
 export function CreateEventMap(event, userId) {
   const wrapper = document.createElement('div');
@@ -20,6 +131,11 @@ export function CreateEventMap(event, userId) {
     empty.textContent = "No hay sectores disponibles";
     wrapper.appendChild(empty);
     return wrapper;
+  }
+
+  // Crear la barra del temporizador en el DOM
+  if (!document.getElementById('seat-timer-bar')) {
+    createTimerBar();
   }
 
   const mapCard = document.createElement('div');
@@ -112,6 +228,31 @@ export function CreateEventMap(event, userId) {
   const buyBtn = sidebar.querySelector('.buy-btn');
   const clearBtn = sidebar.querySelector('.clear-btn');
 
+  // Inicializar el timer — se activa al seleccionar, se para al cancelar/comprar/expirar
+  const timer = createTimer(() => {
+    // El tiempo expiró: deseleccionar asiento
+    if (selected) {
+      resetSeatStyle(selected.el, selected.colors);
+      selected = null;
+    }
+    showEmpty();
+    showExpiredMessage();
+  });
+
+  function showExpiredMessage() {
+    const existing = sidebar.querySelector('.expired-msg');
+    if (existing) existing.remove();
+
+    const msg = document.createElement('p');
+    msg.className = 'expired-msg text-xs text-amber-600 bg-amber-50 p-2 rounded text-center';
+    msg.textContent = 'El tiempo expiró. Por favor, elegí otro asiento.';
+
+    const detailContainer = sidebar.querySelector('.p-5');
+    detailContainer.appendChild(msg);
+
+    setTimeout(() => msg.remove(), 4000);
+  }
+
   function resetSeatStyle(el, colors) {
     el.style.background = colors.bg;
     el.style.border = `1px solid ${colors.border}`;
@@ -126,6 +267,7 @@ export function CreateEventMap(event, userId) {
       resetSeatStyle(el, colors);
       selected = null;
       showEmpty();
+      timer.stop();
       return;
     }
 
@@ -134,6 +276,7 @@ export function CreateEventMap(event, userId) {
 
     selected = { seatId: seat.seatId, seat, sector, el, colors };
     showDetail(selected);
+    timer.show(); // ← Iniciar/reiniciar temporizador
   }
 
   function showEmpty() {
@@ -156,6 +299,7 @@ export function CreateEventMap(event, userId) {
       resetSeatStyle(selected.el, selected.colors);
       selected = null;
       showEmpty();
+      timer.stop(); // ← Detener al cancelar
     }
   });
 
@@ -167,6 +311,8 @@ export function CreateEventMap(event, userId) {
 
     try {
       await makeReservation(userId, selected.seatId);
+
+      timer.stop(); // ← Detener al confirmar compra
 
       selected.el.style.background = '#e5e7eb';
       selected.el.style.border = '1px solid #d1d5db';
