@@ -1,4 +1,5 @@
 ﻿using Application.DTOs.Reservation;
+using Application.Interfaces;
 using Application.Interfaces.AuditLogs;
 using Application.Interfaces.Reservations;
 using Application.Interfaces.Seats;
@@ -20,14 +21,16 @@ namespace Application.UseCase.Commands.Reservation
         private readonly IMarkSeatAsReservedHandler _markSeatAsReserverHandler;
         private readonly ICreateAuditLogCommandHanlder _createAuditLogCommandHandler;
         private readonly IGetUserByIdHandler _getUserByIdQueryHandler;
+        private readonly IUnitOfWork _unitOfWork;
         public CreateReservationHandler(IReservationRepository reservationRepository, IGetSeatByIdHandler getSeatByIdHandler, IMarkSeatAsReservedHandler markSeatAsReserverHandler,
-            ICreateAuditLogCommandHanlder createAuditLogCommandHanlder, IGetUserByIdHandler getUserByIdQueryHandler)
+            ICreateAuditLogCommandHanlder createAuditLogCommandHanlder, IGetUserByIdHandler getUserByIdQueryHandler, IUnitOfWork unitOfWork)
         {
             _reservationRepository = reservationRepository;
             _getSeatByIdHandler = getSeatByIdHandler;
             _markSeatAsReserverHandler = markSeatAsReserverHandler;
-            _createAuditLogCommandHandler = createAuditLogCommandHanlder;
+            _createAuditLogCommandHandler = createAuditLogCommandHanlder;            
             _getUserByIdQueryHandler = getUserByIdQueryHandler;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<ReservationResponse> Handle(CreateReservationCommand command)
@@ -64,9 +67,8 @@ namespace Application.UseCase.Commands.Reservation
                 throw new SectorConflictException("El asiento ya está reservado, intente con otro.");
             }
 
-
-            // inicio de la transacción
-            await using var transaction = await _reservationRepository
+            // iniciar transacción
+            await _unitOfWork.BeginTransactionAsync();
 
             try
             {
@@ -83,9 +85,12 @@ namespace Application.UseCase.Commands.Reservation
                 // guardar cambios
                 await _reservationRepository.CreateReservationAsync(reservation);
 
-                // actualizar estado del asiento
-                MarkSeatAsReservedCommand seatAsReserved = new MarkSeatAsReservedCommand { SeatNumber = seat.SeatNumber, SectorId = seat.SectorId };
-                await _markSeatAsReserverHandler.Handle(seatAsReserved);
+                // actualizar estado del asiento               
+                await _markSeatAsReserverHandler.Handle(new MarkSeatAsReservedCommand
+                {
+                    SeatNumber = seat.SeatNumber,
+                    SectorId = seat.SectorId
+                });
 
                 // crear el log de auditoría
                 await _createAuditLogCommandHandler.Handler(new CreateAuditLogCommand
@@ -95,9 +100,10 @@ namespace Application.UseCase.Commands.Reservation
                     EntityType = "Reservation",
                     EntityId = reservation.Id.ToString(),
                     Details = $"Reserva creada para el asiento {seat.SeatNumber} en el sector {seat.Sector.Name}"
-                });
+                });    
 
-
+                // Confirmar la Transacción
+                await _unitOfWork.CommitAsync();               
 
                 // retornar respuesta
                 return new ReservationResponse
@@ -112,7 +118,8 @@ namespace Application.UseCase.Commands.Reservation
             }
             catch (Exception)
             {
-
+                await _unitOfWork.RollBackAsync();
+                throw;
             }
         }
     }

@@ -20,6 +20,8 @@ using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
+using Application.Interfaces;
+using Infrastructure.UnitOfWork;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -39,6 +41,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
         builder.Configuration.GetConnectionString("DefaultConnection")
     ));
 
+//Inyección del UnitOfWork
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
 
 
 //Configuración para que la urls sean minusculas
@@ -49,16 +54,6 @@ builder.Services.Configure<RouteOptions>(options =>
 });
 
 
-
-
-//Inyecciones
-//Audit Logs
-
-builder.Services.AddScoped<IAuditLogRepository, AuditLogRepository>();
-builder.Services.AddScoped<IGetAuditLogsByUserQueryHandler, GetAuditLogByUserHandler>();
-
-
-
 //EVENT
 builder.Services.AddScoped<IEventRepository, EventRepository>();
 builder.Services.AddScoped<IGetPagedEventsHandler, GetPagedEventsHandler>();
@@ -67,7 +62,6 @@ builder.Services.AddScoped<IGetSeatsByEventIdHandler,GetSeatsByEventIdHandler>()
 
 
 //SEAT
-
 builder.Services.AddScoped<ISeatRepository, SeatRepository>();
 builder.Services.AddScoped<IGetSeatsBySectorIdHandler, GetSeatsBySectorIdHandler>();
 builder.Services.AddScoped<IMarkSeatAsReservedHandler, MarkSeatAsReservedHandler>();
@@ -124,14 +118,7 @@ builder.Services.AddCors(option =>
 });
 
 
-
-
-
 var app = builder.Build();
-
-
-
-
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -142,14 +129,9 @@ if (app.Environment.IsDevelopment())
         options.SwaggerEndpoint("/swagger/v1/swagger.json", "Productora API v1");
     });
 }
-
 app.UseCors("AllowFront");
-
 app.UseMiddleware<ExceptionMiddleware>();
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();

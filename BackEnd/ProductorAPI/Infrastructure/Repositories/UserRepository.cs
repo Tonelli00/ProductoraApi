@@ -22,8 +22,7 @@ namespace Infrastructure.Repositories
 
         public async Task InsertAsync(User user, CancellationToken ct = default)
         {
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync(ct);
+            await _context.Users.AddAsync(user, ct);
         }
 
 

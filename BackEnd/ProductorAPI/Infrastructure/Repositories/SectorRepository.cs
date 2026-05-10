@@ -17,7 +17,6 @@ public class SectorRepository:ISectorRepository
     public async Task<Sector> InsertAsync(Sector Sector, CancellationToken ct = default)
     {
         await _context.Sectors.AddAsync(Sector, ct);
-        await _context.SaveChangesAsync(ct);
         return Sector;
     }
 

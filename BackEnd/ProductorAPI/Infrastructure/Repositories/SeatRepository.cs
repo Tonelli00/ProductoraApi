@@ -19,7 +19,6 @@ namespace Infrastructure.Repositories
         public async Task InsertSeatsAsync(List<Seat> Seats, CancellationToken ct = default)
         {
             await _context.Seats.AddRangeAsync(Seats, ct);
-            await _context.SaveChangesAsync(ct);
         }
         
         public async Task<Seat> GetSeatById(Guid SeatId, CancellationToken ct = default)
@@ -30,7 +29,6 @@ namespace Infrastructure.Repositories
         public async Task UpdateSeatStatus(Seat seat, CancellationToken ct = default)
         {
             _context.Seats.Update(seat);
-            await _context.SaveChangesAsync(ct);
         }
         
         public async Task<IEnumerable<Seat>> GetReservedSeatsByEventId(int EventId,CancellationToken ct = default)
