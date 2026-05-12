@@ -1,0 +1,67 @@
+import { SECTOR_COLORS } from './Utils/Constants.js';
+import { createTimer } from './Timer/Timer.js';
+import { createSidebar } from './Sidebar/Sidebar.js';
+import { createMapCard, resetSeatStyle } from './Map/mapCard.js';
+import { makeReservation } from '../../Reservation/MakeReservation.js';
+
+export function CreateEventMap(event, userId) {
+  const Container = document.createElement('div');
+  Container.className = 'flex gap-6 items-start';
+
+  if (!event?.sectors?.length) {
+    const empty = document.createElement('p');
+    empty.className = 'text-sm text-gray-500';
+    empty.textContent = 'No hay sectores disponibles';
+    Container.appendChild(empty);
+    return Container;
+  }
+
+  let selected = null;
+
+  const timer = createTimer(() => {
+    if (selected) {
+      resetSeatStyle(selected.el, selected.colors);
+      selected = null;
+    }
+    sidebar.showEmpty();
+    sidebar.showExpiredMessage();
+  });
+
+  const sidebar = createSidebar({
+    onClear: () => {
+      if (!selected) return;
+      resetSeatStyle(selected.el, selected.colors);
+      selected = null;
+      sidebar.showEmpty();
+      timer.stop();
+    },
+    onBuy: () => makeReservation(userId, selected.seatId),
+  });
+
+  function handleSeatSelect(seat, sector, seatElement, colors) {
+    const isSameSeat = selected?.seatId === seat.seatId;
+
+    if (selected) resetSeatStyle(selected.el, selected.colors);
+
+    if (isSameSeat) {
+      selected = null;
+      sidebar.showEmpty();
+      timer.stop();
+      return;
+    }
+
+    seatElement.style.background = colors.selected;
+    seatElement.style.border = `1px solid ${colors.selected}`;
+
+    selected = { seatId: seat.seatId, seat, sector, el: seatElement, colors };
+    sidebar.showDetail(selected);
+    timer.show();
+  }
+
+  const mapCard = createMapCard(event.sectors, SECTOR_COLORS, handleSeatSelect);
+
+  Container.appendChild(mapCard);
+  Container.appendChild(sidebar.element);
+
+  return Container;
+}

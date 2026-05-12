@@ -1,6 +1,6 @@
 import { getEvent } from "../Event/GetEvents.js";
 import { initLoginModal } from "../UserForms/LoginUserForm.js";
-import { CreateEventMap } from "./CreateEventMap.js";
+import { CreateEventMap } from "./EventMap/CreateEventMap.js";
 
 export async function loadEventDetail() {
   const eventId = localStorage.getItem("event_id");

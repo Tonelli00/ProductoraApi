@@ -35,5 +35,10 @@ namespace Infrastructure.Repositories
                 .Where(r => r.UserId == userId)
                 .ToListAsync(ct);
         }
+
+        public async Task<IEnumerable<Reservation>> GetExpiredReservationsAsync(CancellationToken ct = default)
+        {
+            return await _context.Reservations.Where(reservation => reservation.ExpiresAt < DateTime.Now && reservation.Status == "Pending").ToListAsync(ct);
+        }
     }
 }

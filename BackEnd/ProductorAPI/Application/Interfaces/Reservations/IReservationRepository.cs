@@ -13,5 +13,7 @@ namespace Application.Interfaces.Reservations
         Task<Reservation?> GetByIdAsync(Guid id,CancellationToken ct = default);
         Task<IEnumerable<Reservation>> GetByUserIdAsync(int userId,CancellationToken ct = default);
         Task CancelReservation(Reservation reservation,CancellationToken ct = default);
+
+        Task<IEnumerable<Reservation>> GetExpiredReservationsAsync(CancellationToken ct = default);
     }
 }

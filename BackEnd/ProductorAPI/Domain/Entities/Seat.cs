@@ -10,7 +10,7 @@ namespace Domain.Entities
         public int SeatNumber { get; set; }
         public string Status { get; set; }
         public int Version { get; set; }
-
+       
         public Sector Sector { get; set; }
 
         public IEnumerable<Reservation> Reservations { get; set; }
