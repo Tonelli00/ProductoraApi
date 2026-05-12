@@ -87,6 +87,8 @@ namespace Infrastructure.Persistence
                 entity.Property(e => e.Version)
                     .IsRequired()
                     .HasColumnType("int").IsConcurrencyToken();
+                entity.Property(s => s.RowVersion)
+                    .IsRowVersion();
 
                 var seats = new List<Seat>();
                 int id = 1;

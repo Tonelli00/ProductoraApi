@@ -10,7 +10,9 @@ using Application.UseCase.Queries.Seats;
 using Application.UseCase.Queries.Users;
 using Domain.Enums;
 using Domain.Exceptions;
+using Domain.Exceptions.Seats;
 using Domain.Exceptions.Users;
+using System.Data;
 
 namespace Application.UseCase.Commands.Reservation
 {
@@ -116,11 +118,16 @@ namespace Application.UseCase.Commands.Reservation
                     ExpiresAt = reservation.ExpiresAt,
                 };
             }
+            catch (DBConcurrencyException)
+            {
+                await _unitOfWork.RollBackAsync();
+                throw new SeatConcurrenceException("El asiento fue reservado por otro usuario.");
+            }
             catch (Exception)
             {
                 await _unitOfWork.RollBackAsync();
                 throw;
-            }
+            }                        
         }
     }
 }
