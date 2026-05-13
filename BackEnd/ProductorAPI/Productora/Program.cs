@@ -80,6 +80,7 @@ builder.Services.AddScoped<ICreateReservationCommandHandler, CreateReservationHa
 builder.Services.AddScoped<IGetReservationsByUserQueryHandler, GetReservationsByUserHandler>();
 builder.Services.AddScoped<IGetReservationByIdQueryHandler, GetReservationByIdHandler>();
 builder.Services.AddScoped<IGetExpiredReservationsHandler, GetExpiredReservationsHandler>();
+builder.Services.AddScoped<IConfirmReservationHandler, ConfirmReservationHandler>();
 
 // USER
 builder.Services.AddScoped<IUserRepository, UserRepository>();

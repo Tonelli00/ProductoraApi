@@ -5,21 +5,23 @@ import { formatTime } from '../Utils/Helpers.js';
 function createTimerBar() {
   const bar = document.createElement('div');
   bar.id = 'seat-timer-bar';
-  bar.style.cssText = `
-    position: sticky;
-    top: 64px;
-    z-index: 40;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    background: #111827;
-    color: #f9fafb;
-    padding: 10px 20px;
-    font-size: 13px;
-    font-weight: 500;
-    border-bottom: 1px solid #374151;
-    transition: opacity 0.3s;
+  bar.className = `
+    sticky
+    top-0
+    z-[9999]
+    hidden
+    items-center
+    justify-center
+    gap-2.5
+    bg-gray-900
+    text-gray-50
+    px-5
+    py-2.5
+    text-[13px]
+    font-medium
+    border-b
+    border-gray-700
+    transition-opacity
   `;
 
   const icon = document.createElement('span');

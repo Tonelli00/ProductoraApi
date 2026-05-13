@@ -1,9 +1,7 @@
-﻿
-
-using Application.DTOs.Reservation;
+﻿using Application.DTOs.Reservation;
 using Application.Interfaces.Reservations;
 
-namespace Application.UseCase.Commands.Reservation
+namespace Application.UseCase.Queries.Reservations
 {
     public class GetExpiredReservationsHandler : IGetExpiredReservationsHandler
     {

@@ -19,6 +19,14 @@ namespace Infrastructure.Repositories
             _context.Reservations.Update(reservation);
         }
 
+        public async Task<Reservation> ConfirmReservationAsync(Reservation reservation, CancellationToken ct = default)
+        {
+            reservation.Status = "Paid";
+            _context.Reservations.Update(reservation);
+            await _context.SaveChangesAsync(ct);
+            return reservation;
+        }
+
         public async Task CreateReservationAsync(Reservation reservation,CancellationToken ct = default)
         {
             await _context.Reservations.AddAsync(reservation, ct);

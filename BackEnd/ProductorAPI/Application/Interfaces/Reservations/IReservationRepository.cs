@@ -15,5 +15,7 @@ namespace Application.Interfaces.Reservations
         Task CancelReservation(Reservation reservation,CancellationToken ct = default);
 
         Task<IEnumerable<Reservation>> GetExpiredReservationsAsync(CancellationToken ct = default);
+
+        Task<Reservation> ConfirmReservationAsync(Reservation reservation, CancellationToken ct = default);
     }
 }

@@ -35,7 +35,10 @@ export function CreateEventMap(event, userId) {
       sidebar.showEmpty();
       timer.stop();
     },
-    onBuy: () => makeReservation(userId, selected.seatId),
+    onBuy: async () => {
+      const reservation=await makeReservation(userId, selected.seatId)
+      return {reservation,eventName:event.name,selected}
+    },
   });
 
   function handleSeatSelect(seat, sector, seatElement, colors) {
