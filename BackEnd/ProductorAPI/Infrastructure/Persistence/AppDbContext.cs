@@ -103,7 +103,7 @@ namespace Infrastructure.Persistence
                         RowIdentifier = "Sector 1",
                         SeatNumber = i,
                         Status = "Available",
-                        Version = 1
+                        Version = 0
                     });
                 }
 
@@ -117,7 +117,7 @@ namespace Infrastructure.Persistence
                         RowIdentifier = "Sector 2",
                         SeatNumber = i,
                         Status = "Available",
-                        Version = 1
+                        Version = 0
                     });
                 }
 

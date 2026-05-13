@@ -12,7 +12,6 @@ using Domain.Enums;
 using Domain.Exceptions;
 using Domain.Exceptions.Seats;
 using Domain.Exceptions.Users;
-using System.Data;
 
 namespace Application.UseCase.Commands.Reservation
 {
@@ -48,32 +47,32 @@ namespace Application.UseCase.Commands.Reservation
               GetUserByIdQuery query =new GetUserByIdQuery { UserId = command.UserId };
               var user = await _getUserByIdQueryHandler.Handler(query);
               if(user == null)
-                  throw new UserNotFoundException("El usuario no existe");
-
-            // validar asiento
-            var seat = await _getSeatByIdHandler.Handle(new GetSeatByIdQuery { SeatId = command.SeatId});
-            if(seat == null)
-                throw new SeatNotFoundException("El asiento no existe");
-
-            // validar disponibilidad
-            if(seat.Status == "Reserved" || seat.Status == "Sold")
-            {
-                await _createAuditLogCommandHandler.Handler(new CreateAuditLogCommand
-                {
-                    UserId = command.UserId,
-                    Action = AuditAction.RESERVE_ATTEMPT.ToString(),
-                    EntityType = "Seat",
-                    EntityId = seat.Id.ToString(),
-                    Details = $"Intentó reservar el asiento {seat.SeatNumber} en el sector {seat.Sector.Name}, pero ya estaba reservado o vendido"
-                });
-                throw new SectorConflictException("El asiento ya está reservado, intente con otro.");
-            }
+                  throw new UserNotFoundException("El usuario no existe");            
 
             // iniciar transacción
             await _unitOfWork.BeginTransactionAsync();
 
             try
             {
+                // validar asiento
+                var seat = await _getSeatByIdHandler.Handle(new GetSeatByIdQuery { SeatId = command.SeatId });
+                if (seat == null)
+                    throw new SeatNotFoundException("El asiento no existe");
+
+                // validar disponibilidad
+                if (seat.Status == "Reserved" || seat.Status == "Sold")
+                {
+                    await _createAuditLogCommandHandler.Handler(new CreateAuditLogCommand
+                    {
+                        UserId = command.UserId,
+                        Action = AuditAction.RESERVE_ATTEMPT.ToString(),
+                        EntityType = "Seat",
+                        EntityId = seat.Id.ToString(),
+                        Details = $"Intentó reservar el asiento {seat.SeatNumber} en el sector {seat.Sector.Name}, pero ya estaba reservado o vendido"
+                    });
+                    throw new SectorConflictException("El asiento ya está reservado, intente con otro.");
+                }
+
                 // crear reserva
                 var reservation = new Domain.Entities.Reservation
                 {
@@ -90,8 +89,7 @@ namespace Application.UseCase.Commands.Reservation
                 // actualizar estado del asiento               
                 await _markSeatAsReserverHandler.Handle(new MarkSeatAsReservedCommand
                 {
-                    SeatNumber = seat.SeatNumber,
-                    SectorId = seat.SectorId
+                    Seat = seat
                 });
 
                 // crear el log de auditoría
@@ -118,12 +116,7 @@ namespace Application.UseCase.Commands.Reservation
                     ExpiresAt = reservation.ExpiresAt,
                 };
             }
-            catch (DBConcurrencyException)
-            {
-                await _unitOfWork.RollBackAsync();
-                throw new SeatConcurrenceException("El asiento fue reservado por otro usuario.");
-            }
-            catch (Exception)
+            catch 
             {
                 await _unitOfWork.RollBackAsync();
                 throw;

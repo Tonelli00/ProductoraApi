@@ -89,7 +89,7 @@ namespace Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            EventDate = new DateTime(2026, 5, 31, 17, 43, 48, 160, DateTimeKind.Local).AddTicks(6298),
+                            EventDate = new DateTime(2026, 6, 1, 21, 24, 15, 972, DateTimeKind.Local).AddTicks(1699),
                             Name = "Gran evento",
                             Status = "Activo",
                             Venue = "Estadio A"
@@ -139,12 +139,6 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(10)");
 
-                    b.Property<byte[]>("RowVersion")
-                        .IsConcurrencyToken()
-                        .IsRequired()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("rowversion");
-
                     b.Property<int>("SeatNumber")
                         .HasColumnType("integer");
 
@@ -173,7 +167,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 1,
                             SectorId = 1,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -182,7 +176,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 2,
                             SectorId = 1,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -191,7 +185,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 3,
                             SectorId = 1,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -200,7 +194,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 4,
                             SectorId = 1,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -209,7 +203,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 5,
                             SectorId = 1,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -218,7 +212,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 6,
                             SectorId = 1,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -227,7 +221,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 7,
                             SectorId = 1,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -236,7 +230,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 8,
                             SectorId = 1,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -245,7 +239,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 9,
                             SectorId = 1,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -254,7 +248,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 10,
                             SectorId = 1,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -263,7 +257,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 11,
                             SectorId = 1,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -272,7 +266,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 12,
                             SectorId = 1,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -281,7 +275,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 13,
                             SectorId = 1,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -290,7 +284,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 14,
                             SectorId = 1,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -299,7 +293,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 15,
                             SectorId = 1,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -308,7 +302,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 16,
                             SectorId = 1,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -317,7 +311,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 17,
                             SectorId = 1,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -326,7 +320,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 18,
                             SectorId = 1,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -335,7 +329,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 19,
                             SectorId = 1,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -344,7 +338,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 20,
                             SectorId = 1,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -353,7 +347,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 21,
                             SectorId = 1,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -362,7 +356,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 22,
                             SectorId = 1,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -371,7 +365,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 23,
                             SectorId = 1,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -380,7 +374,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 24,
                             SectorId = 1,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -389,7 +383,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 25,
                             SectorId = 1,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -398,7 +392,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 26,
                             SectorId = 1,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -407,7 +401,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 27,
                             SectorId = 1,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -416,7 +410,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 28,
                             SectorId = 1,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -425,7 +419,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 29,
                             SectorId = 1,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -434,7 +428,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 30,
                             SectorId = 1,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -443,7 +437,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 31,
                             SectorId = 1,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -452,7 +446,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 32,
                             SectorId = 1,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -461,7 +455,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 33,
                             SectorId = 1,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -470,7 +464,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 34,
                             SectorId = 1,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -479,7 +473,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 35,
                             SectorId = 1,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -488,7 +482,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 36,
                             SectorId = 1,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -497,7 +491,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 37,
                             SectorId = 1,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -506,7 +500,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 38,
                             SectorId = 1,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -515,7 +509,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 39,
                             SectorId = 1,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -524,7 +518,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 40,
                             SectorId = 1,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -533,7 +527,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 41,
                             SectorId = 1,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -542,7 +536,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 42,
                             SectorId = 1,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -551,7 +545,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 43,
                             SectorId = 1,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -560,7 +554,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 44,
                             SectorId = 1,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -569,7 +563,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 45,
                             SectorId = 1,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -578,7 +572,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 46,
                             SectorId = 1,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -587,7 +581,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 47,
                             SectorId = 1,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -596,7 +590,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 48,
                             SectorId = 1,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -605,7 +599,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 49,
                             SectorId = 1,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -614,7 +608,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 50,
                             SectorId = 1,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -623,7 +617,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 1,
                             SectorId = 2,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -632,7 +626,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 2,
                             SectorId = 2,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -641,7 +635,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 3,
                             SectorId = 2,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -650,7 +644,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 4,
                             SectorId = 2,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -659,7 +653,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 5,
                             SectorId = 2,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -668,7 +662,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 6,
                             SectorId = 2,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -677,7 +671,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 7,
                             SectorId = 2,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -686,7 +680,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 8,
                             SectorId = 2,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -695,7 +689,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 9,
                             SectorId = 2,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -704,7 +698,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 10,
                             SectorId = 2,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -713,7 +707,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 11,
                             SectorId = 2,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -722,7 +716,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 12,
                             SectorId = 2,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -731,7 +725,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 13,
                             SectorId = 2,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -740,7 +734,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 14,
                             SectorId = 2,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -749,7 +743,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 15,
                             SectorId = 2,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -758,7 +752,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 16,
                             SectorId = 2,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -767,7 +761,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 17,
                             SectorId = 2,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -776,7 +770,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 18,
                             SectorId = 2,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -785,7 +779,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 19,
                             SectorId = 2,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -794,7 +788,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 20,
                             SectorId = 2,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -803,7 +797,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 21,
                             SectorId = 2,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -812,7 +806,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 22,
                             SectorId = 2,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -821,7 +815,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 23,
                             SectorId = 2,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -830,7 +824,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 24,
                             SectorId = 2,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -839,7 +833,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 25,
                             SectorId = 2,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -848,7 +842,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 26,
                             SectorId = 2,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -857,7 +851,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 27,
                             SectorId = 2,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -866,7 +860,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 28,
                             SectorId = 2,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -875,7 +869,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 29,
                             SectorId = 2,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -884,7 +878,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 30,
                             SectorId = 2,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -893,7 +887,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 31,
                             SectorId = 2,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -902,7 +896,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 32,
                             SectorId = 2,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -911,7 +905,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 33,
                             SectorId = 2,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -920,7 +914,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 34,
                             SectorId = 2,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -929,7 +923,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 35,
                             SectorId = 2,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -938,7 +932,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 36,
                             SectorId = 2,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -947,7 +941,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 37,
                             SectorId = 2,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -956,7 +950,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 38,
                             SectorId = 2,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -965,7 +959,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 39,
                             SectorId = 2,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -974,7 +968,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 40,
                             SectorId = 2,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -983,7 +977,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 41,
                             SectorId = 2,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -992,7 +986,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 42,
                             SectorId = 2,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -1001,7 +995,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 43,
                             SectorId = 2,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -1010,7 +1004,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 44,
                             SectorId = 2,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -1019,7 +1013,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 45,
                             SectorId = 2,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -1028,7 +1022,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 46,
                             SectorId = 2,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -1037,7 +1031,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 47,
                             SectorId = 2,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -1046,7 +1040,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 48,
                             SectorId = 2,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -1055,7 +1049,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 49,
                             SectorId = 2,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         },
                         new
                         {
@@ -1064,7 +1058,7 @@ namespace Infrastructure.Migrations
                             SeatNumber = 50,
                             SectorId = 2,
                             Status = "Available",
-                            Version = 1
+                            Version = 0
                         });
                 });
 
@@ -1147,7 +1141,7 @@ namespace Infrastructure.Migrations
                             Id = 1,
                             Email = "Proyecto2026@gmail.com",
                             Name = "Proyecto",
-                            PasswordHash = "$2a$11$rkr4ziWHtoqKpNch7Ux04ePBh2KE9eghuP8N71lfGF/CM7qYklYKy"
+                            PasswordHash = "$2a$11$GMm86fM10GrCosygz2qqW.lxYCcxG4VUkvLyp4Ei58IhCTSDA/iIG"
                         });
                 });
 

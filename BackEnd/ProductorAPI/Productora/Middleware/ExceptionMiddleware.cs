@@ -1,6 +1,7 @@
 ﻿using Application.DTOs;
 using Domain.Exceptions;
 using Domain.Exceptions.Reservations;
+using Domain.Exceptions.Seats;
 using Domain.Exceptions.Users;
 using System.Text.Json;
 
@@ -28,6 +29,10 @@ public class ExceptionMiddleware
         catch (SeatNotFoundException ex)
         {
             await StatusMessage(context, 404, ex.Message, ex);
+        }
+        catch (SeatConcurrenceException ex)
+        {
+            await StatusMessage(context, 409, ex.Message, ex);
         }
         catch (EventNotFoundException ex)
         {
