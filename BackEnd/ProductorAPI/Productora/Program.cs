@@ -22,6 +22,7 @@ using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 using Application.Interfaces;
 using Infrastructure.UnitOfWork;
+using Productora.BackgroundServices;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -68,6 +69,7 @@ builder.Services.AddScoped<IMarkSeatAsReservedHandler, MarkSeatAsReservedHandler
 builder.Services.AddScoped<IGetReservedSeatsByEventHandler, GetReservedSeatsByEventHandler>();
 builder.Services.AddScoped<IGetSeatByIdHandler, GetSeatByIdHandler>();
 builder.Services.AddScoped<ICreateSeatsHandler, CreateSeatsHandler>();
+builder.Services.AddScoped<IMarkSeatAtAvailableHandler, MarkSeatAtAvailableHandler>();
 
 //SECTOR
 builder.Services.AddScoped<ISectorRepository, SectorRepository>();
@@ -81,6 +83,7 @@ builder.Services.AddScoped<IGetReservationsByUserQueryHandler, GetReservationsBy
 builder.Services.AddScoped<IGetReservationByIdQueryHandler, GetReservationByIdHandler>();
 builder.Services.AddScoped<IGetExpiredReservationsHandler, GetExpiredReservationsHandler>();
 builder.Services.AddScoped<IConfirmReservationHandler, ConfirmReservationHandler>();
+builder.Services.AddScoped<ICancelReservationHandler, CancelReservationHandler>();
 
 // USER
 builder.Services.AddScoped<IUserRepository, UserRepository>();
@@ -90,8 +93,11 @@ builder.Services.AddScoped<ILoginUserHandler, LoginUserHandler>();
 
 //AuditLog
 builder.Services.AddScoped<IAuditLogRepository, AuditLogRepository>();
-builder.Services.AddScoped<ICreateAuditLogCommandHanlder, CreateAuditLogHandler>();
+builder.Services.AddScoped<ICreateAuditLogHanlder, CreateAuditLogHandler>();
 builder.Services.AddScoped<IGetAuditLogsByUserQueryHandler, GetAuditLogByUserHandler>();
+
+//Worker
+builder.Services.AddHostedService<ReservationExpiration>();
 
 //SWAGGER EXAMPLES
 builder.Services.AddSwaggerExamplesFromAssemblyOf<Program>();

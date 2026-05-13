@@ -20,11 +20,11 @@ namespace Application.UseCase.Commands.Reservation
         private readonly IReservationRepository _reservationRepository;
         private readonly IGetSeatByIdHandler _getSeatByIdHandler;
         private readonly IMarkSeatAsReservedHandler _markSeatAsReserverHandler;
-        private readonly ICreateAuditLogCommandHanlder _createAuditLogCommandHandler;
+        private readonly ICreateAuditLogHanlder _createAuditLogCommandHandler;
         private readonly IGetUserByIdHandler _getUserByIdQueryHandler;
         private readonly IUnitOfWork _unitOfWork;
         public CreateReservationHandler(IReservationRepository reservationRepository, IGetSeatByIdHandler getSeatByIdHandler, IMarkSeatAsReservedHandler markSeatAsReserverHandler,
-            ICreateAuditLogCommandHanlder createAuditLogCommandHanlder, IGetUserByIdHandler getUserByIdQueryHandler, IUnitOfWork unitOfWork)
+            ICreateAuditLogHanlder createAuditLogCommandHanlder, IGetUserByIdHandler getUserByIdQueryHandler, IUnitOfWork unitOfWork)
         {
             _reservationRepository = reservationRepository;
             _getSeatByIdHandler = getSeatByIdHandler;
@@ -52,10 +52,11 @@ namespace Application.UseCase.Commands.Reservation
             // iniciar transacción
             await _unitOfWork.BeginTransactionAsync();
 
+            var seat = await _getSeatByIdHandler.Handle(new GetSeatByIdQuery { SeatId = command.SeatId });
+
             try
             {
                 // validar asiento
-                var seat = await _getSeatByIdHandler.Handle(new GetSeatByIdQuery { SeatId = command.SeatId });
                 if (seat == null)
                     throw new SeatNotFoundException("El asiento no existe");
 
@@ -80,7 +81,7 @@ namespace Application.UseCase.Commands.Reservation
                     SeatId = seat.Id,
                     Status = "Pending",
                     ReservedAt = DateTime.UtcNow,
-                    ExpiresAt = DateTime.UtcNow.AddMinutes(5)
+                    ExpiresAt = DateTime.UtcNow.AddMinutes(1)
                 };
 
                 // guardar cambios
@@ -116,9 +117,18 @@ namespace Application.UseCase.Commands.Reservation
                     ExpiresAt = reservation.ExpiresAt,
                 };
             }
-            catch 
+            // atrapar exception de auditoría 
+            catch
             {
                 await _unitOfWork.RollBackAsync();
+                await _createAuditLogCommandHandler.Handler(new CreateAuditLogCommand
+                {
+                    UserId= command.UserId,
+                    Action = AuditAction.RESERVE_ATTEMPT.ToString(),
+                    EntityType = "Seat",
+                    EntityId = seat.Id.ToString(),
+                    Details = $"El usuario {command.UserId} intentó reservar el asiento {seat.SeatNumber} en el sector {seat.Sector.Name}, pero ya estaba reservado"
+                });
                 throw;
             }                        
         }

@@ -29,7 +29,7 @@ namespace Infrastructure.UnitOfWork
             }
             try
             {
-                await _context.SaveChangesAsync(ct);
+                 await _context.SaveChangesAsync(ct);
                 await _transaction.CommitAsync(ct);
                 await _transaction.DisposeAsync();
                 _transaction = null;
@@ -51,11 +51,6 @@ namespace Infrastructure.UnitOfWork
             }
             await _transaction.RollbackAsync(ct);
             await _transaction.DisposeAsync();
-        }
-
-        public async Task SaveChangesAsync(CancellationToken ct = default)
-        {
-            await _context.SaveChangesAsync(ct);
         }
     }
 }

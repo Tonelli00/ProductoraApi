@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Application.Interfaces.AuditLogs
 {
-    public interface ICreateAuditLogCommandHanlder
+    public interface ICreateAuditLogHanlder
     {
         Task<AuditLogResponse> Handler(CreateAuditLogCommand command);
     }
