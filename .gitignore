@@ -7,3 +7,5 @@ node_modules/
 dist/
 .env
 .env.*
+# Configuración local de desarrollo
+appsettings.Development.json

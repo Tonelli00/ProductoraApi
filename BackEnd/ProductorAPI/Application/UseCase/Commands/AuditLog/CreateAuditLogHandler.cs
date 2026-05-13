@@ -4,7 +4,7 @@ using Domain.Entities;
 
 namespace Application.UseCase.Commands.AuditLog
 {
-    public class CreateAuditLogHandler :ICreateAuditLogCommandHanlder
+    public class CreateAuditLogHandler :ICreateAuditLogHanlder
     {
         private readonly IAuditLogRepository _auditLogRepository;
         public CreateAuditLogHandler(IAuditLogRepository auditLogRepository)
