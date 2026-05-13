@@ -15,23 +15,10 @@ namespace Application.UseCase.Commands.Seat
         }
 
         public async Task Handle(MarkSeatAsReservedCommand command)
-        {
-            if (command.SectorId <= 0 || command.SeatNumber <= 0)
-            {
-                throw new ArgumentException("Los valores ingresados deben ser mayores a 0");
-            }
-
-            var seat = await _repository.GetSeatBySeatNumberAndSectorId(command.SeatNumber,command.SectorId);
-            if (seat == null) 
-            {
-                throw new SeatNotFoundException("El asiento seleccionado no existe...");
-            }
-            
-            //Validación para ver si es que el sector existe
-
-            seat.Status="Reserved";
-
-            await _repository.UpdateSeatStatus(seat);               
+        {                      
+            command.Seat.Status="Reserved";
+            command.Seat.Version += 1;
+            await _repository.UpdateSeatStatus(command.Seat);               
         }
     }
 }

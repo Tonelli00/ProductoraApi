@@ -1,5 +1,7 @@
 ﻿
 
+using System.ComponentModel.DataAnnotations;
+
 namespace Domain.Entities
 {
     public class Seat
@@ -9,13 +11,13 @@ namespace Domain.Entities
         public string RowIdentifier { get; set; }
         public int SeatNumber { get; set; }
         public string Status { get; set; }
+
+        [ConcurrencyCheck]
         public int Version { get; set; }
        
         public Sector Sector { get; set; }
 
         public IEnumerable<Reservation> Reservations { get; set; }
-        
-        //public byte[] RowVersion { get; set; }
 
     }
 }

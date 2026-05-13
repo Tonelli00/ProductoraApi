@@ -1,5 +1,7 @@
 ﻿using Application.Interfaces;
+using Domain.Exceptions.Seats;
 using Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Infrastructure.UnitOfWork
@@ -25,10 +27,20 @@ namespace Infrastructure.UnitOfWork
             {
                 throw new InvalidOperationException("No se inicio la transacción");
             }
-            await _context.SaveChangesAsync(ct);
-            await _transaction.CommitAsync(ct);
-            await _transaction.DisposeAsync();
-            _transaction = null;
+            try
+            {
+                await _context.SaveChangesAsync(ct);
+                await _transaction.CommitAsync(ct);
+                await _transaction.DisposeAsync();
+                _transaction = null;
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                await _transaction.RollbackAsync(ct);  
+                await _transaction.DisposeAsync();
+                _transaction = null;
+                throw new SeatConcurrenceException("El asiento ya ha sido reservado por otro usuario.");
+            }
         }
 
         public async Task RollBackAsync(CancellationToken ct = default)
