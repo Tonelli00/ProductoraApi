@@ -19,6 +19,7 @@ namespace Application.UseCase.Queries.Seats
             {
                 SeatId = s.Id,
                 SeatNumber = s.SeatNumber,
+                SectorId = s.SectorId,
                 RowIdentifier = s.RowIdentifier,
                 Status = s.Status,
             }).ToList();

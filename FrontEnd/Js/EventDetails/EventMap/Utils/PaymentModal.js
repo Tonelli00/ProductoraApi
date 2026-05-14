@@ -124,8 +124,8 @@ export async function PaymentModal(reservationId,eventName,selected)
     document.body.appendChild(modal);
     document.body.classList.add('overflow-hidden');
 
-    const closeButton = document.getElementById("close-payment-modal");
-
+    const closeButton = modal.querySelector("#close-payment-modal");
+    
     closeButton.addEventListener("click", () =>
     {
         modal.remove();
@@ -141,8 +141,8 @@ export async function PaymentModal(reservationId,eventName,selected)
         }
     });
 
-    const form = document.getElementById("payment-form");
-
+    const form = modal.querySelector("#payment-form");
+    
     form.addEventListener("submit", async (e) =>
     {   
         e.preventDefault();

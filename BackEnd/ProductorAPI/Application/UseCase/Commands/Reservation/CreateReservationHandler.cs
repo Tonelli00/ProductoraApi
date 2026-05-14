@@ -3,10 +3,12 @@ using Application.Interfaces;
 using Application.Interfaces.AuditLogs;
 using Application.Interfaces.Reservations;
 using Application.Interfaces.Seats;
+using Application.Interfaces.Sectors;
 using Application.Interfaces.Users;
 using Application.UseCase.Commands.AuditLog;
 using Application.UseCase.Commands.Seat;
 using Application.UseCase.Queries.Seats;
+using Application.UseCase.Queries.Sectors;
 using Application.UseCase.Queries.Users;
 using Domain.Enums;
 using Domain.Exceptions;
@@ -22,15 +24,18 @@ namespace Application.UseCase.Commands.Reservation
         private readonly IMarkSeatAsReservedHandler _markSeatAsReserverHandler;
         private readonly ICreateAuditLogHanlder _createAuditLogCommandHandler;
         private readonly IGetUserByIdHandler _getUserByIdQueryHandler;
+        private readonly IGetSectorByIdHandler _getSectorById;
         private readonly IUnitOfWork _unitOfWork;
         public CreateReservationHandler(IReservationRepository reservationRepository, IGetSeatByIdHandler getSeatByIdHandler, IMarkSeatAsReservedHandler markSeatAsReserverHandler,
-            ICreateAuditLogHanlder createAuditLogCommandHanlder, IGetUserByIdHandler getUserByIdQueryHandler, IUnitOfWork unitOfWork)
+            ICreateAuditLogHanlder createAuditLogCommandHanlder, IGetUserByIdHandler getUserByIdQueryHandler,IGetSectorByIdHandler getSectorById,IUnitOfWork unitOfWork)
         {
             _reservationRepository = reservationRepository;
             _getSeatByIdHandler = getSeatByIdHandler;
             _markSeatAsReserverHandler = markSeatAsReserverHandler;
             _createAuditLogCommandHandler = createAuditLogCommandHanlder;            
             _getUserByIdQueryHandler = getUserByIdQueryHandler;
+            _getSeatByIdHandler= getSeatByIdHandler;
+            _getSectorById= getSectorById;
             _unitOfWork = unitOfWork;
         }
 
@@ -53,6 +58,13 @@ namespace Application.UseCase.Commands.Reservation
             await _unitOfWork.BeginTransactionAsync();
 
             var seat = await _getSeatByIdHandler.Handle(new GetSeatByIdQuery { SeatId = command.SeatId });
+            
+            if (seat == null) 
+            {
+                throw new SeatNotFoundException("El asiento no fue encontrado");
+            }
+
+            var sector = await _getSectorById.Handle(new GetSectorByIdQuery { SectorId = seat.SectorId});
 
             try
             {
@@ -68,8 +80,8 @@ namespace Application.UseCase.Commands.Reservation
                         UserId = command.UserId,
                         Action = AuditAction.RESERVE_ATTEMPT.ToString(),
                         EntityType = "Seat",
-                        EntityId = seat.Id.ToString(),
-                        Details = $"Intentó reservar el asiento {seat.SeatNumber} en el sector {seat.Sector.Name}, pero ya estaba reservado o vendido"
+                        EntityId = seat.SeatId.ToString(),
+                        Details = $"Intentó reservar el asiento {seat.SeatNumber} en el sector {sector.Name}, pero ya estaba reservado o vendido"
                     });
                     throw new SectorConflictException("El asiento ya está reservado, intente con otro.");
                 }
@@ -78,7 +90,7 @@ namespace Application.UseCase.Commands.Reservation
                 var reservation = new Domain.Entities.Reservation
                 {
                     UserId = command.UserId,
-                    SeatId = seat.Id,
+                    SeatId = seat.SeatId,
                     Status = "Pending",
                     ReservedAt = DateTime.UtcNow,
                     ExpiresAt = DateTime.UtcNow.AddMinutes(1)
@@ -90,7 +102,7 @@ namespace Application.UseCase.Commands.Reservation
                 // actualizar estado del asiento               
                 await _markSeatAsReserverHandler.Handle(new MarkSeatAsReservedCommand
                 {
-                    Seat = seat
+                    SeatId = seat.SeatId
                 });
 
                 // crear el log de auditoría
@@ -100,7 +112,7 @@ namespace Application.UseCase.Commands.Reservation
                     Action = AuditAction.RESERVE_SUCCESS.ToString(),
                     EntityType = "Reservation",
                     EntityId = reservation.Id.ToString(),
-                    Details = $"Reserva creada para el asiento {seat.SeatNumber} en el sector {seat.Sector.Name}"
+                    Details = $"Reserva creada para el asiento {seat.SeatNumber} en el sector {sector.Name}"
                 });    
 
                 // Confirmar la Transacción
@@ -126,8 +138,8 @@ namespace Application.UseCase.Commands.Reservation
                     UserId= command.UserId,
                     Action = AuditAction.RESERVE_ATTEMPT.ToString(),
                     EntityType = "Seat",
-                    EntityId = seat.Id.ToString(),
-                    Details = $"El usuario {command.UserId} intentó reservar el asiento {seat.SeatNumber} en el sector {seat.Sector.Name}, pero ya estaba reservado"
+                    EntityId = seat.SeatId.ToString(),
+                    Details = $"El usuario {command.UserId} intentó reservar el asiento {seat.SeatNumber} en el sector {sector.Name}, pero ya estaba reservado"
                 });
                 throw;
             }                        

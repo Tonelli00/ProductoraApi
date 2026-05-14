@@ -31,6 +31,7 @@ namespace Application.UseCase.Queries.Events
                 Sectors = e.Sectors.Select(s => new SectorShortResponseDTO()
                 {
                     SectorId = s.Id,
+                    EventId=e.Id,
                     Name = s.Name,
                     Capacity = s.Capacity,
                     Price = s.Price

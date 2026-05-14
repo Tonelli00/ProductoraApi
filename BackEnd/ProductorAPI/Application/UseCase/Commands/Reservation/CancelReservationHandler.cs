@@ -25,13 +25,13 @@ namespace Application.UseCase.Commands.Reservation
             _createAuditLogHanlder = createAuditLogHanlder;
         }
 
-        public async Task<ReservationResponse> Handler(CancelReservationCommand command)
+        public async Task Handler(CancelReservationCommand command)
         {
             var reservation = await _reservationRepository.GetByIdAsync(command.ReservationId);
 
             // cambiar estado de asiento
             var Seat = await _getSeatByIdHandler.Handle(new GetSeatByIdQuery { SeatId = reservation.SeatId });
-            await _markSeatAtAvailableHandler.Handle(new MarkSeatAtAvailableCommand { Seat = Seat });
+            await _markSeatAtAvailableHandler.Handle(new MarkSeatAsAvailableCommand { SeatId = Seat.SeatId });
 
             // cambiar estado de reserva 
             reservation.Status = "Expired";
@@ -44,18 +44,8 @@ namespace Application.UseCase.Commands.Reservation
                 Action = AuditAction.EXPIRED.ToString(),
                 EntityType = "Reservation",
                 EntityId = reservation.Id.ToString(),
-                Details = $"Se vencio el tiempo de la reserva {reservation.Id} para le asiento {Seat.Id}"
+                Details = $"Se vencio el tiempo de la reserva {reservation.Id} para le asiento {Seat.SeatId}"
             });
-
-            return new ReservationResponse
-            {
-                Id = reservation.Id,
-                UserId = reservation.UserId,
-                SeatId = reservation.SeatId,
-                Status = reservation.Status,
-                ReservedAt = reservation.ReservedAt,
-                ExpiresAt = reservation.ExpiresAt
-            };
         }
     }
 }

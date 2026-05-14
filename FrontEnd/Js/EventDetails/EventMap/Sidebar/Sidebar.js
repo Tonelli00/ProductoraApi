@@ -156,14 +156,13 @@ export function createSidebar({ onClear, onBuy }) {
     try {
 
       const result = await onBuy();
-      console.log(result);
       await PaymentModal(
         result.reservation.id,
         result.eventName,
         result.selected
       );
-
-      buyBtn.disabled = true;
+      buyBtn.disabled = false;
+      buyBtn.textContent = 'Pasar a finalizar compra';
     } catch (error) {
 
       buyBtn.disabled = false;
@@ -171,28 +170,25 @@ export function createSidebar({ onClear, onBuy }) {
       buyBtn.textContent =
         'Pasar a finalizar compra';
 
-      showTemporaryMessage(
-        buyBtn.parentElement,
-        error?.message ?? 'Error al realizar la compra.',
-        'error-msg text-xs text-red-600 bg-red-50 p-2 rounded text-center',
-        3000
-      );
+      
+    Swal.fire({
+        toast: true,
+        position: "bottom-end",
+        icon: "error",
+        title: error?.message ?? 'Error al realizar la compra.',
+        showConfirmButton: false,
+        timer: 4000,
+        timerProgressBar: true
+    });
     }
   });
 
   return {
-
     element: sidebar,
-
     showEmpty,
-
     showDetail,
-
-    showExpiredMessage: () =>
-      showTemporaryMessage(
-        bodyEl,
-        'El tiempo expiró. Por favor, elegí otro asiento.',
-        'text-xs text-amber-600 bg-amber-50 p-2 rounded text-center'
-      ),
+    showExpiredMessage: () => showTemporaryMessage(
+        bodyEl, 'El tiempo expiró. Por favor, elegí otro asiento.',
+        'text-xs text-amber-600 bg-amber-50 p-2 rounded text-center'),
   };
 }

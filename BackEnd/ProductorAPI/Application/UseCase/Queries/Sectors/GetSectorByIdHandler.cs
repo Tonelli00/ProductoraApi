@@ -1,8 +1,6 @@
 using Application.DTOs;
 using Application.DTOs.Seat;
-using Application.Interfaces.Events;
 using Application.Interfaces.Sectors;
-using Application.UseCase.Queries.Events;
 using Domain.Exceptions;
 
 namespace Application.UseCase.Queries.Sectors;
@@ -35,6 +33,7 @@ public class GetSectorByIdHandler : IGetSectorByIdHandler
                 SeatId = s.Id,
                 RowIdentifier = s.RowIdentifier,
                 SeatNumber = s.SeatNumber,
+                SectorId=s.SectorId,
                 Status = s.Status
             }).ToList()
         };

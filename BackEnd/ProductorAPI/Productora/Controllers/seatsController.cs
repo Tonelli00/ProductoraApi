@@ -20,25 +20,42 @@ namespace Productora.Controllers
         private readonly IGetSeatsBySectorIdHandler _getSeatsBySectorIdHandler;
         private readonly IMarkSeatAsReservedHandler _markSeatAsReserved;
         private readonly IGetReservedSeatsByEventHandler _getReservedSeatsByEventHandler;
+        private readonly IGetSeatByIdHandler _getSeatByIdHandler;
 
 
-        public SeatsController(IGetSeatsBySectorIdHandler handler, IMarkSeatAsReservedHandler markSeatAsReserved, IGetReservedSeatsByEventHandler getReservedSeatsByEventHandler)
+        public SeatsController(IGetSeatsBySectorIdHandler handler,IGetSeatByIdHandler getSeatByIdHandler, IMarkSeatAsReservedHandler markSeatAsReserved, IGetReservedSeatsByEventHandler getReservedSeatsByEventHandler)
         {
             _getSeatsBySectorIdHandler = handler;
             _markSeatAsReserved = markSeatAsReserved;
             _getReservedSeatsByEventHandler = getReservedSeatsByEventHandler;
+            _getSeatByIdHandler = getSeatByIdHandler;
         }
 
-        [HttpGet("{id:int}")]
+        [HttpGet("{SectorId:int}")]
         [ProducesResponseType(typeof(List<SeatResponseDTO>), 200)]
         [ProducesResponseType(typeof(ErrorResponseDTO), 400)]
         [ProducesResponseType(typeof(ErrorResponseDTO), 404)]
 
 
-        public async Task<IActionResult> GetAll([FromRoute] int id)
+        public async Task<IActionResult> GetAll([FromRoute] int SectorId)
         {
 
-            var result = await _getSeatsBySectorIdHandler.Handle(new GetSeatsBySectorIdQuery { SectorId=id});
+            var result = await _getSeatsBySectorIdHandler.Handle(new GetSeatsBySectorIdQuery { SectorId= SectorId });
+            return Ok(result);
+
+        }
+
+
+        [HttpGet("{id:Guid}")]
+        [ProducesResponseType(typeof(SeatResponseDTO), 200)]
+        [ProducesResponseType(typeof(ErrorResponseDTO), 400)]
+        [ProducesResponseType(typeof(ErrorResponseDTO), 404)]
+
+
+        public async Task<IActionResult> GetSeatById([FromRoute] Guid id)
+        {
+
+            var result = await _getSeatByIdHandler.Handle(new GetSeatByIdQuery{ SeatId=id});
             return Ok(result);
 
         }

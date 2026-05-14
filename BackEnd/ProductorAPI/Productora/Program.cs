@@ -69,12 +69,13 @@ builder.Services.AddScoped<IMarkSeatAsReservedHandler, MarkSeatAsReservedHandler
 builder.Services.AddScoped<IGetReservedSeatsByEventHandler, GetReservedSeatsByEventHandler>();
 builder.Services.AddScoped<IGetSeatByIdHandler, GetSeatByIdHandler>();
 builder.Services.AddScoped<ICreateSeatsHandler, CreateSeatsHandler>();
-builder.Services.AddScoped<IMarkSeatAtAvailableHandler, MarkSeatAtAvailableHandler>();
-
+builder.Services.AddScoped<IMarkSeatAtAvailableHandler, MarkSeatAsAvailableHandler>();
+builder.Services.AddScoped<IMarkSeatAsSoldHandler, MarkSeatAsSoldHandler>();
 //SECTOR
 builder.Services.AddScoped<ISectorRepository, SectorRepository>();
 builder.Services.AddScoped<ICreateSectorHandler, CreateSectorHandler>();
 builder.Services.AddScoped<IGetSectorByIdHandler, GetSectorByIdHandler>();
+builder.Services.AddScoped<IGetSectorSummaryHandler, GetSectorSummaryHandler>();
 
 // RESERVATION   
 builder.Services.AddScoped<IReservationRepository, ReservationRepository>();
@@ -118,8 +119,7 @@ builder.Services.AddCors(option =>
 {
     option.AddPolicy("AllowFront", policy =>
     {
-        policy
-            .AllowAnyOrigin()
+        policy.AllowAnyOrigin()
             .AllowAnyMethod()
             .AllowAnyHeader();
     });

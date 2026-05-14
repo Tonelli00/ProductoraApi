@@ -11,6 +11,6 @@ namespace Application.Interfaces.Seats
 {
     public interface IMarkSeatAtAvailableHandler
     {
-        Task Handle(MarkSeatAtAvailableCommand command);
+        Task Handle(MarkSeatAsAvailableCommand command);
     }
 }

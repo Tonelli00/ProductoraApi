@@ -37,6 +37,7 @@ public class GetSeatsByEventIdHandler : IGetSeatsByEventIdHandler
             SeatId = s.Id,
             RowIdentifier = s.RowIdentifier,
             SeatNumber = s.SeatNumber,
+            SectorId = s.SectorId,
             Status = s.Status
         }).ToList();
     }

@@ -2,7 +2,7 @@
 
 using Application.DTOs.Reservation;
 using Application.Interfaces.Reservations;
-using Domain.Entities;
+using Application.Interfaces.Seats;
 using Domain.Exceptions;
 
 namespace Application.UseCase.Commands.Reservation
@@ -10,10 +10,11 @@ namespace Application.UseCase.Commands.Reservation
     public class ConfirmReservationHandler : IConfirmReservationHandler
     {
         private readonly IReservationRepository _repository;
-
-        public ConfirmReservationHandler(IReservationRepository reservationRepository)
+        private readonly IMarkSeatAsSoldHandler _markSeatAsSoldHandler;
+        public ConfirmReservationHandler(IReservationRepository reservationRepository, IMarkSeatAsSoldHandler markSeatAsSoldHandler)
         {
             _repository = reservationRepository;
+            _markSeatAsSoldHandler = markSeatAsSoldHandler;
         }
 
         public async Task<ReservationResponse> Handle(ConfirmReservationCommand command)
@@ -23,6 +24,10 @@ namespace Application.UseCase.Commands.Reservation
             {
                 throw new ReservationNotFoundException("La reserva no fue encontrada");
             }
+
+            _reservation.Status = "Paid";
+
+            await _markSeatAsSoldHandler.Handle(new Seat.MarkSeatAsSoldCommand { SeatId = _reservation.SeatId });
 
             var result = await _repository.ConfirmReservationAsync(_reservation);
 

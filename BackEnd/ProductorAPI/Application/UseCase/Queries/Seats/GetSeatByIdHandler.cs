@@ -18,10 +18,17 @@ namespace Application.UseCase.Queries.Seats
             _seatRepository = seatRepository;
         }
 
-        public async Task<Seat?> Handle(GetSeatByIdQuery Query)
+        public async Task<SeatResponseDTO?> Handle(GetSeatByIdQuery Query)
         {
             var seat = await _seatRepository.GetSeatById(Query.SeatId);
-            return seat;
+            return new SeatResponseDTO 
+            {
+                SeatId = seat.Id,
+                RowIdentifier = seat.RowIdentifier,
+                SeatNumber = seat.SeatNumber,
+                SectorId= seat.SectorId,
+                Status = seat.Status,
+            };
         }
     }
 }

@@ -25,4 +25,11 @@ public class SectorRepository:ISectorRepository
     {
         return await _context.Sectors.Include(s=>s.Seats).FirstOrDefaultAsync(s=> s.Id==Id,ct);
     }
+
+    public async Task<Sector> GetSectorSummaryByIdAsync(int Id, CancellationToken ct = default)
+    {
+        return await _context.Sectors.FirstOrDefaultAsync(s => s.Id == Id, ct);
+    }
+
+    
 }
