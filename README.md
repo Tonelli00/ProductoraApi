@@ -37,7 +37,9 @@ Existen dos formas de generar migraciones:
 ### - Opción 1: Desde Visual Studio
 
 1. Abrir la Consola del Administrador de Paquetes  
+
 2. Seleccionar el proyecto **Infrastructure** como predeterminado  
+
 3. Ejecutar:
 
 ```powershell
@@ -49,7 +51,9 @@ Add-Migration <NombreMigracion>
 ### - Opción 2: Desde la terminal
 
 1. Posicionarse en la carpeta del proyecto API
+
 2. Ejecutar dotnet restore
+
 3. Ejecutar:
 
 ```bash
@@ -67,7 +71,9 @@ Una vez creada la migración, se debe aplicar a la base de datos.
 ### - Opción 1: Desde Visual Studio
 
 1. Abrir la Consola del Administrador de Paquetes  
+
 2. Seleccionar el proyecto **Infrastructure**  
+
 3. Ejecutar:
 
 ```powershell
@@ -105,10 +111,14 @@ Se optó por una estructura modular basada en vistas y componentes reutilizables
 - Separación entre lógica y presentación  
 - Facilidad de mantenimiento  
 
-Herramientas usadas para los toast del sistema: https://sweetalert2.github.io/recipe-gallery/colored-toasts.html. 
+###Herramientas usadas para los toast del sistema: 
+Enlace a la página: <a>https://sweetalert2.github.io/recipe-gallery/colored-toasts.html</a> 
+
 Esta herramienta nos permite crear toast modernos, limpios y con mensajes personalizados de una manera muy facil. 
 
-1.Hay que importalo en el archivo HTML que lo vayamos a usar. Para esto, importamos el siguiente script <script src="sweetalert2.min.js"></script>
+1.Hay que importalo en el archivo HTML que lo vayamos a usar. 
+
+  -Para esto, importamos el siguiente script <script src="sweetalert2.min.js"></script>
 
 2. Luego, para poder utilizarlo, se utiliza el objeto Swal con su metodo fire (Swal.fire) y luego se especifican los colores, mensajes, posición del modal en la página, logos y demás.
 
