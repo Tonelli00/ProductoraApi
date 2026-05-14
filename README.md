@@ -111,7 +111,7 @@ Se optó por una estructura modular basada en vistas y componentes reutilizables
 - Separación entre lógica y presentación  
 - Facilidad de mantenimiento  
 
-###Herramientas usadas para los toast del sistema: 
+## Herramientas usadas para los toast del sistema: 
 Enlace a la página: <a>https://sweetalert2.github.io/recipe-gallery/colored-toasts.html</a> 
 
 Esta herramienta nos permite crear toast modernos, limpios y con mensajes personalizados de una manera muy facil. 
@@ -123,12 +123,13 @@ Esta herramienta nos permite crear toast modernos, limpios y con mensajes person
 2. Luego, para poder utilizarlo, se utiliza el objeto Swal con su metodo fire (Swal.fire) y luego se especifican los colores, mensajes, posición del modal en la página, logos y demás.
 
 
-### Decisiones de negocio
+## Decisiones de negocio
 Se optó por determinar que el usuario únicamente puede realizar una reserva para un asiento. El usuario no puede realizar una reserva con 2 asientos asociados. Ademaás, para realizar la reserva, el mismo tieme que estar logueado en la página. Caso contrario, no podrá ver el mapa de asientos.
 
-### Herramienta para el control de concurrencia.
+## Herramienta para el control de concurrencia.
 Se optó por hacer pruebas con la herramienta Ngrok. Esta herramienta sirve para exponer la API de una forma segura. De esta forma, se puede testear el compartamiento cuando dos personas intentan acceder al mismo recurso.
 Los pasos para la instalación de dicha herramienta (Desde windows) son los siguientes:
+
 1- Entrar al sitio web de ngrok: https://ngrok.com/
 
 2- Crearnos una cuenta
