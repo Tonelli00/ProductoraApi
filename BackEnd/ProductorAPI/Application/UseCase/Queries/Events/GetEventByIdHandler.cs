@@ -43,6 +43,7 @@ public class GetEventByIdHandler:IGetEventByIdHandler
                     SeatId = seat.Id,
                     RowIdentifier = seat.RowIdentifier,
                     SeatNumber = seat.SeatNumber,
+                    SectorId=s.Id,
                     Status = seat.Status
                 }).ToList()
             }).ToList()

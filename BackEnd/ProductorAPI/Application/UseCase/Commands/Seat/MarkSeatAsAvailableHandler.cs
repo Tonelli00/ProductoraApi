@@ -8,19 +8,20 @@ using System.Threading.Tasks;
 
 namespace Application.UseCase.Commands.Seat
 {
-    public class MarkSeatAtAvailableHandler : IMarkSeatAtAvailableHandler
+    public class MarkSeatAsAvailableHandler : IMarkSeatAtAvailableHandler
     {
         private readonly ISeatRepository _seatRepository;
 
-        public MarkSeatAtAvailableHandler(ISeatRepository seatRepository)
+        public MarkSeatAsAvailableHandler(ISeatRepository seatRepository)
         {
             _seatRepository = seatRepository;
         }
 
-        public async Task Handle(MarkSeatAtAvailableCommand command)
+        public async Task Handle(MarkSeatAsAvailableCommand command)
         {
-            command.Seat.Status = "Available";
-            await _seatRepository.UpdateSeatStatus(command.Seat);
+            var seat = await _seatRepository.GetSeatById(command.SeatId);
+            seat.Status = "Available";
+            await _seatRepository.UpdateSeatStatus(seat);
         }
     }
 }

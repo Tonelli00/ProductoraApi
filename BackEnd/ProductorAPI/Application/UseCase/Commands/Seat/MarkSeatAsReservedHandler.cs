@@ -15,10 +15,11 @@ namespace Application.UseCase.Commands.Seat
         }
 
         public async Task Handle(MarkSeatAsReservedCommand command)
-        {                      
-            command.Seat.Status="Reserved";
-            command.Seat.Version += 1;
-            await _repository.UpdateSeatStatus(command.Seat);               
+        {
+            var seat = await _repository.GetSeatById(command.SeatId);
+            seat.Status = "Reserved";
+            seat.Version += 1;
+            await _repository.UpdateSeatStatus(seat);               
         }
     }
 }

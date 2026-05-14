@@ -82,7 +82,7 @@ function createSeatElement(seat, colors, onSelect) {
   const seatElement = document.createElement('div');
   seatElement.className="w-5 h-4 rounded-[3px] transition-transform transition-opacity duration-100"
 
-  const isReserved = seat.status?.toLowerCase() === 'reserved';
+  const isReserved = seat.status?.toLowerCase() === 'reserved' || seat.status?.toLowerCase() === 'sold';
 
   if (isReserved) {
     reservedSeatStyle(seatElement);

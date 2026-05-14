@@ -19,11 +19,13 @@ public class SectorsController : ControllerBase
 {
     private readonly IGetSectorByIdHandler _getSectorByIdHandler;
     private readonly ICreateSectorHandler _createSectorHandler;
+    private readonly IGetSectorSummaryHandler _getSectorSummary;
 
-    public SectorsController(IGetSectorByIdHandler getSectorByIdHandler, ICreateSectorHandler createSectorHandler)
+    public SectorsController(IGetSectorByIdHandler getSectorByIdHandler, ICreateSectorHandler createSectorHandler, IGetSectorSummaryHandler getSectorSummary)
     {
         _getSectorByIdHandler = getSectorByIdHandler;
         _createSectorHandler = createSectorHandler;
+        _getSectorSummary = getSectorSummary;
     }
 
     [HttpPost]
@@ -43,7 +45,7 @@ public class SectorsController : ControllerBase
    }
 
     [HttpGet("{id:int}")]
-    [ProducesResponseType(typeof(SectorShortResponseDTO), 200)]
+    [ProducesResponseType(typeof(SectorResponseDTO), 200)]
     [ProducesResponseType(typeof(ErrorResponseDTO), 400)]
     [ProducesResponseType(typeof(ErrorResponseDTO), 404)]
 
@@ -56,4 +58,20 @@ public class SectorsController : ControllerBase
       var result = await _getSectorByIdHandler.Handle(new GetSectorByIdQuery { SectorId = id });
       return Ok(result);
    }
+
+
+    [HttpGet("{id:int}/summary")]
+    [ProducesResponseType(typeof(SectorShortResponseDTO), 200)]
+    [ProducesResponseType(typeof(ErrorResponseDTO), 400)]
+    [ProducesResponseType(typeof(ErrorResponseDTO), 404)]
+
+    [SwaggerResponse(400, "Bad request", typeof(ErrorResponseDTO))]
+
+    [SwaggerResponseExample(400, typeof(SectorNotFoundExample))]
+
+    public async Task<IActionResult> GetSectorSummary(int id)
+    {
+        var result = await _getSectorSummary.Handle(new GetSectorSummaryQuery{ SectorId = id });
+        return Ok(result);
+    }
 }

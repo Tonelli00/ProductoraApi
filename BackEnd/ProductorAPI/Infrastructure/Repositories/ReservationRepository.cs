@@ -22,7 +22,6 @@ namespace Infrastructure.Repositories
 
         public async Task<Reservation> ConfirmReservationAsync(Reservation reservation, CancellationToken ct = default)
         {
-            reservation.Status = "Paid";
             _context.Reservations.Update(reservation);
             await _context.SaveChangesAsync(ct);
             return reservation;
@@ -41,7 +40,7 @@ namespace Infrastructure.Repositories
         public async Task<IEnumerable<Reservation>> GetByUserIdAsync(int userId,CancellationToken ct = default)
         {
             return await _context.Reservations
-                .Where(r => r.UserId == userId)
+                .Where(r => r.UserId == userId && r.Status == "Paid" || r.Status == "Pending")
                 .ToListAsync(ct);
         }
 

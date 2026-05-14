@@ -45,6 +45,7 @@ public class CreateSectorHandler:ICreateSectorHandler
         return new SectorShortResponseDTO()
         {
             SectorId = InsertedSector.Id,
+            EventId = command.EventId,
             Name = InsertedSector.Name,
             Capacity = InsertedSector.Capacity,
             Price = InsertedSector.Price
