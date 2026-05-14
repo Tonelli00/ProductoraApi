@@ -105,7 +105,24 @@ Se optó por una estructura modular basada en vistas y componentes reutilizables
 - Separación entre lógica y presentación  
 - Facilidad de mantenimiento  
 
+Herramientas usadas para los toast del sistema: https://sweetalert2.github.io/recipe-gallery/colored-toasts.html. 
+Esta herramienta nos permite crear toast modernos, limpios y con mensajes personalizados de una manera muy facil. 
+
+1-Hay que importalo en el archivo HTML que lo vayamos a usar. Para esto, importamos el siguiente script <script src="sweetalert2.min.js"></script>
+2- Luego, para poder utilizarlo, se utiliza el objeto Swal con su metodo fire (Swal.fire) y luego se especifican los colores, mensajes, posición del modal en la página, logos y demás.
+
+
 ### Decisiones de negocio
 Se optó por determinar que el usuario únicamente puede realizar una reserva para un asiento. El usuario no puede realizar una reserva con 2 asientos asociados. Ademaás, para realizar la reserva, el mismo tieme que estar logueado en la página. Caso contrario, no podrá ver el mapa de asientos.
 
-
+### Herramienta para el control de concurrencia.
+Se optó por hacer pruebas con la herramienta Ngrok. Esta herramienta sirve para exponer la API de una forma segura. De esta forma, se puede testear el compartamiento cuando dos personas intentan acceder al mismo recurso.
+Los pasos para la instalación de dicha herramienta (Desde windows) son los siguientes:
+1- Entrar al sitio web de ngrok: https://ngrok.com/
+2- Crearnos una cuenta
+3- Descargar el instalador de ngrok
+4- Descomprimir el archivo .rar que nos da cuando ejecutamos el instalador
+5- Ejecutar la aplicación
+6- Configurar nuestro AuthToken. Para eso, ejecutamos el siguiente comando en la consola que se nos abre al ejecutar la aplicación: ngrok config add-authtoken $YOUR_AUTHTOKEN
+7- Una vez configurado, levantamos la API de forma local y en otra consola ejecutamos http ngrok <puerto donde corre nuestra API>. 
+8- Una vez realizado esto, queda nuestra API expuesta y se pueden realizar consultas desde distintos dispositivos.
