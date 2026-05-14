@@ -108,8 +108,8 @@ Se optó por una estructura modular basada en vistas y componentes reutilizables
 Herramientas usadas para los toast del sistema: https://sweetalert2.github.io/recipe-gallery/colored-toasts.html. 
 Esta herramienta nos permite crear toast modernos, limpios y con mensajes personalizados de una manera muy facil. 
 
-1-Hay que importalo en el archivo HTML que lo vayamos a usar. Para esto, importamos el siguiente script <script src="sweetalert2.min.js"></script>
-2- Luego, para poder utilizarlo, se utiliza el objeto Swal con su metodo fire (Swal.fire) y luego se especifican los colores, mensajes, posición del modal en la página, logos y demás.
+1.Hay que importalo en el archivo HTML que lo vayamos a usar. Para esto, importamos el siguiente script <script src="sweetalert2.min.js"></script>
+2. Luego, para poder utilizarlo, se utiliza el objeto Swal con su metodo fire (Swal.fire) y luego se especifican los colores, mensajes, posición del modal en la página, logos y demás.
 
 
 ### Decisiones de negocio
