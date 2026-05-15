@@ -119,7 +119,11 @@ builder.Services.AddCors(option =>
 {
     option.AddPolicy("AllowFront", policy =>
     {
-        policy.AllowAnyOrigin()
+        policy.WithOrigins(
+            "http://localhost:5252",
+            "https://productora-api.vercel.app",
+            "https://ripply-pregastrular-barrett.ngrok-free.dev"
+            )
             .AllowAnyMethod()
             .AllowAnyHeader();
     });
