@@ -50,6 +50,10 @@ public class ExceptionMiddleware
         {
             await StatusMessage(context, 404, ex.Message, ex);
         }
+        catch (CancelReservationFailException ex)
+        {
+            await StatusMessage(context, 409, ex.Message, ex);
+        }
         catch (KeyNotFoundException ex)
         {
             await StatusMessage(context, 404, ex.Message, ex);
