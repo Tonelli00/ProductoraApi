@@ -175,7 +175,7 @@ export function createSidebar({ onClear, onBuy }) {
         toast: true,
         position: "bottom-end",
         icon: "error",
-        title: error?.message ?? 'Error al realizar la compra.',
+        title: error?.Message ?? 'Error al realizar la compra.',
         showConfirmButton: false,
         timer: 4000,
         timerProgressBar: true
