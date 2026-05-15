@@ -1,5 +1,5 @@
-const base_Url="http://localhost:5252/";
-//const base_URL_NGROK = "https://ripply-pregastrular-barrett.ngrok-free.dev/"
+//const base_Url="http://localhost:5252/";
+const base_Url = "https://ripply-pregastrular-barrett.ngrok-free.dev/"
 
 export async function getData(Endpointurl) {
     try{

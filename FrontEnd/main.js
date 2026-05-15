@@ -14,6 +14,10 @@ if (path.includes("index.html")) {
   initRegisterModal();
   initLoginModal();
   updateNav();
+  if(localStorage.getItem("event_id"))
+    {
+      localStorage.removeItem("event_id");
+    }
 }
 
 if (path.includes("Events.html")) {
@@ -21,6 +25,11 @@ if (path.includes("Events.html")) {
   initRegisterModal();
   initLoginModal();
   updateNav();
+  if(localStorage.getItem("event_id"))
+    {
+      localStorage.removeItem("event_id");
+    }
+  
 }
 
 if (path.includes("Event.html")) {
