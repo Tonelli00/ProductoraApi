@@ -137,9 +137,12 @@ if (app.Environment.IsDevelopment())
         options.SwaggerEndpoint("/swagger/v1/swagger.json", "Productora API v1");
     });
 }
-app.UseCors("AllowFront");
 app.UseMiddleware<ExceptionMiddleware>();
+
 app.UseHttpsRedirection();
+
+app.UseCors("AllowFront");
+
 app.UseAuthorization();
 app.MapControllers();
 app.Run();
