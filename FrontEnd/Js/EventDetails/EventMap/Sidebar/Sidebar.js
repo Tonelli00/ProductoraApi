@@ -177,9 +177,12 @@ export function createSidebar({ onClear, onBuy }) {
         icon: "error",
         title: error?.Message ?? 'Error al realizar la compra.',
         showConfirmButton: false,
-        timer: 4000,
+        timer: 5000,
         timerProgressBar: true
     });
+    setTimeout(() => {
+          location.reload();
+      }, 5000);
     }
   });
 
