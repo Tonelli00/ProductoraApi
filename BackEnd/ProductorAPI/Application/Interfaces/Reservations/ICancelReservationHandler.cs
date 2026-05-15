@@ -7,6 +7,6 @@ namespace Application.Interfaces.Reservations
 {
     public interface ICancelReservationHandler
     {
-        Task<ReservationResponse> Handler(CancelReservationCommand command);
+        Task Handler(CancelReservationCommand command);
     }
 }
