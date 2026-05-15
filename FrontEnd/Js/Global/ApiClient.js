@@ -13,7 +13,7 @@ export async function getData(Endpointurl) {
         return data;
     }
     catch(error){
-        throw new Error(error.Message || "No se pudo conectar con el servidor");
+        throw new Error(error.message || "No se pudo conectar con el servidor");
     }
 }
 
@@ -32,7 +32,7 @@ export async function postData(endpointUrl, body) {
     return data;
     }
      catch(error){
-        throw new Error(error.Message || "No se pudo conectar con el servidor");
+        throw new Error(error.message || "No se pudo conectar con el servidor");
     }
     
 }
@@ -53,6 +53,6 @@ export async function putData(endpointUrl) {
         return data;
 
     } catch(error){
-        throw new Error(error.Message || "No se pudo conectar con el servidor");
+        throw new Error(error.message || "No se pudo conectar con el servidor");
     }
 }
