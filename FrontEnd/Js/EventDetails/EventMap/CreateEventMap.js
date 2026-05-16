@@ -16,7 +16,7 @@ export function syncSeats(updatedEvent) {
 
             if (!seatElement) return;
 
-            if (seat.status === 'Reserved') {
+            if (seat.status === 'Reserved' ||seat.status === 'Sold') {
 
                 seatElement.style.background =
                     '#9CA3AF';
