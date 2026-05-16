@@ -87,13 +87,14 @@ namespace Application.UseCase.Commands.Reservation
                 }
 
                 // crear reserva
+                var argentinaTimeZone = TimeZoneInfo.FindSystemTimeZoneById("America/Argentina/Buenos_Aires");
                 var reservation = new Domain.Entities.Reservation
                 {
                     UserId = command.UserId,
                     SeatId = seat.SeatId,
                     Status = "Pending",
-                    ReservedAt = DateTime.UtcNow,
-                    ExpiresAt = DateTime.UtcNow.AddMinutes(1)
+                    ReservedAt = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, argentinaTimeZone),
+                    ExpiresAt = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow.AddMinutes(5), argentinaTimeZone),
                 };
 
                 // guardar cambios
