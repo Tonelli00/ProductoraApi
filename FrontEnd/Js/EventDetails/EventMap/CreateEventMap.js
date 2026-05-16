@@ -5,7 +5,6 @@ import { createMapCard, resetSeatStyle } from './Map/mapCard.js';
 import { makeReservation } from '../../Reservation/MakeReservation.js';
 
 export function syncSeats(updatedEvent) {
-
     updatedEvent.sectors.forEach(sector => {
 
         sector.seats.forEach(seat => {
@@ -16,10 +15,10 @@ export function syncSeats(updatedEvent) {
 
             if (!seatElement) return;
 
-            if (seat.status === 'Reserved' ||seat.status === 'Sold') {
+            if (seat.status === 'Reserved' || seat.status === 'Sold') {
 
-                seatElement.style.background =
-                    '#9CA3AF';
+                seatElement.style.background = '#e5e7eb';
+                seatElement.style.border = '1px solid #d1d5db';
 
                 seatElement.classList.add(
                     'pointer-events-none'

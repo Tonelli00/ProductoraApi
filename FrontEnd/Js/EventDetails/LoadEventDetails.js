@@ -68,7 +68,7 @@ else{
 
       setInterval(async () => {
         const updatedEvent = await getEvent(eventId);
-
+        console.log("Evento Update",updatedEvent);
         syncSeats(updatedEvent);
 
       }, 3000);
