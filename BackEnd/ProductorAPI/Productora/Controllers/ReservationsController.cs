@@ -4,8 +4,12 @@ using Application.DTOs.Seat;
 using Application.Interfaces.Reservations;
 using Application.UseCase.Commands.Reservation;
 using Application.UseCase.Queries.Reservations;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Productora.Documentation.SwaggerExamples.Errors;
 using Productora.Documentation.SwaggerExamples.Reservations;
+using Productora.Documentation.SwaggerExamples.Seats;
+using Productora.Documentation.SwaggerExamples.Users;
 using Swashbuckle.AspNetCore.Annotations;
 using Swashbuckle.AspNetCore.Filters;
 
@@ -37,8 +41,14 @@ namespace Productora.Controllers
         [ProducesResponseType(typeof(ErrorResponseDTO), 409)]
 
         [SwaggerResponse(201, "Created", typeof(ReservationResponse))]
+        [SwaggerResponse(400, "Bad Request", typeof(ErrorResponseDTO))]
+        [SwaggerResponse(404, "Not Found", typeof(ErrorResponseDTO))]
+        [SwaggerResponse(409, "Conflict", typeof(ErrorResponseDTO))]
 
         [SwaggerResponseExample(201, typeof(ReservedSeatExample))]
+        [SwaggerResponseExample(400, typeof(BadRequestExample))]
+        [SwaggerResponseExample(404, typeof(UserNotFoundExample))]
+        [SwaggerResponseExample(409, typeof(SeatConcurrenceExample))]
 
         public async Task<IActionResult> Create([FromBody] CreateReservationCommand command)
         {
@@ -51,6 +61,15 @@ namespace Productora.Controllers
         [ProducesResponseType(typeof(ErrorResponseDTO), 400)]
         [ProducesResponseType(typeof(ErrorResponseDTO), 404)]
 
+        [SwaggerResponse(200, "OK", typeof(ReservationResponse))]
+        [SwaggerResponse(400, "Bad Request", typeof(ErrorResponseDTO))]
+        [SwaggerResponse(404, "Not Found", typeof(ErrorResponseDTO))]
+
+        [SwaggerResponseExample(200, typeof(ReservationResponse))]
+        [SwaggerResponseExample(400, typeof(BadRequestExample))]
+        [SwaggerResponseExample(404, typeof(UserNotFoundExample))]
+        [SwaggerResponseExample(404, typeof(ReservationNotFoundExample))]
+
         public async Task<IActionResult> GetByUser([FromRoute] int id)
         {
             var result = await _getReservationsByUserId.Handler(new GetReservationsByUserIDQuery { userId = id});
@@ -62,8 +81,12 @@ namespace Productora.Controllers
         [ProducesResponseType(typeof(ErrorResponseDTO), 400)]
         [ProducesResponseType(typeof(ErrorResponseDTO), 404)]
 
+        [SwaggerResponse(200, "OK", typeof(ReservationResponse))]
+        [SwaggerResponse(400, "Bad Request", typeof(ErrorResponseDTO))]
         [SwaggerResponse(404, "Not Found", typeof(ErrorResponseDTO))]
 
+        [SwaggerResponseExample(200, typeof(ReservationResponse))]
+        [SwaggerResponseExample(400, typeof(BadRequestExample))]
         [SwaggerResponseExample(404, typeof(ReservationNotFoundExample))]
 
         public async Task<IActionResult> GetById([FromRoute] Guid id)
@@ -75,7 +98,11 @@ namespace Productora.Controllers
         [HttpPut("{id:guid}")]
         [ProducesResponseType(typeof(ReservationResponse), 200)]
         [ProducesResponseType(typeof(ErrorResponseDTO), 404)]
+
+        [SwaggerResponse(200, "OK", typeof(ReservationResponse))]
         [SwaggerResponse(404, "Not Found", typeof(ErrorResponseDTO))]
+
+        [SwaggerResponseExample(200, typeof(ReservationResponse))]
         [SwaggerResponseExample(404, typeof(ReservationNotFoundExample))]
 
         public async Task<IActionResult> ConfirmReservation([FromRoute] Guid id)

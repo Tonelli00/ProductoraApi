@@ -28,14 +28,15 @@ namespace Productora.Controllers
         }
 
         [HttpPost]
-        [ProducesResponseType(typeof(UserResponse), 200)]
+        [ProducesResponseType(typeof(UserResponse), 201)]
         [ProducesResponseType(typeof(ErrorResponseDTO), 400)]
-        [ProducesResponseType(typeof(ErrorResponseDTO), 404)]
         [ProducesResponseType(typeof(ErrorResponseDTO), 409)]
 
+        [SwaggerResponse(201, "Created", typeof(UserResponse))]
         [SwaggerResponse(400, "Bad Request", typeof(ErrorResponseDTO))]
         [SwaggerResponse(409, "Conflict", typeof(ErrorResponseDTO))]
 
+        [SwaggerResponseExample(201, typeof(UserResponse))]
         [SwaggerResponseExample(400, typeof(BadRequestExample))]
         [SwaggerResponseExample(409, typeof(EmailConflictExample))]
 
@@ -46,9 +47,13 @@ namespace Productora.Controllers
         }
         [HttpPost("login")]
         [ProducesResponseType(typeof(UserResponse), 200)]
-        [ProducesResponseType(typeof(ErrorResponseDTO), 400)]
-        [ProducesResponseType(typeof(ErrorResponseDTO), 404)]
-                
+        [ProducesResponseType(typeof(ErrorResponseDTO), 401)]
+
+        [SwaggerResponse(200, "OK", typeof(UserResponse))]
+        [SwaggerResponse(401, "Unauthorized", typeof(ErrorResponseDTO))]
+
+        [SwaggerResponseExample(200, typeof(UserResponse))]
+        [SwaggerResponseExample(401, typeof(UsercredentialsIncorrectExample))]
 
         public async Task<IActionResult> Login([FromBody] LoginUserCommand command)
         {
@@ -61,8 +66,12 @@ namespace Productora.Controllers
         [ProducesResponseType(typeof(ErrorResponseDTO), 400)]
         [ProducesResponseType(typeof(ErrorResponseDTO), 404)]
 
+        [SwaggerResponse(200, "OK", typeof(UserResponse))]
+        [SwaggerResponse(400, "Bad Request", typeof(ErrorResponseDTO))]
         [SwaggerResponse(404, "Not Found", typeof(ErrorResponseDTO))]
 
+        [SwaggerResponseExample(200, typeof(UserResponse))]
+        [SwaggerResponseExample(400, typeof(BadRequestExample))]
         [SwaggerResponseExample(404, typeof(UserNotFoundExample))]
 
         public async Task<IActionResult> GetUserById([FromRoute] int id)

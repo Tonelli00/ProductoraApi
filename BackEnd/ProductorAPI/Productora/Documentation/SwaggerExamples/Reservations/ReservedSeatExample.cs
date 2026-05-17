@@ -9,7 +9,7 @@ namespace Productora.Documentation.SwaggerExamples.Reservations
         {
             return new ErrorResponseDTO
             {
-                StatusCode = 200,
+                StatusCode = 201,
                 Message = "El asiento se reservo correctamente"
             };
         }

@@ -78,6 +78,10 @@ public class ExceptionMiddleware
         {
             await StatusMessage(context, 409, ex.Message,ex);
         }
+        catch (UserCredentialsIncorrectException ex)
+        {
+            await StatusMessage(context, 401, ex.Message,ex);
+        }
         catch (Exception ex)
         {
             await StatusMessage(context, 500, "Internal server error",ex);

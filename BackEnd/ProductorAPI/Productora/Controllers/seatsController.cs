@@ -6,8 +6,11 @@ using Application.UseCase.Commands.Seat;
 using Application.UseCase.Queries.Seats;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Productora.Documentation.SwaggerExamples.Errors;
+using Productora.Documentation.SwaggerExamples.Reservations;
 using Productora.Documentation.SwaggerExamples.Seats;
 using Productora.Documentation.SwaggerExamples.Sectors;
+using Productora.Documentation.SwaggerExamples.Users;
 using Swashbuckle.AspNetCore.Annotations;
 using Swashbuckle.AspNetCore.Filters;
 
@@ -36,6 +39,14 @@ namespace Productora.Controllers
         [ProducesResponseType(typeof(ErrorResponseDTO), 400)]
         [ProducesResponseType(typeof(ErrorResponseDTO), 404)]
 
+        [SwaggerResponse(200, "OK", typeof(SeatResponseDTO))]
+        [SwaggerResponse(400, "Bad Request", typeof(ErrorResponseDTO))]
+        [SwaggerResponse(404, "Not Found", typeof(ErrorResponseDTO))]
+
+        [SwaggerResponseExample(200, typeof(SeatResponseDTO))]
+        [SwaggerResponseExample(400, typeof(BadRequestExample))]
+        [SwaggerResponseExample(404, typeof(SeatNotFoundExample))]
+
 
         public async Task<IActionResult> GetAll([FromRoute] int SectorId)
         {
@@ -51,6 +62,13 @@ namespace Productora.Controllers
         [ProducesResponseType(typeof(ErrorResponseDTO), 400)]
         [ProducesResponseType(typeof(ErrorResponseDTO), 404)]
 
+        [SwaggerResponse(200, "OK", typeof(SeatResponseDTO))]
+        [SwaggerResponse(400, "Bad Request", typeof(ErrorResponseDTO))]
+        [SwaggerResponse(404, "Not Found", typeof(ErrorResponseDTO))]
+
+        [SwaggerResponseExample(200, typeof(SeatResponseDTO))]
+        [SwaggerResponseExample(400, typeof(BadRequestExample))]
+        [SwaggerResponseExample(404, typeof(SeatNotFoundExample))]
 
         public async Task<IActionResult> GetSeatById([FromRoute] Guid id)
         {
@@ -61,12 +79,16 @@ namespace Productora.Controllers
         }
 
         [HttpGet("reserved")]
-        [ProducesResponseType(typeof(ReservationResponse), 200)]
+        [ProducesResponseType(typeof(IEnumerable<SeatResponseDTO>), 200)]
         [ProducesResponseType(typeof(ErrorResponseDTO), 400)]
         [ProducesResponseType(typeof(ErrorResponseDTO), 404)]
 
+        [SwaggerResponse(200, "OK", typeof(IEnumerable<SeatResponseDTO>))]
+        [SwaggerResponse(400, "Bad Request", typeof(ErrorResponseDTO))]
         [SwaggerResponse(404, "Not Found", typeof(ErrorResponseDTO))]
 
+        [SwaggerResponseExample(200, typeof(SeatListExample))]
+        [SwaggerResponseExample(400, typeof(BadRequestExample))]
         [SwaggerResponseExample(404, typeof(SeatNotFoundExample))]
 
         public async Task<IActionResult> GetReserved([FromQuery] GetReservedSeatsByEventIdQuery query)

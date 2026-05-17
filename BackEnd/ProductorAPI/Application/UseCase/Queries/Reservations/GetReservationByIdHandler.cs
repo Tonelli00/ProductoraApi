@@ -21,6 +21,7 @@ namespace Application.UseCase.Queries.Reservations
 
         public async Task<ReservationResponse> Handle(GetReservationByIdQueryHandler query)
         {
+
             var reservation = await _reservationRepository.GetByIdAsync(query.reservationId);
             if(reservation == null)
             {
