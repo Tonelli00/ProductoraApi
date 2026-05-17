@@ -89,7 +89,7 @@ namespace Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            EventDate = new DateTime(2026, 6, 1, 21, 24, 15, 972, DateTimeKind.Local).AddTicks(1699),
+                            EventDate = new DateTime(2026, 6, 5, 15, 46, 23, 414, DateTimeKind.Local).AddTicks(9287),
                             Name = "Gran evento",
                             Status = "Activo",
                             Venue = "Estadio A"
@@ -1141,7 +1141,7 @@ namespace Infrastructure.Migrations
                             Id = 1,
                             Email = "Proyecto2026@gmail.com",
                             Name = "Proyecto",
-                            PasswordHash = "$2a$11$GMm86fM10GrCosygz2qqW.lxYCcxG4VUkvLyp4Ei58IhCTSDA/iIG"
+                            PasswordHash = "$2a$11$JdYUIg3f5eYBdKV4lXSB3OCsUkdrTAyPFh64PFLVRYn/vpuwrtSRW"
                         });
                 });
 

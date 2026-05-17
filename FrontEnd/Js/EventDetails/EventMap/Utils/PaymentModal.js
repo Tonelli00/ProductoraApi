@@ -161,6 +161,11 @@ export async function PaymentModal(reservationId,eventName,selected)
             timer: 5000,
             timerProgressBar: true
         });
+        setTimeout(() => {
+            location.href="Reservations.html"
+            localStorage.removeItem("event_id");
+
+        }, 5000);
        
         
     }

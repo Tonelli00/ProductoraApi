@@ -24,6 +24,7 @@ export function syncSeats(updatedEvent) {
                     'pointer-events-none'
                 );
             }
+            
         });
     });
 }

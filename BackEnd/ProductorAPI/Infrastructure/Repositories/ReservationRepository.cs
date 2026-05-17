@@ -39,14 +39,17 @@ namespace Infrastructure.Repositories
 
         public async Task<IEnumerable<Reservation>> GetByUserIdAsync(int userId,CancellationToken ct = default)
         {
+
             return await _context.Reservations
-                .Where(r => r.UserId == userId && r.Status == "Paid" || r.Status == "Pending")
+                .Where(r => r.UserId == userId && (r.Status == "Paid" || r.Status == "Pending"))
                 .ToListAsync(ct);
         }
 
         public async Task<IEnumerable<Reservation>> GetExpiredReservationsAsync(CancellationToken ct = default)
         {
-            return await _context.Reservations.Where(reservation => reservation.ExpiresAt < DateTime.Now && reservation.Status == "Pending").ToListAsync(ct);
+            var argentinaTimeZone = TimeZoneInfo.FindSystemTimeZoneById("America/Argentina/Buenos_Aires");
+            var now = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, argentinaTimeZone);
+            return await _context.Reservations.Where(reservation => reservation.Status == "Pending" && reservation.ExpiresAt < now).ToListAsync(ct);
         }
     }
 }

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class NuevaMigracion : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -142,12 +142,12 @@ namespace Infrastructure.Migrations
             migrationBuilder.InsertData(
                 table: "EVENT",
                 columns: new[] { "Id", "EventDate", "Name", "Status", "Venue" },
-                values: new object[] { 1, new DateTime(2026, 6, 1, 21, 24, 15, 972, DateTimeKind.Local).AddTicks(1699), "Gran evento", "Activo", "Estadio A" });
+                values: new object[] { 1, new DateTime(2026, 6, 5, 15, 46, 23, 414, DateTimeKind.Local).AddTicks(9287), "Gran evento", "Activo", "Estadio A" });
 
             migrationBuilder.InsertData(
                 table: "USER",
                 columns: new[] { "Id", "Email", "Name", "PasswordHash" },
-                values: new object[] { 1, "Proyecto2026@gmail.com", "Proyecto", "$2a$11$GMm86fM10GrCosygz2qqW.lxYCcxG4VUkvLyp4Ei58IhCTSDA/iIG" });
+                values: new object[] { 1, "Proyecto2026@gmail.com", "Proyecto", "$2a$11$JdYUIg3f5eYBdKV4lXSB3OCsUkdrTAyPFh64PFLVRYn/vpuwrtSRW" });
 
             migrationBuilder.InsertData(
                 table: "SECTOR",

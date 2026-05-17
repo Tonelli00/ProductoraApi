@@ -41,7 +41,7 @@ namespace Application.UseCase.Queries.Reservations
             }
             var reservations = await _reservationRepository.GetByUserIdAsync(query.userId);
             if (reservations == null)
-                throw new ReservationNotFoundException("No se encontraron reservasiones para el usuario especificado.");
+                throw new ReservationNotFoundException("No se encontraron reservas para el usuario especificado.");
             return reservations.Select(r => new ReservationResponse
             {
                 Id = r.Id,
