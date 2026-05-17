@@ -30,6 +30,7 @@ namespace Infrastructure.Repositories
         public async Task CreateReservationAsync(Reservation reservation,CancellationToken ct = default)
         {
             await _context.Reservations.AddAsync(reservation, ct);
+          
         }
 
         public async Task<Reservation?> GetByIdAsync(Guid id,CancellationToken ct = default)

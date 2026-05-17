@@ -3,9 +3,11 @@ import { CreateReservationCard } from "./ReservationCard.js";
 
 export async function ReservationList()
 {
+    const container = document.getElementById("reservations-container");
+    renderSkeletons(container, 4);
     const userId = localStorage.getItem("UserId");
     const reservations = await GetUserReservations(userId);
-    
+
     const TotalReservation = document.getElementById("total-reservation");
     TotalReservation.textContent=reservations.length;
    
@@ -16,6 +18,7 @@ export async function ReservationList()
     PendingReservation.textContent = reservations.filter(r=> r.status == "Pending").length;
    
     const container = document.getElementById("reservations-container");
+    
     container.innerHTML = "";
 
     if (!reservations || reservations.length === 0) {

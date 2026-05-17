@@ -1,10 +1,11 @@
 import { getAllEvents } from "../Event/GetEvents.js";
 import { createEventCard } from "./CreateEventCard.js";
+import { renderSkeletons } from "../Utils/RenderSkeletons.js";
 
 export async function EventsCards(pageNumber=1){
 
     const eventsSection = document.getElementById("events");
-    eventsSection.innerHTML = ""; 
+    renderSkeletons(eventsSection, 10);
 
     const events = await getAllEvents(pageNumber);
 
@@ -13,7 +14,7 @@ export async function EventsCards(pageNumber=1){
             eventsSection.innerHTML = "<p>No hay eventos programados</p>";
             return { hasNextPage: false };
         }
-    
+    eventsSection.innerHTML = "";
     events.forEach(event => {
         const card = createEventCard(event);
         eventsSection.appendChild(card);
