@@ -158,14 +158,14 @@ export async function PaymentModal(reservationId,eventName,selected)
             icon: "success",
             title: "Reserva pagada con éxito",
             showConfirmButton: false,
-            timer: 5000,
+            timer: 3000,
             timerProgressBar: true
         });
         setTimeout(() => {
             location.href="Reservations.html"
             localStorage.removeItem("event_id");
 
-        }, 5000);
+        }, 3000);
        
         
     }
@@ -176,11 +176,11 @@ export async function PaymentModal(reservationId,eventName,selected)
             icon: "error",
             title: "No se pudo realizar la reserva, intente nuevamente.",
             showConfirmButton: false,
-            timer: 5000
+            timer: 3000
         });
         setTimeout(() => {
             location.reload();
-        }, 5000);
+        }, 3000);
     }
     });
 }
