@@ -1,6 +1,6 @@
 import { GetUserReservations } from "../../Reservation/GetReservation.js";
 import { CreateReservationCard } from "./ReservationCard.js";
-
+import { renderSkeletons } from "../../Utils/RenderSkeletons.js";
 export async function ReservationList()
 {
     const container = document.getElementById("reservations-container");
