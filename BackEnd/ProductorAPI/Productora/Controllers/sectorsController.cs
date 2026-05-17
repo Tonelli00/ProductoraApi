@@ -7,7 +7,12 @@ using Application.UseCase.Commands.Sector;
 using Application.UseCase.Queries.AuditLogs;
 using Application.UseCase.Queries.Sectors;
 using Microsoft.AspNetCore.Mvc;
+using Productora.Documentation.SwaggerExamples.Errors;
+using Productora.Documentation.SwaggerExamples.Events;
+using Productora.Documentation.SwaggerExamples.Reservations;
+using Productora.Documentation.SwaggerExamples.Seats;
 using Productora.Documentation.SwaggerExamples.Sectors;
+using Productora.Documentation.SwaggerExamples.Users;
 using Swashbuckle.AspNetCore.Annotations;
 using Swashbuckle.AspNetCore.Filters;
 
@@ -34,8 +39,14 @@ public class SectorsController : ControllerBase
     [ProducesResponseType(typeof(ErrorResponseDTO), 404)]
     [ProducesResponseType(typeof(ErrorResponseDTO), 409)]
 
+    [SwaggerResponse(201, "Created", typeof(SectorResponseDTO))]
+    [SwaggerResponse(400, "Bad Request", typeof(ErrorResponseDTO))]
+    [SwaggerResponse(404, "Not Found", typeof(ErrorResponseDTO))]
     [SwaggerResponse(409, "Conflict", typeof(ErrorResponseDTO))]
 
+    [SwaggerResponseExample(201, typeof(SectorResponseDTO))]
+    [SwaggerResponseExample(400, typeof(BadRequestExample))]
+    [SwaggerResponseExample(404, typeof(EventNotFoundExample))]
     [SwaggerResponseExample(409, typeof(SectorConflictExample))]
 
     public async Task<IActionResult> CreateSector([FromBody]CreateSectorCommand command)
@@ -49,9 +60,13 @@ public class SectorsController : ControllerBase
     [ProducesResponseType(typeof(ErrorResponseDTO), 400)]
     [ProducesResponseType(typeof(ErrorResponseDTO), 404)]
 
+    [SwaggerResponse(200, "OK", typeof(SectorResponseDTO))]
     [SwaggerResponse(400, "Bad request", typeof(ErrorResponseDTO))]
+    [SwaggerResponse(404, "Not Found", typeof(ErrorResponseDTO))]
 
-    [SwaggerResponseExample(400, typeof(SectorNotFoundExample))]
+    [SwaggerResponseExample(200, typeof(SectorResponseDTO))]
+    [SwaggerResponseExample(400, typeof(BadRequestExample))]
+    [SwaggerResponseExample(404, typeof(SectorNotFoundExample))]
 
     public async Task<IActionResult> GetSector(int id)
    {
@@ -65,9 +80,13 @@ public class SectorsController : ControllerBase
     [ProducesResponseType(typeof(ErrorResponseDTO), 400)]
     [ProducesResponseType(typeof(ErrorResponseDTO), 404)]
 
+    [SwaggerResponse(200, "OK", typeof(SectorShortResponseDTO))]
     [SwaggerResponse(400, "Bad request", typeof(ErrorResponseDTO))]
-
-    [SwaggerResponseExample(400, typeof(SectorNotFoundExample))]
+    [SwaggerResponse(404, "Not Found", typeof(ErrorResponseDTO))]
+    
+    [SwaggerResponseExample(200, typeof(SectorShortResponseDTO))]
+    [SwaggerResponseExample(400, typeof(BadRequestExample))]
+    [SwaggerResponseExample(404, typeof(SectorNotFoundExample))]
 
     public async Task<IActionResult> GetSectorSummary(int id)
     {

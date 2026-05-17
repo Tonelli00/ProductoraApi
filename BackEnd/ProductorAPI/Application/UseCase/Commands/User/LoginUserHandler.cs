@@ -20,7 +20,7 @@ namespace Application.UseCase.Commands.User
             var _user = await _userRepository.GetUserByEmailAsync(email);
            if(_user == null) 
            {
-                throw new UserNotFoundException("El usuario no fue encontrado");
+                throw new UserCredentialsIncorrectException("El usuario no fue encontrado");
            }
 
             bool isValidPsw= BCrypt.Net.BCrypt.Verify(command.Password,_user.PasswordHash);

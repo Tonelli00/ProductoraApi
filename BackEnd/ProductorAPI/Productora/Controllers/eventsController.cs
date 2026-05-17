@@ -6,7 +6,9 @@ using Application.UseCase.Queries.Events;
 using Domain.Exceptions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Productora.Documentation.SwaggerExamples.Errors;
 using Productora.Documentation.SwaggerExamples.Events;
+using Productora.Documentation.SwaggerExamples.Seats;
 using Swashbuckle.AspNetCore.Annotations;
 using Swashbuckle.AspNetCore.Filters;
 
@@ -41,8 +43,12 @@ namespace Productora.Controllers
         [ProducesResponseType(typeof(ErrorResponseDTO), 400)]
         [ProducesResponseType(typeof(ErrorResponseDTO), 404)]
 
+        [SwaggerResponse(200, "OK", typeof(EventResponseDTO))]
+        [SwaggerResponse(400, "Bad Request", typeof(ErrorResponseDTO))]
         [SwaggerResponse(404, "Event not found", typeof(ErrorResponseDTO))]
 
+        [SwaggerResponseExample(200, typeof(EventResponseDTO))]
+        [SwaggerResponseExample(400, typeof(BadRequestExample))]
         [SwaggerResponseExample(404, typeof(EventNotFoundExample))]
 
         public async Task<IActionResult> GetEventById(int id)
@@ -54,9 +60,17 @@ namespace Productora.Controllers
             return Ok(result);
         }
         [HttpGet("{id}/seats")]
-        [ProducesResponseType(typeof(SeatResponseDTO), 200)]
+        [ProducesResponseType(typeof(IEnumerable<SeatResponseDTO>), 200)]
         [ProducesResponseType(typeof(ErrorResponseDTO), 400)]
         [ProducesResponseType(typeof(ErrorResponseDTO), 404)]
+
+        [SwaggerResponse(200, "OK", typeof(IEnumerable<SeatResponseDTO>))]
+        [SwaggerResponse(400, "Bad Request", typeof(ErrorResponseDTO))]
+        [SwaggerResponse(404, "Not Found", typeof(ErrorResponseDTO))]
+
+        [SwaggerResponseExample(200, typeof(SeatListExample))]
+        [SwaggerResponseExample(400, typeof(BadRequestExample))]
+        [SwaggerResponseExample(404, typeof(EventNotFoundExample))]
 
         public async Task<IActionResult> GetSeatsByEventId(int id)
         {
