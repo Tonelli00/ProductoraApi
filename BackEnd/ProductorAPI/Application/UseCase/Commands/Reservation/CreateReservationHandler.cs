@@ -47,14 +47,12 @@ namespace Application.UseCase.Commands.Reservation
 
         public async Task<ReservationResponse> Handle(CreateReservationCommand command)
         {
-            // validar datos
             if (command.UserId <= 0)
                 throw new ArgumentException("El UserId es requerido");
 
             if (command.SeatId == Guid.Empty)
                 throw new ArgumentException("Seleccione un asiento válido");
 
-            // validar usuario
             var user = await _getUserByIdQueryHandler.Handler(
                 new GetUserByIdQuery { UserId = command.UserId });
 
@@ -75,59 +73,34 @@ namespace Application.UseCase.Commands.Reservation
             try
             {
                 if (seat.Status == "Reserved" || seat.Status == "Sold")
-                {
-                    await _createAuditLogCommandHandler.Handler(new CreateAuditLogCommand
-                    {
-                        UserId = command.UserId,
-                        Action = AuditAction.RESERVE_ATTEMPT.ToString(),
-                        EntityType = "Seat",
-                        EntityId = seat.SeatId.ToString(),
-                        Details = $"Intentó reservar el asiento {seat.SeatNumber} en el sector {sector.Name}, pero ya estaba reservado o vendido"
-                    });
-                    await _unitOfWork.CommitAsync();
                     throw new SectorConflictException("El asiento ya está reservado, intente con otro.");
-                }
 
-                var argentinaTimeZone = TimeZoneInfo.FindSystemTimeZoneById(
-                    "America/Argentina/Buenos_Aires");
+                var argentinaTimeZone = TimeZoneInfo.FindSystemTimeZoneById("America/Argentina/Buenos_Aires");
 
                 var reservation = new Domain.Entities.Reservation
                 {
                     UserId = command.UserId,
                     SeatId = seat.SeatId,
                     Status = "Pending",
-                    ReservedAt = TimeZoneInfo.ConvertTimeFromUtc(
-                        DateTime.UtcNow,
-                        argentinaTimeZone),
-
-                    ExpiresAt = TimeZoneInfo.ConvertTimeFromUtc(
-                        DateTime.UtcNow.AddMinutes(5),
-                        argentinaTimeZone),
+                    ReservedAt = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, argentinaTimeZone),
+                    ExpiresAt = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow.AddMinutes(5), argentinaTimeZone),
                 };
 
-                // guardar reserva
                 await _reservationRepository.CreateReservationAsync(reservation);
 
-                // actualizar asiento
                 await _markSeatAsReserverHandler.Handle(
-                    new MarkSeatAsReservedCommand
-                    {
-                        SeatId = seat.SeatId
-                    });
-
-                // auditoría éxito
-                await _createAuditLogCommandHandler.Handler(
-                    new CreateAuditLogCommand
-                    {
-                        UserId = command.UserId,
-                        Action = AuditAction.RESERVE_SUCCESS.ToString(),
-                        EntityType = "Reservation",
-                        EntityId = reservation.Id.ToString(),
-                        Details =
-                            $"Reserva creada para el asiento {seat.SeatNumber} en el sector {sector.Name}"
-                    });
+                    new MarkSeatAsReservedCommand { SeatId = seat.SeatId });
 
                 await _unitOfWork.CommitAsync();
+
+                await _createAuditLogCommandHandler.Handler(new CreateAuditLogCommand
+                {
+                    UserId = command.UserId,
+                    Action = AuditAction.RESERVE_SUCCESS.ToString(),
+                    EntityType = "Reservation",
+                    EntityId = reservation.Id.ToString(),
+                    Details = $"Reserva creada para el asiento {seat.SeatNumber} en el sector {sector.Name}"
+                });
 
                 return new ReservationResponse
                 {
@@ -139,20 +112,48 @@ namespace Application.UseCase.Commands.Reservation
                     ExpiresAt = reservation.ExpiresAt,
                 };
             }
-            catch (Exception ex)
+            catch (SectorConflictException)
             {
-
                 await _unitOfWork.RollBackAsync();
-                await _createAuditLogCommandHandler.Handler(
-                   new CreateAuditLogCommand
-                   {
-                       UserId = command.UserId,
-                       Action = AuditAction.RESERVE_ATTEMPT.ToString(),
-                       EntityType = "Seat",
-                       EntityId = seat.SeatId.ToString(),
-                       Details =
-                           $"Ocurrió un error inesperado al reservar el asiento {seat.SeatNumber}"
-                   });
+
+                await _createAuditLogCommandHandler.Handler(new CreateAuditLogCommand
+                {
+                    UserId = command.UserId,
+                    Action = AuditAction.RESERVE_ATTEMPT.ToString(),
+                    EntityType = "Seat",
+                    EntityId = seat.SeatId.ToString(),
+                    Details = $"Intentó reservar el asiento {seat.SeatNumber} en el sector {sector.Name}, pero ya estaba reservado o vendido"
+                });
+
+                throw;
+            }
+          
+            catch (SeatConcurrenceException)
+            {
+                await _createAuditLogCommandHandler.Handler(new CreateAuditLogCommand
+                {
+                    UserId = command.UserId,
+                    Action = AuditAction.RESERVE_ATTEMPT.ToString(),
+                    EntityType = "Seat",
+                    EntityId = seat.SeatId.ToString(),
+                    Details = $"El asiento {seat.SeatNumber} fue tomado por otro usuario en el sector {sector.Name}"
+                });
+
+                throw;
+            }
+            catch (Exception)
+            {
+                await _unitOfWork.RollBackAsync();
+
+                await _createAuditLogCommandHandler.Handler(new CreateAuditLogCommand
+                {
+                    UserId = command.UserId,
+                    Action = AuditAction.RESERVE_ATTEMPT.ToString(),
+                    EntityType = "Seat",
+                    EntityId = seat.SeatId.ToString(),
+                    Details = $"Ocurrió un error inesperado al reservar el asiento {seat.SeatNumber}"
+                });
+
                 throw;
             }
         }

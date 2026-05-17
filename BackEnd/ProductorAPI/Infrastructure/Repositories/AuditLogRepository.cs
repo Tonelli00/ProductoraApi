@@ -22,6 +22,8 @@ namespace Infrastructure.Repositories
         public async Task CreateAuditLog(Audit_Log audit_Log, CancellationToken ct = default)
         {
            await _context.Audit_Logs.AddAsync(audit_Log, ct);
+           await _context.SaveChangesAsync(ct);
+
         }
 
         public async Task<Audit_Log?> GetAuditLogById(Guid Id, CancellationToken ct = default)

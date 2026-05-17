@@ -51,6 +51,7 @@ namespace Infrastructure.UnitOfWork
             }
             await _transaction.RollbackAsync(ct);
             await _transaction.DisposeAsync();
+            _transaction = null;
         }
     }
 }
