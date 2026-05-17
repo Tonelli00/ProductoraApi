@@ -83,6 +83,8 @@ function createSeatElement(seat, colors, onSelect) {
   seatElement.className="w-5 h-4 rounded-[3px] transition-transform transition-opacity duration-100"
 
   const isReserved = seat.status?.toLowerCase() === 'reserved' || seat.status?.toLowerCase() === 'sold';
+  
+  seatElement.dataset.seatId = seat.seatId;
 
   if (isReserved) {
     reservedSeatStyle(seatElement);

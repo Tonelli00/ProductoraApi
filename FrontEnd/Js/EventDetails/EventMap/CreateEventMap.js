@@ -4,6 +4,30 @@ import { createSidebar } from './Sidebar/Sidebar.js';
 import { createMapCard, resetSeatStyle } from './Map/mapCard.js';
 import { makeReservation } from '../../Reservation/MakeReservation.js';
 
+export function syncSeats(updatedEvent) {
+    updatedEvent.sectors.forEach(sector => {
+
+        sector.seats.forEach(seat => {
+            const seatElement =
+                document.querySelector(
+                    `[data-seat-id="${seat.seatId}"]`
+                );
+
+            if (!seatElement) return;
+
+            if (seat.status === 'Reserved' || seat.status === 'Sold') {
+
+                seatElement.style.background = '#e5e7eb';
+                seatElement.style.border = '1px solid #d1d5db';
+
+                seatElement.classList.add(
+                    'pointer-events-none'
+                );
+            }
+        });
+    });
+}
+
 export function CreateEventMap(event, userId) {
   const Container = document.createElement('div');
   Container.className = 'flex gap-6 items-start';
@@ -68,3 +92,6 @@ export function CreateEventMap(event, userId) {
 
   return Container;
 }
+
+
+

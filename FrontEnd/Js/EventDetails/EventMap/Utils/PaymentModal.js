@@ -162,9 +162,7 @@ export async function PaymentModal(reservationId,eventName,selected)
             timerProgressBar: true
         });
        
-        setTimeout(() => {
-            location.reload();
-        }, 5000);
+        
     }
      catch (error) {
         Swal.fire({

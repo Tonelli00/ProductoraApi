@@ -1,6 +1,6 @@
 import { getEvent } from "../Event/GetEvents.js";
 import { initLoginModal } from "../UserForms/LoginUserForm.js";
-import { CreateEventMap } from "./EventMap/CreateEventMap.js";
+import { CreateEventMap,syncSeats} from "./EventMap/CreateEventMap.js";
 
 export async function loadEventDetail() {
   const eventId = localStorage.getItem("event_id");
@@ -62,8 +62,16 @@ export async function loadEventDetail() {
         document.getElementById("modal-login").classList.remove("hidden");
     });
 }
-    else{
-      seatMap.appendChild(CreateEventMap(event,userId));
+else{
+      const map = CreateEventMap(event,userId)
+      seatMap.appendChild(map);
+
+      setInterval(async () => {
+        const updatedEvent = await getEvent(eventId);
+        console.log("Evento Update",updatedEvent);
+        syncSeats(updatedEvent);
+
+      }, 3000);
     }
   
 }
