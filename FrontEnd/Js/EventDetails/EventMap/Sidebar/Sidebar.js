@@ -161,6 +161,15 @@ export function createSidebar({ onClear, onBuy }) {
         result.eventName,
         result.selected
       );
+    Swal.fire({
+        toast: true,
+        position: "bottom-end",
+        icon: "info",
+        title: "Su reserva fue creada correctamente. Puede verla en “Mis reservas”.",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true
+    });
       buyBtn.disabled = false;
       buyBtn.textContent = 'Pasar a finalizar compra';
     } catch (error) {
