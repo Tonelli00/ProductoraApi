@@ -16,8 +16,7 @@ export async function ReservationList()
    
     const PendingReservation = document.getElementById("pending-reservation");
     PendingReservation.textContent = reservations.filter(r=> r.status == "Pending").length;
-   
-    const container = document.getElementById("reservations-container");
+ 
     
     container.innerHTML = "";
 
